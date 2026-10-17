@@ -397,6 +397,24 @@ footer a { color: var(--plum); font-weight: 700; }
 .v-hint { max-width: calc(100% - 24px); overflow-wrap: anywhere; }
 .surprise:hover .die { transform: rotate(180deg); }
 .section-stats { display: block; margin-top: 2px; }
+.daily {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; max-width: 440px;
+  padding: 8px 12px 8px 8px;
+  border: 0; border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--line), 0 12px 26px -18px rgba(75, 29, 116, .7);
+  text-align: left; color: var(--ink);
+  cursor: pointer;
+  transition: transform .25s var(--ease-out);
+}
+.daily:active { transform: scale(.98); }
+.daily:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; }
+.daily img { flex: none; width: 54px; height: 96px; object-fit: cover; border-radius: 11px; background: var(--bg-2); }
+.daily-text { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.daily-text b { color: var(--plum); font-size: 16px; font-weight: 780; }
+.daily-text span { color: var(--ink-2); font-size: 13px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.daily-go { flex: none; padding: 8px 13px; border-radius: 999px; background: var(--plum); color: var(--plum-ink); font-weight: 700; font-size: 14px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; animation-iteration-count: 1 !important; }
@@ -413,6 +431,11 @@ footer a { color: var(--plum); font-weight: 700; }
   </a>
   <h1>Duckive <button type="button" class="duck-btn" id="duck-btn" aria-label="Make the duck quack"><span class="duck">🦆</span></button></h1>
   <p class="lede">Every story from my highlights, saved in one spot. Tap one to watch.</p>
+  <button type="button" class="daily" id="daily" hidden>
+    <img alt="">
+    <span class="daily-text"><b>Duck of the day</b><span id="daily-note"></span></span>
+    <span class="daily-go" aria-hidden="true">Watch ▶</span>
+  </button>
 </header>
 
 <div class="bar" id="bar">
@@ -440,7 +463,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-17T23:54:34+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-17T23:56:32+00:00"></footer>
 
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Story player" hidden>
   <div class="v-backdrop" id="v-backdrop"></div>
@@ -1020,11 +1043,13 @@ footer a { color: var(--plum); font-weight: 700; }
     return "translate(" + dx + "px, " + dy + "px) scale(" + k + ")";
   }
 
-  function openViewer(id, tile, customList) {
+  let returnTo = null;
+  function openViewer(id, tile, customList, back) {
     if (open) return;
     if (closing) closing();
+    returnTo = back || null;
     list = customList || storiesFor(state.section, state.sort);
-    shuffled = !!customList;
+    shuffled = !!customList && customList.length > 1;
     const i = list.findIndex((s) => s.id === id);
     if (i < 0) return;
     opener = tile || document.activeElement;
@@ -1054,7 +1079,7 @@ footer a { color: var(--plum); font-weight: 700; }
     V.video.pause();
     V.spin.hidden = true;
     V.hint.hidden = true;
-    const tile = tiles.get(story().id);
+    const tile = returnTo || tiles.get(story().id);
     let done = false;
     const finish = () => {
       if (done) return;
@@ -1226,6 +1251,24 @@ footer a { color: var(--plum); font-weight: 700; }
     }
     openViewer(s.id, tiles.get(s.id));
   });
+
+  // Duck of the day: the same pick for everyone all day, a new one tomorrow
+  const ducksAll = ALL.filter((s) => s.section === "ducks").sort((a, b) => a.t - b.t);
+  if (ducksAll.length) {
+    const now = new Date();
+    let h = now.getFullYear() * 372 + now.getMonth() * 31 + now.getDate();
+    h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+    h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+    h ^= h >>> 16;
+    const pick = ducksAll[(h >>> 0) % ducksAll.length];
+    const daily = $("daily");
+    const thumb = daily.querySelector("img");
+    thumb.src = MEDIA + pick.id + ".jpg";
+    $("daily-note").textContent = "From " + fmtFull.format(dateOf(pick)) + (pick.song ? " · ♫ " + pick.song : "");
+    daily.setAttribute("aria-label", "Duck of the day, from " + fmtFull.format(dateOf(pick)) + ". Watch it");
+    daily.hidden = false;
+    daily.addEventListener("click", () => openViewer(pick.id, thumb, [pick], thumb));
+  }
 
   $("surprise").addEventListener("click", () => {
     const pool = storiesFor(state.section, state.sort).slice();
