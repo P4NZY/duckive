@@ -382,7 +382,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-17T23:40:30+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-17T23:52:30+00:00"></footer>
 
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Story player" hidden>
   <div class="v-backdrop" id="v-backdrop"></div>
@@ -429,6 +429,7 @@ footer a { color: var(--plum); font-weight: 700; }
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const EASE = "cubic-bezier(.2,.8,.2,1)";
   const STILL_MS = 5000;
+  const MEDIA = "media/";
   const SECTIONS = { ducks: "Ducks", gaming: "Game wins" };
 
   const store = {
@@ -488,7 +489,7 @@ footer a { color: var(--plum); font-weight: 700; }
     img.decoding = "async";
     img.width = 360;
     img.height = 640;
-    img.src = "media/" + s.id + ".jpg";
+    img.src = MEDIA +s.id + ".jpg";
     const date = document.createElement("span");
     date.className = "t-date";
     date.setAttribute("aria-hidden", "true");
@@ -719,6 +720,8 @@ footer a { color: var(--plum); font-weight: 700; }
   let spinTimer = 0;
   let hintTimer = 0;
   let opener = null;
+  let closing = null;
+  let ghostToken = 0;
   const story = () => list[idx];
 
   function setSoundButton() {
@@ -779,11 +782,14 @@ footer a { color: var(--plum); font-weight: 700; }
     if (reduced) return;
     if (drawGhost()) {
       V.ghost.hidden = false;
+      const token = ++ghostToken;
+      const hide = () => { if (token === ghostToken) V.ghost.hidden = true; };
       const g = V.ghost.animate(
         [{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-dir * 30) + "%) scale(.9)", opacity: 0 }],
         { duration: 340, easing: EASE }
       );
-      g.onfinish = () => { V.ghost.hidden = true; };
+      g.onfinish = hide;
+      setTimeout(hide, 500);
     }
     V.media.animate(
       [{ transform: "translateX(" + (dir * 30) + "%) scale(.9)", opacity: 0 }, { transform: "none", opacity: 1 }],
@@ -808,7 +814,7 @@ footer a { color: var(--plum); font-weight: 700; }
     setSong(s);
 
     V.still.classList.remove("gone", "kb");
-    V.still.src = "media/" + s.id + ".jpg";
+    V.still.src = MEDIA +s.id + ".jpg";
     mode = s.kind === "video" ? "video" : (s.audio ? "audio" : "still");
     if (mode !== "video") {
       V.still.style.setProperty("--kb", (mode === "audio" ? Math.max(s.dur, 4) : STILL_MS / 1000) + "s");
@@ -827,13 +833,13 @@ footer a { color: var(--plum); font-weight: 700; }
       stillStart = performance.now();
       stillElapsed = 0;
     } else {
-      V.video.src = "media/" + s.id + ".mp4";
+      V.video.src = MEDIA +s.id + ".mp4";
       V.video.muted = muted || !s.audio;
       play();
       spinTimer = setTimeout(() => { if (V.video.readyState < 3) V.spin.hidden = false; }, 350);
     }
     const n = list[i + 1];
-    if (n) { const im = new Image(); im.src = "media/" + n.id + ".jpg"; }
+    if (n) { const im = new Image(); im.src = MEDIA +n.id + ".jpg"; }
     raf = requestAnimationFrame(tick);
   }
 
@@ -925,6 +931,7 @@ footer a { color: var(--plum); font-weight: 700; }
 
   function openViewer(id, tile) {
     if (open) return;
+    if (closing) closing();
     list = storiesFor(state.section, state.sort);
     const i = list.findIndex((s) => s.id === id);
     if (i < 0) return;
@@ -952,7 +959,13 @@ footer a { color: var(--plum); font-weight: 700; }
     V.spin.hidden = true;
     V.hint.hidden = true;
     const tile = tiles.get(story().id);
+    let done = false;
     const finish = () => {
+      if (done) return;
+      done = true;
+      closing = null;
+      V.ghost.hidden = true;
+      for (const el of V.root.querySelectorAll(".v-top, .v-bottom, .v-shade, .v-nav")) el.getAnimations().forEach((x) => x.cancel());
       V.root.hidden = true;
       V.stage.style.transform = "";
       V.backdrop.style.opacity = "";
@@ -964,6 +977,7 @@ footer a { color: var(--plum); font-weight: 700; }
       const target = tile && tile.isConnected ? tile : opener;
       if (target) target.focus({ preventScroll: true });
     };
+    closing = finish;
     if (reduced) { finish(); return; }
     let target = null;
     if (tile && tile.isConnected) {
@@ -988,11 +1002,8 @@ footer a { color: var(--plum); font-weight: 700; }
       [{ transform: startT === "none" ? "none" : startT, opacity: 1 }, target ? { transform: target, opacity: 1 } : { transform: "translateY(60px) scale(.85)", opacity: 0 }],
       { duration: 380, easing: EASE, fill: "forwards" }
     );
-    a.onfinish = () => {
-      V.ghost.hidden = true;
-      for (const el of V.root.querySelectorAll(".v-top, .v-bottom, .v-shade, .v-nav")) el.getAnimations().forEach((x) => x.cancel());
-      finish();
-    };
+    a.onfinish = finish;
+    setTimeout(finish, 700); // in case the browser throttles animations mid-close
   }
 
   /* gestures: tap sides, hold to pause, swipe sideways, drag down to close */

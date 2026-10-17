@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="156 ducks and 74 video game wins from @marcus.phonk's Instagram stories.">
+<meta name="theme-color" content="#e7f5de">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Duckive 🦆">
+<meta property="og:description" content="156 ducks and 74 video game wins from @marcus.phonk's Instagram stories.">
+<meta property="og:url" content="https://p4nzy.github.io/duckive/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%86%3C/text%3E%3C/svg%3E">
+<title>Duckive 🦆 Lab</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap">
+<style>
+/* Layout: playful header, sticky section tabs, a 3-up story-archive grid grouped by month; stories open in a full-screen player.
+   Color: light green is the main color; dark purple marks every highlight (title, active tab, buttons, links, focus). */
+:root {
+  --bg: #e7f5de;
+  --bg-2: #d3ecc4;
+  --glass: rgba(231, 245, 222, 0.86);
+  --surface: #ffffff;
+  --ink: #241433;
+  --ink-2: #5b4a6b;
+  --plum: #4b1d74;
+  --plum-ink: #ffffff;
+  --line: #c2dfb4;
+  --night: #140a1f;
+  --sprout: #b9f0a4;
+  --font-display: "Bagel Fat One", "Arial Rounded MT Bold", "Trebuchet MS", ui-rounded, system-ui, sans-serif;
+  --font-body: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-spring: cubic-bezier(.34, 1.36, .64, 1);
+  color-scheme: light;
+  scrollbar-gutter: stable;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+html.locked, html.locked body { overflow: hidden; }
+html.locked { background: var(--night); }
+button { font: inherit; color: inherit; }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 16px; }
+
+/* Header */
+.top { padding-block: 28px 18px; display: grid; gap: 12px; }
+.handle {
+  justify-self: start;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 650; font-size: 14px;
+  box-shadow: 0 1px 0 var(--line), 0 6px 16px -10px rgba(36, 20, 51, .5);
+  transition: transform .2s var(--ease-out);
+}
+.handle:active { transform: scale(.96); }
+.handle:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; }
+.handle-dot {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--plum); color: var(--plum-ink); font-size: 13px;
+}
+.handle svg { width: 12px; height: 12px; opacity: .55; }
+h1 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(54px, 17vw, 104px);
+  line-height: .92;
+  letter-spacing: -0.01em;
+  color: var(--plum);
+  text-wrap: balance;
+}
+h1 .duck { display: inline-block; font-size: .78em; transform-origin: 50% 80%; animation: bob 3.2s ease-in-out infinite; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-.08em) rotate(5deg); }
+}
+.lede { margin: 0; max-width: 34ch; color: var(--ink-2); font-size: 17px; text-wrap: pretty; }
+
+/* Sticky section tabs */
+.bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  padding-block: 10px;
+  background: var(--glass);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  transition: box-shadow .25s;
+}
+.bar.stuck { box-shadow: 0 1px 0 var(--line); }
+.seg {
+  position: relative;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--bg-2);
+}
+.seg button {
+  position: relative; z-index: 1;
+  border: 0; background: transparent;
+  padding: 11px 14px;
+  border-radius: 999px;
+  font-weight: 700; font-size: 16px;
+  color: var(--ink-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .3s var(--ease-out);
+}
+.seg button[aria-selected="true"], .seg button[aria-checked="true"] { color: var(--plum-ink); }
+.seg button:focus-visible { outline: 3px solid var(--plum); outline-offset: -3px; }
+.seg .n { font-size: 13px; font-weight: 650; opacity: .72; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.seg-pill {
+  position: absolute; z-index: 0;
+  top: 4px; bottom: 4px; left: 0; width: 0;
+  border-radius: 999px;
+  background: var(--plum);
+  box-shadow: 0 6px 14px -6px rgba(75, 29, 116, .75);
+  transition: transform .5s var(--ease-spring), width .5s var(--ease-spring);
+}
+.seg.sort { display: inline-grid; background: var(--bg-2); }
+.seg.sort button { padding: 7px 14px; font-size: 14px; }
+.seg.sort button[aria-checked="true"] { color: var(--plum); }
+.seg.sort .seg-pill { background: var(--surface); box-shadow: 0 2px 8px -3px rgba(36, 20, 51, .45); }
+.seg.sort svg { width: 13px; height: 13px; margin-right: 4px; vertical-align: -1px; }
+
+/* Section head */
+.section-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 10px 16px;
+  padding-block: 14px 4px;
+}
+.section-meta { margin: 0; min-width: 0; flex: 1 1 220px; color: var(--ink-2); font-size: 14px; }
+.section-meta strong { color: var(--plum); font-weight: 750; }
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding-block: 4px 32px;
+}
+@media (min-width: 620px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } }
+@media (min-width: 860px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; } }
+.month {
+  grid-column: 1 / -1;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 18px 2px 4px;
+}
+.month:first-child { padding-top: 6px; }
+.month h3 { margin: 0; font-size: 18px; font-weight: 780; letter-spacing: -0.01em; color: var(--ink); }
+.month span { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.tile {
+  position: relative; display: block;
+  width: 100%; max-width: 100%;
+  aspect-ratio: 9 / 16;
+  padding: 0; border: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-2);
+  cursor: pointer;
+  transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+}
+.tile img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--ease-out);
+}
+.tile::after {
+  content: "";
+  position: absolute; inset: auto 0 0 0; height: 42%;
+  background: linear-gradient(transparent, rgba(20, 10, 31, .55));
+  pointer-events: none;
+}
+.tile:active { transform: scale(.95); }
+.tile:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; }
+@media (hover: hover) {
+  .tile:hover { transform: translateY(-3px); box-shadow: 0 14px 24px -14px rgba(75, 29, 116, .8); }
+  .tile:hover img { transform: scale(1.06); }
+}
+.t-date {
+  position: absolute; top: 6px; left: 6px; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 30px;
+  padding: 4px 5px 3px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .94);
+  color: var(--ink);
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
+}
+.t-date b { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--plum); }
+.t-date i { margin-top: 2px; font-style: normal; font-size: 9.5px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+.t-dur {
+  position: absolute; right: 7px; bottom: 6px; z-index: 1;
+  color: #fff; font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .55);
+}
+footer { padding-block: 8px 40px; color: var(--ink-2); font-size: 13px; }
+footer a { color: var(--plum); font-weight: 700; }
+
+/* Story player */
+.viewer { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; }
+.v-backdrop { position: absolute; inset: 0; background: var(--night); }
+.v-stage {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+  color: #fff;
+}
+@media (min-width: 700px) {
+  .v-stage {
+    position: relative; inset: auto;
+    height: min(calc(100dvh - 40px), 920px);
+    aspect-ratio: 9 / 16;
+    border-radius: 18px;
+  }
+}
+.v-media, .v-ghost { position: absolute; inset: 0; }
+.v-media video, .v-media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+.v-media video.audio-only { visibility: hidden; }
+.v-still { transition: opacity .25s ease; }
+.v-still.gone { opacity: 0; }
+.v-still.kb { animation: kenburns var(--kb, 6s) linear both; }
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.09); } }
+.v-ghost { width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.v-shade { position: absolute; inset-inline: 0; pointer-events: none; z-index: 3; }
+.v-shade.top { top: 0; height: 130px; background: linear-gradient(rgba(20, 10, 31, .6), transparent); }
+.v-shade.bottom { bottom: 0; height: 140px; background: linear-gradient(transparent, rgba(20, 10, 31, .6)); }
+.v-top, .v-bottom { position: absolute; inset-inline: 0; z-index: 4; transition: opacity .2s ease; }
+.v-top { top: 0; padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 0; }
+.v-bottom { bottom: 0; padding: 0 12px calc(env(safe-area-inset-bottom, 0px) + 18px); }
+.is-held .v-top, .is-held .v-bottom, .is-held .v-shade { opacity: 0; }
+.v-progress { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .3); overflow: hidden; }
+.v-progress span { display: block; height: 100%; background: var(--sprout); transform-origin: left center; transform: scaleX(0); }
+.v-meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; min-width: 0; }
+.v-chip {
+  flex: none;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--sprout); color: var(--plum);
+  font-size: 12px; font-weight: 750;
+}
+.v-when { min-width: 0; flex: 1; font-size: 13px; line-height: 1.2; text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
+.v-when b { display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.v-when span { opacity: .8; font-variant-numeric: tabular-nums; }
+.v-btn {
+  flex: none;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: background .2s, transform .2s var(--ease-out);
+}
+.v-btn:active { transform: scale(.9); }
+.v-btn:disabled { opacity: .45; cursor: default; }
+.v-btn:focus-visible { outline: 2px solid var(--sprout); outline-offset: 2px; }
+.v-btn svg { width: 20px; height: 20px; }
+.v-song {
+  display: inline-flex; align-items: center; gap: 7px;
+  max-width: 100%;
+  padding: 7px 13px 7px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .16);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font-size: 13px; font-weight: 600;
+  overflow: hidden;
+}
+.v-song .note {
+  flex: none; width: 20px; height: 20px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--plum); color: var(--sprout);
+  font-size: 11px;
+}
+.v-song .track { overflow: hidden; min-width: 0; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+.v-song .track span { display: inline-block; white-space: nowrap; }
+.v-song .track.scroll span { animation: marquee var(--mq-dur, 8s) linear infinite; padding-right: 32px; }
+@keyframes marquee { 0%, 15% { transform: translateX(0); } 100% { transform: translateX(var(--mq, -50%)); } }
+.v-hint {
+  position: absolute; z-index: 5; top: calc(env(safe-area-inset-top, 0px) + 66px); right: 12px;
+  padding: 7px 11px; border-radius: 10px;
+  background: var(--surface); color: var(--plum);
+  font-size: 13px; font-weight: 650;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .6);
+  animation: pop .35s var(--ease-spring) both;
+}
+@keyframes pop { from { opacity: 0; transform: translateY(-6px) scale(.9); } }
+.v-spin {
+  position: absolute; z-index: 3; left: 50%; top: 50%;
+  width: 38px; height: 38px; margin: -19px 0 0 -19px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, .25); border-top-color: var(--sprout);
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.v-nav {
+  display: none;
+  position: absolute; top: 50%; z-index: 6;
+  width: 48px; height: 48px; margin-top: -24px;
+  border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, .12); color: #fff;
+  cursor: pointer;
+  transition: background .2s, transform .2s var(--ease-out);
+}
+.v-nav svg { width: 22px; height: 22px; }
+.v-nav:hover { background: rgba(255, 255, 255, .22); }
+.v-nav:active { transform: scale(.92); }
+.v-nav:disabled { opacity: .25; cursor: default; }
+.v-nav:focus-visible { outline: 2px solid var(--sprout); outline-offset: 2px; }
+@media (min-width: 700px) {
+  .v-nav { display: grid; place-items: center; }
+  .v-nav.prev { left: calc(50% - min(calc(100dvh - 40px), 920px) * 9 / 32 - 72px); }
+  .v-nav.next { right: calc(50% - min(calc(100dvh - 40px), 920px) * 9 / 32 - 72px); }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Lab extras */
+.lab-bar { background: var(--plum); color: var(--plum-ink); font-size: 13px; }
+.lab-bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; }
+.lab-bar a { color: var(--sprout); font-weight: 750; white-space: nowrap; }
+.duck-btn {
+  border: 0; background: none; padding: 0;
+  font: inherit; color: inherit; line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.duck-btn:focus-visible { outline: 3px solid var(--plum); outline-offset: 4px; border-radius: 14px; }
+.quack-bubble {
+  position: absolute; z-index: 20;
+  padding: 5px 11px; border-radius: 999px;
+  background: var(--surface); color: var(--plum);
+  font: 750 15px var(--font-body);
+  box-shadow: 0 8px 18px -8px rgba(36, 20, 51, .6);
+  pointer-events: none; white-space: nowrap;
+}
+.t-new {
+  position: absolute; top: 6px; right: 6px; z-index: 1;
+  padding: 3px 7px; border-radius: 999px;
+  background: var(--plum); color: var(--plum-ink);
+  font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(20, 10, 31, .35);
+}
+.new-count {
+  display: inline-grid; place-items: center;
+  min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px;
+  border-radius: 999px;
+  background: var(--sprout); color: var(--plum);
+  font-size: 11px; font-weight: 800; vertical-align: 1px;
+}
+.head-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.surprise {
+  border: 0; border-radius: 999px;
+  padding: 9px 14px;
+  background: var(--plum); color: var(--plum-ink);
+  font-weight: 700; font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px -6px rgba(75, 29, 116, .75);
+  transition: transform .2s var(--ease-out);
+}
+.surprise:active { transform: scale(.94); }
+.surprise:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.surprise .die { display: inline-block; margin-right: 3px; transition: transform .5s var(--ease-spring); }
+.v-hint { max-width: calc(100% - 24px); overflow-wrap: anywhere; }
+.surprise:hover .die { transform: rotate(180deg); }
+.section-stats { display: block; margin-top: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; animation-iteration-count: 1 !important; }
+}
+</style>
+</head>
+<body>
+<div class="lab-bar"><div class="wrap"><span>🧪 Lab copy: new ideas being tried out.</span><a href="../">Main site →</a></div></div>
+
+<header class="top wrap">
+  <a class="handle" href="https://www.instagram.com/marcus.phonk/" target="_blank" rel="noopener">
+    <span class="handle-dot" aria-hidden="true">🦈</span>@marcus.phonk
+    <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2.5h6v6M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <h1>Duckive <button type="button" class="duck-btn" id="duck-btn" aria-label="Make the duck quack"><span class="duck">🦆</span></button></h1>
+  <p class="lede">Every story from my highlights, saved in one spot. Tap one to watch.</p>
+</header>
+
+<div class="bar" id="bar">
+  <div class="wrap">
+    <div class="seg" id="tabs" role="tablist" aria-label="Section">
+      <span class="seg-pill" aria-hidden="true"></span>
+      <button type="button" role="tab" id="tab-ducks" data-section="ducks" aria-selected="true" aria-controls="grid">Ducks<span class="n" id="n-ducks"></span></button>
+      <button type="button" role="tab" id="tab-gaming" data-section="gaming" aria-selected="false" aria-controls="grid">Game wins<span class="n" id="n-gaming"></span></button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="section-head">
+    <p class="section-meta" id="section-meta"></p>
+    <div class="head-actions">
+    <button type="button" class="surprise" id="surprise"><span class="die" aria-hidden="true">🎲</span> Surprise me</button>
+    <div class="seg sort" id="sort" role="radiogroup" aria-label="Order">
+      <span class="seg-pill" aria-hidden="true"></span>
+      <button type="button" role="radio" data-sort="newest" aria-checked="true"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2v8M2.5 6.5 6 10l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Newest</button>
+      <button type="button" role="radio" data-sort="oldest" aria-checked="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Oldest</button>
+    </div>
+    </div>
+  </div>
+  <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
+</main>
+
+<footer class="wrap" id="footer" data-updated="2026-10-17T23:52:30+00:00"></footer>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Story player" hidden>
+  <div class="v-backdrop" id="v-backdrop"></div>
+  <div class="v-stage" id="v-stage">
+    <div class="v-media" id="v-media">
+      <video id="v-video" playsinline webkit-playsinline preload="auto"></video>
+      <img class="v-still" id="v-still" alt="">
+    </div>
+    <canvas class="v-ghost" id="v-ghost" hidden></canvas>
+    <div class="v-spin" id="v-spin" hidden></div>
+    <div class="v-shade top"></div>
+    <div class="v-shade bottom"></div>
+    <div class="v-top">
+      <div class="v-progress" aria-hidden="true"><span id="v-prog"></span></div>
+      <div class="v-meta">
+        <span class="v-chip" id="v-chip"></span>
+        <div class="v-when"><b id="v-date"></b><span id="v-count"></span></div>
+        <button type="button" class="v-btn" id="v-share" aria-label="Share this story">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v5.5c0 .8.7 1.5 1.5 1.5h7c.8 0 1.5-.7 1.5-1.5V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="v-btn" id="v-sound" aria-label="Mute"></button>
+        <button type="button" class="v-btn" id="v-close" aria-label="Close">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="v-hint" id="v-hint" hidden>Tap the speaker for sound</div>
+    <div class="v-bottom">
+      <div class="v-song" id="v-song"><span class="note" aria-hidden="true">♫</span><span class="track" id="v-track"><span id="v-song-text"></span></span></div>
+    </div>
+  </div>
+  <button type="button" class="v-nav prev" id="v-prev" aria-label="Previous story">
+    <svg viewBox="0 0 22 22" aria-hidden="true"><path d="M13.5 4.5 7 11l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button type="button" class="v-nav next" id="v-next" aria-label="Next story">
+    <svg viewBox="0 0 22 22" aria-hidden="true"><path d="M8.5 4.5 15 11l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <p class="sr-only" id="v-live" aria-live="polite"></p>
+</div>
+
+<script type="application/json" id="stories-data">[{"id":"3717773007667112812","section":"ducks","highlight":"🦆","t":1757413092,"dur":8.6,"song":"Juicy J, Lex Luger — So Damn Fucked Up","kind":"video","audio":true},{"id":"3718499822526268397","section":"ducks","highlight":"🦆","t":1757499742,"dur":15.0,"song":"Shiro SAGISU — MISATO","kind":"video","audio":true},{"id":"3719307274096256443","section":"ducks","highlight":"🦆","t":1757595997,"dur":15.0,"song":"Satoru Kosaki — Nangokufu desu ga, Nani ka","kind":"video","audio":true},{"id":"3719950037913472200","section":"ducks","highlight":"🦆","t":1757672618,"dur":9.2,"song":"Shiro SAGISU — Next Episode","kind":"video","audio":true},{"id":"3721389101048984000","section":"ducks","highlight":"🦆","t":1757844169,"dur":4.5,"song":"Satoru Kosaki — Fun Fun Fun♪ dayo, Lucky Star","kind":"video","audio":true},{"id":"3722176084625122394","section":"ducks","highlight":"🦆","t":1757937986,"dur":15.0,"song":"Susumu Hirasawa — Gats","kind":"video","audio":true},{"id":"3722858234903022899","section":"ducks","highlight":"🦆","t":1758019305,"dur":15.0,"song":"Aero Chord — Surface","kind":"video","audio":true},{"id":"3723634528599172858","section":"ducks","highlight":"🦆","t":1758111846,"dur":15.0,"song":"Kendrick Lamar, Blxst, Amanda Reifer — Die Hard","kind":"video","audio":false},{"id":"3725008958566980983","section":"ducks","highlight":"🦆","t":1758275688,"dur":10.7,"song":"Shiro SAGISU — Waking up in the morning","kind":"video","audio":true},{"id":"3725778858071877785","section":"ducks","highlight":"🦆","t":1758367470,"dur":15.0,"song":"Shiro SAGISU — BAREFOOT IN THE PARK","kind":"video","audio":true},{"id":"3726613800762753783","section":"ducks","highlight":"🦆","t":1758466997,"dur":13.6,"song":"Ray Krislianggi — Sutekimeppou (from \"MONOGATARI Series\")","kind":"video","audio":true},{"id":"3727148859785741557","section":"ducks","highlight":"🦆","t":1758530783,"dur":6.7,"song":"Jan Vogler — Suite for Violoncello No. 1 in G Major, BWV 1007: I. Prélude","kind":"video","audio":true},{"id":"3728046625307233840","section":"ducks","highlight":"🦆","t":1758637804,"dur":15.3,"song":"Aero Chord — Surface","kind":"video","audio":true},{"id":"3728959453413275097","section":"ducks","highlight":"🦆","t":1758746626,"dur":15.0,"song":" — ","kind":"video","audio":true},{"id":"3729473136702816340","section":"ducks","highlight":"🦆","t":1758807863,"dur":20.0,"song":"inshvllvh — XLR","kind":"video","audio":false},{"id":"3730219507227608218","section":"ducks","highlight":"🦆","t":1758896837,"dur":20.0,"song":"Shiro SAGISU — THANATOS","kind":"video","audio":true},{"id":"3730862090748430290","section":"ducks","highlight":"🦆","t":1758973440,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3731706978721360416","section":"ducks","highlight":"🦆","t":1759074155,"dur":8.0,"song":"Tomoki Hasegawa — Yachin ga Hanbun!?","kind":"video","audio":true},{"id":"3732455188456812418","section":"ducks","highlight":"🦆","t":1759163351,"dur":20.0,"song":"Tomoki Hasegawa — Yachin ga Hanbun!?","kind":"video","audio":true},{"id":"3733174722633402192","section":"ducks","highlight":"🦆","t":1759249118,"dur":14.1,"song":"Shiro SAGISU — Next Episode","kind":"video","audio":true},{"id":"3733175043346685352","section":"ducks","highlight":"🦆","t":1759249162,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3734045868476081286","section":"ducks","highlight":"🦆","t":1759352975,"dur":20.0,"song":"Yoshihisa Hirano — Kyrie","kind":"video","audio":true},{"id":"3734757584159659756","section":"ducks","highlight":"🦆","t":1759437818,"dur":20.0,"song":"林振詮 — 莫札特小步舞曲","kind":"video","audio":true},{"id":"3735477975249370974","section":"ducks","highlight":"🦆","t":1759523695,"dur":20.0,"song":"Lil Baby — My Dawg","kind":"video","audio":true},{"id":"3736118061246768606","section":"ducks","highlight":"🦆","t":1759599995,"dur":10.5,"song":"Dreyma — Secunda (From 'The Elder Scrolls V: Skyrim')","kind":"video","audio":true},{"id":"3736703751558842107","section":"ducks","highlight":"🦆","t":1759669819,"dur":20.0,"song":"Mark Mothersbaugh — Wise Master Wu","kind":"video","audio":true},{"id":"3737486185363721996","section":"ducks","highlight":"🦆","t":1759763088,"dur":13.4,"song":"Sakura Chiyono O (CV: Ruriko Noguchi) — Ask Chiyono O!","kind":"video","audio":true},{"id":"3738156161707840301","section":"ducks","highlight":"🦆","t":1759842960,"dur":20.0,"song":"Luciano Pavarotti, Martti Talvela, Sherrill Milnes, London Symphony Orchestra, Richard Bonynge — Verdi: Rigoletto, Act III: La donna è mobile – E là il vostr'uomo","kind":"video","audio":true},{"id":"3739052813809392974","section":"ducks","highlight":"🦆","t":1759949849,"dur":20.0,"song":"Special Week (CV: Azumi Waki), Silence Suzuka (CV: Marika Kohno), Tokai Teio (CV: Machico), Gold Ship (CV: Hitomi Ueda), Tamamo Cross (CV: Naomi Ohzora), Winning Ticket (CV: Yui Watanabe), Tazuna Hayakawa (CV: Yukiyo Fujii), Jikkyo no Akasaka-san (CV: Satomi Akesaka) — Run, Umamusume","kind":"video","audio":true},{"id":"3739837770018347621","section":"ducks","highlight":"🦆","t":1760043262,"dur":10.5,"song":"Samuel Kim — Josuke Theme - Epic Version (Diamond is Unbreakable)","kind":"video","audio":true},{"id":"3740350620855988145","section":"ducks","highlight":"🦆","t":1760104560,"dur":20.0,"song":"Anime Zing — Dark Rebirth - Dio's Theme (From \"JoJo's Bizarre Adventure Stardust Crusaders \")","kind":"video","audio":true},{"id":"3741005236459336293","section":"ducks","highlight":"🦆","t":1760182593,"dur":13.9,"song":" — ","kind":"video","audio":true},{"id":"3741839820713379770","section":"ducks","highlight":"🦆","t":1760282082,"dur":12.9,"song":"Shiro SAGISU — MISATO","kind":"video","audio":true},{"id":"3742618169115200182","section":"ducks","highlight":"🦆","t":1760374142,"dur":9.1,"song":"Farrell Vernon, Irene Ator — Mozart: Queen of the Night (Aria)","kind":"video","audio":true},{"id":"3744602412716421153","section":"ducks","highlight":"🦆","t":1760611408,"dur":13.4,"song":"Lotus Juice, Azumi Takahashi, ATLUS Sound Team, ATLUS GAME MUSIC — Color Your Night","kind":"video","audio":true},{"id":"3745501257465900862","section":"ducks","highlight":"🦆","t":1760718564,"dur":20.0,"song":"SiM — The Rumbling (TV Size)","kind":"video","audio":false},{"id":"3745501845725441039","section":"ducks","highlight":"🦆","t":1760718634,"dur":20.0,"song":"BBC Scottish Symphony Orchestra, Jerzy Maksymiuk — Peer Gynt, Op. 23, Act IV: Prelude. Morning Mood","kind":"video","audio":true},{"id":"3746233211463178643","section":"ducks","highlight":"🦆","t":1760805820,"dur":20.0,"song":"Dan Salvato — Poem Panic!","kind":"still","audio":true},{"id":"3748217976617753522","section":"ducks","highlight":"🦆","t":1761042420,"dur":6.8,"song":"TheFatRat — Time Lapse","kind":"video","audio":true},{"id":"3748528104864759581","section":"ducks","highlight":"🦆","t":1761079392,"dur":20.0,"song":"Yanwei Yang — Frieren: Beyond Journey's End Episode 12 OST 改","kind":"video","audio":true},{"id":"3750007260219725330","section":"ducks","highlight":"🦆","t":1761255720,"dur":20.0,"song":"The Mozart Tango Players — La Primavera","kind":"video","audio":false},{"id":"3754102670341237311","section":"ducks","highlight":"🦆","t":1761743932,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3754910891951801158","section":"ducks","highlight":"🦆","t":1761840280,"dur":20.0,"song":"Shihoko Hirata, ATLUS Sound Team, ATLUS GAME MUSIC — Heartbeat, Heartbreak","kind":"video","audio":true},{"id":"3756976280890295871","section":"ducks","highlight":"🦆","t":1762086490,"dur":15.8,"song":"Marvelous Sunday (CV: Marie Miyake) — Marvelous Sunday Time☆★","kind":"video","audio":true},{"id":"3757894399246780322","section":"ducks","highlight":"🦆","t":1762195941,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3758744523204263880","section":"ducks","highlight":"🦆","t":1762297280,"dur":15.2,"song":" — ","kind":"video","audio":true},{"id":"3759449861482149432","section":"ducks","highlight":"🦆","t":1762381364,"dur":7.3,"song":"Lotus Juice, Azumi Takahashi, ATLUS Sound Team, ATLUS GAME MUSIC — Color Your Night","kind":"video","audio":true},{"id":"3759991564098131155","section":"ducks","highlight":"🦆","t":1762438012,"dur":18.1,"song":"ALI — LOST IN PARADISE (Jujutsu Kaisen Ending Theme Song) (feat. AKLO)","kind":"video","audio":true},{"id":"3803281828627409948","section":"ducks","highlight":"2026 🦆","t":1767606545,"dur":20.0,"song":"Baltra — Never Let Go (Of Me) (Slowed Extended Version)","kind":"video","audio":true},{"id":"3804312312371263073","section":"ducks","highlight":"2026 🦆","t":1767729388,"dur":20.0,"song":"Kanye West — No Child Left Behind","kind":"video","audio":true},{"id":"3805396094075586694","section":"ducks","highlight":"2026 🦆","t":1767858580,"dur":8.8,"song":"Hans Zimmer — Extraction Point","kind":"video","audio":true},{"id":"3808664460370380588","section":"ducks","highlight":"2026 🦆","t":1768248200,"dur":16,"song":"Yanwei Yang — Frieren: Beyond Journey's End Episode 12 OST 改","kind":"video","audio":false},{"id":"3810153260418347484","section":"ducks","highlight":"2026 🦆","t":1768425683,"dur":20.0,"song":"Miami XO — Bazooka","kind":"video","audio":false},{"id":"3815704840588789671","section":"ducks","highlight":"2026 🦆","t":1769087482,"dur":4.5,"song":"Travis Scott — Upper Echelon (feat. T.I., 2 Chainz)","kind":"video","audio":true},{"id":"3819207360766341954","section":"ducks","highlight":"2026 🦆","t":1769505016,"dur":20.0,"song":"Baltra — Never Let Go (Of Me) (Slowed Extended Version)","kind":"video","audio":true},{"id":"3823823167454499689","section":"ducks","highlight":"2026 🦆","t":1770055261,"dur":5.9,"song":"Dan Salvato — Poem Panic!","kind":"video","audio":true},{"id":"3826798471286375765","section":"ducks","highlight":"2026 🦆","t":1770409943,"dur":11.2,"song":"Shiro SAGISU — MISATO","kind":"still","audio":true},{"id":"3830163626011456542","section":"ducks","highlight":"2026 🦆","t":1770811100,"dur":10.7,"song":"Yu-Ching Fei — Yi Jian Mei (xue hua piao piao bei feng xiao xiao)","kind":"video","audio":true},{"id":"3831131710171962761","section":"ducks","highlight":"2026 🦆","t":1770926509,"dur":20.0,"song":"kensuke ushio — in the sea","kind":"video","audio":true},{"id":"3834398542492352685","section":"ducks","highlight":"2026 🦆","t":1771315946,"dur":12,"song":"American Military — First Call","kind":"video","audio":true},{"id":"3835558067714958782","section":"ducks","highlight":"2026 🦆","t":1771454169,"dur":9.8,"song":"Katherine Jenkins, Kiri Te Kanawa, Philharmonia Orchestra, Anthony Inglis — Delibes: The Flower Duet (From \"Lakmé\")","kind":"video","audio":true},{"id":"3835959194952412676","section":"ducks","highlight":"2026 🦆","t":1771501991,"dur":20.0,"song":"C418 — Aria Math","kind":"video","audio":true},{"id":"3837292498075011652","section":"ducks","highlight":"2026 🦆","t":1771660918,"dur":20.0,"song":"Pitbull — Fireball (feat. John Ryan)","kind":"video","audio":true},{"id":"3839000590152161044","section":"ducks","highlight":"2026 🦆","t":1771864553,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3839718630527364367","section":"ducks","highlight":"2026 🦆","t":1771950143,"dur":20.6,"song":"VUKEINE — SKORN - Ultra Slowed","kind":"video","audio":true},{"id":"3840288528873827683","section":"ducks","highlight":"2026 🦆","t":1772018088,"dur":20.0,"song":"Dixon Dallas — Like Whiskey","kind":"video","audio":true},{"id":"3840399794162399892","section":"ducks","highlight":"2026 🦆","t":1772031351,"dur":20.0,"song":"Dixon Dallas — Good Lookin'","kind":"video","audio":true},{"id":"3841153244051560926","section":"ducks","highlight":"2026 🦆","t":1772121165,"dur":11.4,"song":"Jan Vogler — Suite for Violoncello No. 1 in G Major, BWV 1007: I. Prélude","kind":"video","audio":true},{"id":"3841202370030113987","section":"ducks","highlight":"2026 🦆","t":1772127026,"dur":20.0,"song":"Lil Baby — My Dawg","kind":"video","audio":true},{"id":"3841930312016231371","section":"ducks","highlight":"2026 🦆","t":1772213799,"dur":10.8,"song":"Mike Posner — I Took A Pill In Ibiza (Seeb Remix)","kind":"video","audio":true},{"id":"3843790261428176785","section":"ducks","highlight":"2026 🦆","t":1772435521,"dur":15.1,"song":"Baltra — Never Let Go (Of Me) (Slowed Extended Version)","kind":"video","audio":true},{"id":"3844924069737163143","section":"ducks","highlight":"2026 🦆","t":1772570629,"dur":20.0,"song":"Animelmack — Going Home (Bleach)","kind":"video","audio":true},{"id":"3845652737111380629","section":"ducks","highlight":"2026 🦆","t":1772657551,"dur":20.0,"song":"Shiro SAGISU — Treachery - treacherously","kind":"video","audio":true},{"id":"3846214463091416022","section":"ducks","highlight":"2026 🦆","t":1772722330,"dur":13.4,"song":"ALI — LOST IN PARADISE (Jujutsu Kaisen Ending Theme Song) (feat. AKLO)","kind":"video","audio":true},{"id":"3849854590246195579","section":"ducks","highlight":"2026 🦆","t":1773158451,"dur":20.0,"song":"遠野高志 — Touch You","kind":"video","audio":true},{"id":"3849871462203132093","section":"ducks","highlight":"2026 🦆","t":1773158821,"dur":11.7,"song":"Kevin Sherwood — Damned","kind":"video","audio":true},{"id":"3850605477692463042","section":"ducks","highlight":"2026 🦆","t":1773247959,"dur":20.0,"song":"Kenshi Yonezu, Hikaru Utada — JANE DOE","kind":"video","audio":true},{"id":"3852567654229925281","section":"ducks","highlight":"2026 🦆","t":1773481873,"dur":20.0,"song":"Yanwei Yang — Frieren: Beyond Journey's End Episode 12 OST 改","kind":"video","audio":true},{"id":"3854086213057694227","section":"ducks","highlight":"2026 🦆","t":1773662714,"dur":10.5,"song":"Gorillaz, Miho Hatori, Tina Weymouth — 19-2000","kind":"video","audio":true},{"id":"3854964078359889434","section":"ducks","highlight":"2026 🦆","t":1773767544,"dur":11.1,"song":"Skrillex — Kyoto (feat. Sirah)","kind":"video","audio":true},{"id":"3859208735163998344","section":"ducks","highlight":"2026 🦆","t":1774273552,"dur":20.0,"song":"DJ Esco — How It Was (feat. Future)","kind":"video","audio":true},{"id":"3860019333896355225","section":"ducks","highlight":"2026 🦆","t":1774370177,"dur":13.4,"song":"kensuke ushio — in the pool","kind":"video","audio":true},{"id":"3861977325239844081","section":"ducks","highlight":"2026 🦆","t":1774603588,"dur":13.5,"song":"Monsta — Holdin' On (Skrillex & Nero Remix)","kind":"video","audio":true},{"id":"3865249884311943034","section":"ducks","highlight":"2026 🦆","t":1774993710,"dur":20.0,"song":"Baltra — Never Let Go (Of Me) (Slowed Extended Version)","kind":"video","audio":true},{"id":"3865250340895521974","section":"ducks","highlight":"2026 🦆","t":1774993756,"dur":19.2,"song":"Animelmack — Going Home (Bleach)","kind":"video","audio":true},{"id":"3866615273138724003","section":"ducks","highlight":"2026 🦆","t":1775156479,"dur":20.0,"song":"BLACKPINK — JUMP","kind":"video","audio":true},{"id":"3870245416348464435","section":"ducks","highlight":"2026 🦆","t":1775589222,"dur":20.0,"song":"Future — Fuck Up Some Commas","kind":"video","audio":true},{"id":"3870685574076087304","section":"ducks","highlight":"2026 🦆","t":1775641693,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3871672136444184491","section":"ducks","highlight":"2026 🦆","t":1775757486,"dur":21.3,"song":"Pitbull — Give Me Everything (feat. Ne-Yo, Afrojack, Nayer)","kind":"video","audio":true},{"id":"3873588314997541439","section":"ducks","highlight":"2026 🦆","t":1775987671,"dur":14,"song":"Marvelous Sunday (CV: Marie Miyake) — Marvelous Sunday Time☆★","kind":"video","audio":true},{"id":"3874360575518072019","section":"ducks","highlight":"2026 🦆","t":1776079785,"dur":20.0,"song":"Pop Smoke — Invincible","kind":"video","audio":true},{"id":"3877986838392646595","section":"ducks","highlight":"2026 🦆","t":1776512093,"dur":4.7,"song":"Ado — Odoru Ponpokorin","kind":"video","audio":true},{"id":"3880198849612523293","section":"ducks","highlight":"2026 🦆","t":1776775792,"dur":15.1,"song":"Seycara Orchestral — Chateau au Gateau!","kind":"video","audio":true},{"id":"3881542703020283389","section":"ducks","highlight":"2026 🦆","t":1776935987,"dur":11.6,"song":"Satoru Kosaki — Nangokufu desu ga, Nani ka","kind":"video","audio":true},{"id":"3881592733022339051","section":"ducks","highlight":"2026 🦆","t":1776941958,"dur":20.2,"song":"GameboyJones — HIT THE JACKPOT! (Hakari Dance)","kind":"video","audio":true},{"id":"3881790733816464766","section":"ducks","highlight":"2026 🦆","t":1776965560,"dur":17.7,"song":"Tim Haywood — Main Theme","kind":"video","audio":true},{"id":"3883048360210915955","section":"ducks","highlight":"2026 🦆","t":1777115477,"dur":11.1,"song":"koteon — coconut","kind":"video","audio":true},{"id":"3885176861479172515","section":"ducks","highlight":"2026 🦆","t":1777369216,"dur":11.9,"song":"koteon — coconut","kind":"video","audio":true},{"id":"3888821567119471815","section":"ducks","highlight":"2026 🦆","t":1777803696,"dur":8.5,"song":" — ","kind":"video","audio":true},{"id":"3889737464474521550","section":"ducks","highlight":"2026 🦆","t":1777912883,"dur":20.0,"song":"Mr. Probz — Waves (Robin Schulz Radio Edit)","kind":"video","audio":true},{"id":"3890317543193732823","section":"ducks","highlight":"2026 🦆","t":1777982033,"dur":15.8,"song":"Shiro SAGISU — MISATO","kind":"video","audio":true},{"id":"3891683671132349120","section":"ducks","highlight":"2026 🦆","t":1778144889,"dur":20.0,"song":"Gold Ship (CV: Hitomi Ueda) — Gorushin Gorushin Gorushinshin","kind":"video","audio":true},{"id":"3896834177257459101","section":"ducks","highlight":"2026 🦆","t":1778771401,"dur":20.0,"song":"Dr. Dre — Still D.R.E. (feat. Snoop Dogg)","kind":"video","audio":true},{"id":"3897616573875661535","section":"ducks","highlight":"2026 🦆","t":1778852149,"dur":20.0,"song":"50 Cent — Candy Shop (feat. Olivia)","kind":"still","audio":true},{"id":"3899695057800318304","section":"ducks","highlight":"2026 🦆","t":1779099921,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3900713422564103691","section":"ducks","highlight":"2026 🦆","t":1779221316,"dur":11.9,"song":" — ","kind":"video","audio":true},{"id":"3901423973430726416","section":"ducks","highlight":"2026 🦆","t":1779306028,"dur":20.0,"song":"Yanwei Yang — Frieren: Beyond Journey's End Episode 12 OST 改","kind":"still","audio":true},{"id":"3902565755455559899","section":"ducks","highlight":"2026 🦆","t":1779442135,"dur":20.0,"song":"Harmony Tales — Harvest Dawn (From \"The Elderscrolls IV Oblivion\")","kind":"video","audio":true},{"id":"3902595029667452983","section":"ducks","highlight":"2026 🦆","t":1779445630,"dur":15.5,"song":"任然 — 一步之遥","kind":"still","audio":true},{"id":"3906388318468181344","section":"ducks","highlight":"2026 🦆","t":1779897829,"dur":20.0,"song":"kensuke ushio — first glance","kind":"video","audio":true},{"id":"3907604315262971834","section":"ducks","highlight":"2026 🦆","t":1780042780,"dur":5.4,"song":"Carlos Carty — The Fifth Season","kind":"video","audio":true},{"id":"3909097190060475829","section":"ducks","highlight":"2026 🦆","t":1780220748,"dur":20.0,"song":"2xclusiveseb — goat simulator","kind":"still","audio":true},{"id":"3913829921067665581","section":"ducks","highlight":"2026 🦆","t":1780784938,"dur":17.7,"song":"Skrilla — Doot Doot (6 7)","kind":"video","audio":true},{"id":"3915050565327427666","section":"ducks","highlight":"2026 🦆","t":1780930441,"dur":20.0,"song":"Drake — National Treasures","kind":"video","audio":true},{"id":"3915759799954357500","section":"ducks","highlight":"2026 🦆","t":1781014949,"dur":20.0,"song":"Blush Notes — Pure as a Feather","kind":"video","audio":true},{"id":"3916620848127543916","section":"ducks","highlight":"2026 🦆","t":1781117609,"dur":20.0,"song":"The Cathedral Singers, Richard Proulx, Lorelei McDermott, Stephen Hartman — Ave Maria, Op. 52 No. 6, D. 839 (Arr. for High Voice, Choir & Harp)","kind":"video","audio":true},{"id":"3917321509588697461","section":"ducks","highlight":"2026 🦆","t":1781201132,"dur":5.6,"song":"Satoru Kosaki — Nangokufu desu ga, Nani ka","kind":"video","audio":true},{"id":"3918496408680271835","section":"ducks","highlight":"2026 🦆","t":1781341190,"dur":10.3,"song":"Anime de Japan — Nothing Can Be Explained","kind":"video","audio":true},{"id":"3919421781270069734","section":"ducks","highlight":"2026 🦆","t":1781451502,"dur":20.0,"song":"DJ Esco — How It Was (feat. Future)","kind":"video","audio":true},{"id":"3920133168808109977","section":"ducks","highlight":"2026 🦆","t":1781536304,"dur":13.1,"song":"Kanye West — Mercy (feat. Big Sean, Pusha T, 2 Chainz)","kind":"video","audio":true},{"id":"3921412299214563975","section":"ducks","highlight":"2026 🦆","t":1781688791,"dur":20.0,"song":"Frizk — mintbeat","kind":"video","audio":true},{"id":"3922187094185271374","section":"ducks","highlight":"2026 🦆","t":1781781153,"dur":20.0,"song":"2Pac — Lil' Homies","kind":"video","audio":true},{"id":"3922392999396961387","section":"ducks","highlight":"2026 🦆","t":1781805699,"dur":20.0,"song":"Blush Notes — Pure as a Feather","kind":"video","audio":true},{"id":"3923017990102618318","section":"ducks","highlight":"2026 🦆","t":1781880205,"dur":14.5,"song":"URock — Clubbed To Death","kind":"still","audio":true},{"id":"3923720935169363882","section":"ducks","highlight":"2026 🦆","t":1781964000,"dur":20.0,"song":"Hekuto Pascal — fish in the pool / Hanayashiki","kind":"video","audio":true},{"id":"3925014569244203107","section":"ducks","highlight":"2026 🦆","t":1782118219,"dur":20.0,"song":"Zy, M3mo — 春隙","kind":"video","audio":false},{"id":"3930267330336567554","section":"ducks","highlight":"2026 🦆","t":1782744392,"dur":20.0,"song":"Anime de Japan — Nothing Can Be Explained","kind":"video","audio":false},{"id":"3932276821441662760","section":"ducks","highlight":"2026 🦆","t":1782983944,"dur":10.3,"song":"Frank Schröter — Medieval Story","kind":"video","audio":true},{"id":"3933713746841098477","section":"ducks","highlight":"2026 🦆","t":1783155237,"dur":20.0,"song":"Pharozen — Johnny Theme \"JoJo's Bizarre Adventure: Steel Ball Run\" Trailer Song (Instrumental Version)","kind":"video","audio":true},{"id":"3952090101160932571","section":"ducks","highlight":"2026 🦆","t":1785345869,"dur":20.0,"song":"おとぎ話の音楽絵本 — 花びらのようにそっと - Gentle as a Petal","kind":"video","audio":true},{"id":"3952817469013890559","section":"ducks","highlight":"2026 🦆","t":1785432578,"dur":20.0,"song":"Imagine Dragons — On Top of the World","kind":"video","audio":true},{"id":"3952870948235382411","section":"ducks","highlight":"2026 🦆","t":1785438950,"dur":19.4,"song":"URock — Clubbed To Death","kind":"video","audio":true},{"id":"3953384784835136723","section":"ducks","highlight":"2026 🦆","t":1785500212,"dur":21,"song":"이달의 소녀(최리) — Love Cherry Motion(최리)","kind":"video","audio":true},{"id":"3954904641598677008","section":"ducks","highlight":"2026 🦆","t":1785681387,"dur":15.3,"song":"THE KURICORDER QUARTET — 花","kind":"video","audio":false},{"id":"3962349961249080869","section":"ducks","highlight":"2026 🦆","t":1786568941,"dur":20.0,"song":"Sweets Ria — My Little Friend","kind":"video","audio":true},{"id":"3967975530317778267","section":"ducks","highlight":"2026 🦆","t":1787239560,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3973015911384257084","section":"ducks","highlight":"2026 🦆","t":1787840425,"dur":20.0,"song":"URock — Clubbed To Death","kind":"video","audio":true},{"id":"3973963090991029952","section":"ducks","highlight":"2026 🦆","t":1787953333,"dur":20.0,"song":"frog coat records — Maomao the Hard Worker (The Apothecary Diaries, E14)","kind":"video","audio":true},{"id":"3974535932824541894","section":"ducks","highlight":"2026 🦆","t":1788021620,"dur":20.0,"song":"Banjo Guy Ollie — Bosun Bill (From \"Sea of Thieves\")","kind":"video","audio":true},{"id":"3976739584100632708","section":"ducks","highlight":"2026 🦆","t":1788284321,"dur":20.0,"song":"Slow-fi Classics — ZEZE (Slowed Down + Reverb Version)","kind":"video","audio":true},{"id":"3979012365408013680","section":"ducks","highlight":"2026 🦆","t":1788555254,"dur":20.0,"song":"frog coat records — Maomao the Hard Worker (The Apothecary Diaries, E14)","kind":"video","audio":true},{"id":"3979679442171122186","section":"ducks","highlight":"2026 🦆","t":1788634769,"dur":14.1,"song":"Martin Garrix — Animals","kind":"video","audio":true},{"id":"3980415103136182511","section":"ducks","highlight":"2026 🦆","t":1788722477,"dur":20.0,"song":"Yoshihisa Hirano — Kyrie","kind":"video","audio":true},{"id":"3982665540841257862","section":"ducks","highlight":"2026 🦆","t":1788990750,"dur":20.0,"song":"Joe Maphis — Twin Banjo Special","kind":"video","audio":true},{"id":"3985477952829154489","section":"ducks","highlight":"2026 🦆","t":1789325371,"dur":20.0,"song":"Waka Flocka Flame — O Let's Do It (feat. Cap)","kind":"video","audio":true},{"id":"3987395533471279425","section":"ducks","highlight":"2026 🦆","t":1789554604,"dur":20.0,"song":"Joe Maphis — Twin Banjo Special","kind":"video","audio":true},{"id":"3988143062714453966","section":"ducks","highlight":"2026 🦆","t":1789643717,"dur":10.2,"song":"Carter Burwell — Bella's Lullaby (Twilight Soundtrack Version)","kind":"video","audio":true},{"id":"3988983168249972067","section":"ducks","highlight":"2026 🦆","t":1789743866,"dur":20.0,"song":"YoungBoy Never Broke Again — Make No Sense","kind":"video","audio":true},{"id":"3992488063963528708","section":"ducks","highlight":"🦆2026 #2","t":1790161678,"dur":12.0,"song":"Alan BandK — Autumn Leaf Falls","kind":"video","audio":true},{"id":"3994895234831487456","section":"ducks","highlight":"🦆2026 #2","t":1790448640,"dur":20.0,"song":"Kroi — SPIN","kind":"video","audio":true},{"id":"3996834141630379429","section":"ducks","highlight":"🦆2026 #2","t":1790679776,"dur":20.0,"song":"Wiz Khalifa — We Dem Boyz","kind":"video","audio":true},{"id":"3997028984373662478","section":"ducks","highlight":"🦆2026 #2","t":1790703004,"dur":20.0,"song":"VISUAL ARTS / Key — Baka Futari","kind":"video","audio":true},{"id":"3997869814701387532","section":"ducks","highlight":"🦆2026 #2","t":1790803238,"dur":20.0,"song":"Nguyễn Hoài Nam — Breath of the Bamboo Flute","kind":"video","audio":true},{"id":"3997871498748020578","section":"ducks","highlight":"🦆2026 #2","t":1790803438,"dur":20.0,"song":"Pop Smoke — Welcome To The Party","kind":"video","audio":true},{"id":"3999064744874528440","section":"ducks","highlight":"🦆2026 #2","t":1790945684,"dur":20.0,"song":"anporin — Chocolat Girl","kind":"video","audio":true},{"id":"4001200938714407193","section":"ducks","highlight":"🦆2026 #2","t":1791200338,"dur":20.0,"song":"London Music Works, Antonin Roux — Dark Souls III (From \"Dark Souls 3\")","kind":"video","audio":true},{"id":"3792667903976281527","section":"gaming","highlight":"Hype moments","t":1766341262,"dur":7.8,"song":" — ","kind":"video","audio":true},{"id":"3796393176366333623","section":"gaming","highlight":"Hype moments","t":1766785353,"dur":20.0,"song":"Pablo Isidro — Never Meant To Belong (From \"Bleach\")","kind":"video","audio":false},{"id":"3799196729674151065","section":"gaming","highlight":"Hype moments","t":1767119563,"dur":5,"song":" — ","kind":"video","audio":true},{"id":"3799197387366151496","section":"gaming","highlight":"Hype moments","t":1767119641,"dur":20.0,"song":"Yaq8bi — Party hips (Fortnite)","kind":"still","audio":false},{"id":"3801507729647392369","section":"gaming","highlight":"Hype moments","t":1767395054,"dur":5.2,"song":" — ","kind":"video","audio":true},{"id":"3803284674596846736","section":"gaming","highlight":"Hype moments","t":1767606884,"dur":20.0,"song":"VUKEINE — SKORN - Ultra Slowed","kind":"video","audio":true},{"id":"3803288305899443403","section":"gaming","highlight":"Hype moments","t":1767607317,"dur":20.0,"song":"Скриптонит — не расслабляйся","kind":"video","audio":true},{"id":"3803628489455503072","section":"gaming","highlight":"Hype moments","t":1767647870,"dur":20.0,"song":"Anime de Japan — On the Precipice of Defeat","kind":"video","audio":true},{"id":"3806989690008514448","section":"gaming","highlight":"Hype moments","t":1768048556,"dur":20.0,"song":"Shiro SAGISU — Treachery - treacherously","kind":"video","audio":true},{"id":"3812024434307912301","section":"gaming","highlight":"Hype moments","t":1768648744,"dur":20.0,"song":"Jake Paul — It's Everyday Bro (feat. Team 10)","kind":"video","audio":true},{"id":"3816573620776911838","section":"gaming","highlight":"Hype moments","t":1769191049,"dur":6.3,"song":" — ","kind":"video","audio":true},{"id":"3817444234907632154","section":"gaming","highlight":"Hype moments","t":1769294835,"dur":20.0,"song":"Hans Zimmer — Extraction Point","kind":"video","audio":true},{"id":"3818153489994388614","section":"gaming","highlight":"Hype moments","t":1769379385,"dur":20.0,"song":"O.T. Genasis — CoCo","kind":"video","audio":true},{"id":"3818746616320893177","section":"gaming","highlight":"Hype moments","t":1769450091,"dur":20.0,"song":"Travis Scott — Upper Echelon (feat. T.I., 2 Chainz)","kind":"video","audio":true},{"id":"3819315882703232734","section":"gaming","highlight":"Hype moments","t":1769517953,"dur":20.0,"song":"ICHIRO — DEATH TRIAL (Slowed)","kind":"video","audio":true},{"id":"3819346836498997072","section":"gaming","highlight":"Hype moments","t":1769521643,"dur":5,"song":" — ","kind":"video","audio":true},{"id":"3820281025163476531","section":"gaming","highlight":"Hype moments","t":1769633007,"dur":20,"song":" — ","kind":"video","audio":true},{"id":"3821773645324778604","section":"gaming","highlight":"Hype moments","t":1769810941,"dur":20.0,"song":"FreeTheGod — Shimmer Emote (Fortnite)","kind":"video","audio":true},{"id":"3821773982722961789","section":"gaming","highlight":"Hype moments","t":1769810982,"dur":20.0,"song":"Rick Ross, French Montana — Stay Schemin (feat. Drake)","kind":"still","audio":true},{"id":"3824619300049172989","section":"gaming","highlight":"Hype moments","t":1770150170,"dur":20.0,"song":"Скриптонит — не расслабляйся","kind":"video","audio":true},{"id":"3824659345418251045","section":"gaming","highlight":"Hype moments","t":1770154943,"dur":20.0,"song":"Ado — Odoru Ponpokorin","kind":"video","audio":true},{"id":"3825414690554013898","section":"gaming","highlight":"Hype moments","t":1770244988,"dur":20.0,"song":"Rick Ross, French Montana — Stay Schemin (feat. Drake)","kind":"video","audio":true},{"id":"3827518243581990894","section":"gaming","highlight":"Hype moments","t":1770495747,"dur":20.0,"song":"Kodak Black — ZEZE (feat. Travis Scott & Offset)","kind":"video","audio":true},{"id":"3830741857139713605","section":"gaming","highlight":"Hype moments","t":1770880035,"dur":20.0,"song":"Sean Murray — Pentagon","kind":"video","audio":true},{"id":"3830742678149545359","section":"gaming","highlight":"Hype moments","t":1770880117,"dur":20.0,"song":"DJ Esco — How It Was (feat. Future)","kind":"video","audio":true},{"id":"3832657952905922867","section":"gaming","highlight":"Hype moments","t":1771108452,"dur":20.0,"song":"Justin Bieber — What Do You Mean?","kind":"video","audio":true},{"id":"3836143347345965614","section":"gaming","highlight":"Hype moments","t":1771523679,"dur":20.0,"song":"Akifumi Tada — Leveling Up","kind":"video","audio":true},{"id":"3840397524406401065","section":"gaming","highlight":"Hype moments","t":1772031076,"dur":20.0,"song":"Akifumi Tada — Leveling Up","kind":"video","audio":true},{"id":"3842811778841499885","section":"gaming","highlight":"Hype moments","t":1772318882,"dur":20.0,"song":"Pitbull — Fireball (feat. John Ryan)","kind":"video","audio":true},{"id":"3847888275860112329","section":"gaming","highlight":"Hype moments","t":1772924048,"dur":20.0,"song":"Pitbull — Fireball (feat. John Ryan)","kind":"video","audio":true},{"id":"3855488213309777014","section":"gaming","highlight":"Hype moments","t":1773830031,"dur":20,"song":" — ","kind":"video","audio":true},{"id":"3863648977061155041","section":"gaming","highlight":"Hype moments","t":1774802869,"dur":20.0,"song":"Mike Posner — I Took A Pill In Ibiza (Seeb Remix)","kind":"video","audio":true},{"id":"3864547434584104315","section":"gaming","highlight":"Hype moments","t":1774909971,"dur":20.0,"song":"Pitbull — Fireball (feat. John Ryan)","kind":"still","audio":true},{"id":"3865894698372049738","section":"gaming","highlight":"Hype moments","t":1775070578,"dur":20.0,"song":"Skrilla — Doot Doot (6 7)","kind":"video","audio":true},{"id":"3865896085956860796","section":"gaming","highlight":"Hype moments","t":1775070677,"dur":20.0,"song":"Travis Scott — Upper Echelon (feat. T.I., 2 Chainz)","kind":"video","audio":true},{"id":"3867027876855954318","section":"gaming","highlight":"Hype moments","t":1775205663,"dur":20.0,"song":"TheFatRat — Time Lapse","kind":"video","audio":true},{"id":"3871459401513045877","section":"gaming","highlight":"Hype moments","t":1775733945,"dur":20.0,"song":"Stephen Barton — Apex Legends: Main Theme","kind":"video","audio":true},{"id":"3876028636872589994","section":"gaming","highlight":"Hype moments","t":1776278606,"dur":20.0,"song":"Future — Life Is Good (feat. Drake)","kind":"still","audio":true},{"id":"3880060454844257244","section":"gaming","highlight":"Hype moments","t":1776759291,"dur":20.0,"song":"Dr. Dre — Still D.R.E. (feat. Snoop Dogg)","kind":"video","audio":true},{"id":"3886035120968709832","section":"gaming","highlight":"Hype moments","t":1777471527,"dur":20.0,"song":"Tim Haywood — Main Theme","kind":"video","audio":true},{"id":"3887720138426309289","section":"gaming","highlight":"Hype moments","t":1777672400,"dur":20,"song":" — ","kind":"video","audio":true},{"id":"3899119186764937042","section":"gaming","highlight":"Hype moments","t":1779031272,"dur":20.0,"song":"Pitbull — Don't Stop the Party (feat. TJR)","kind":"video","audio":true},{"id":"3910485183409202499","section":"gaming","highlight":"Hype moments","t":1780386206,"dur":20.0,"song":"Juicy J, Lex Luger — So Damn Fucked Up","kind":"video","audio":true},{"id":"3917432229248667888","section":"gaming","highlight":"Hype moments","t":1781214326,"dur":20.0,"song":"Desiigner — Panda","kind":"video","audio":true},{"id":"3922186258260470503","section":"gaming","highlight":"Hype moments","t":1781781054,"dur":20.0,"song":"Pitbull — Don't Stop the Party (feat. TJR)","kind":"video","audio":true},{"id":"3924413016502195700","section":"gaming","highlight":"Hype moments","t":1782046507,"dur":20.0,"song":"Frank Schröter — Medieval Story","kind":"video","audio":true},{"id":"3925353965495547814","section":"gaming","highlight":"Hype moments","t":1782158675,"dur":12.0,"song":"Chief Keef — Finessin","kind":"video","audio":false},{"id":"3925983558887842979","section":"gaming","highlight":"Hype moments","t":1782233727,"dur":20.0,"song":"2Pac — Keep Goin'","kind":"video","audio":true},{"id":"3931916256839997390","section":"gaming","highlight":"Hype moments","t":1782940960,"dur":20.0,"song":"Lil Baby — Pure Cocaine","kind":"video","audio":false},{"id":"3719496294784841727","section":"gaming","highlight":"Epic gamersauce","t":1757618530,"dur":15.0,"song":"Fat Joe, Remy Ma, French Montana — All The Way Up (feat. Infared)","kind":"video","audio":true},{"id":"3720946300934979299","section":"gaming","highlight":"Epic gamersauce","t":1757791384,"dur":15.0,"song":"Usher — Hey Daddy (Daddy's Home)","kind":"video","audio":true},{"id":"3722323680454829084","section":"gaming","highlight":"Epic gamersauce","t":1757955581,"dur":15.0,"song":" — ","kind":"video","audio":true},{"id":"3723912669406228485","section":"gaming","highlight":"Epic gamersauce","t":1758145003,"dur":15.0,"song":"DJ Khaled — All I Do Is Win (feat. T-Pain, Ludacris, Snoop Dogg, Rick Ross)","kind":"video","audio":true},{"id":"3723913019546667138","section":"gaming","highlight":"Epic gamersauce","t":1758145045,"dur":15.0,"song":"Anime Zing — Perfect Cell's Theme (From \"Dragon Ball Z\")","kind":"video","audio":true},{"id":"3724643007170373200","section":"gaming","highlight":"Epic gamersauce","t":1758232066,"dur":15.0,"song":"K CAMP — FWYB","kind":"video","audio":true},{"id":"3728284236479262765","section":"gaming","highlight":"Epic gamersauce","t":1758666134,"dur":15.0,"song":"Emil Gilel — 夜曲Op. 9, No. 2","kind":"video","audio":true},{"id":"3728994734480838662","section":"gaming","highlight":"Epic gamersauce","t":1758750832,"dur":6.0,"song":"Noel Chamber Orchestra — Boccherini Minuet","kind":"video","audio":true},{"id":"3730341107247622390","section":"gaming","highlight":"Epic gamersauce","t":1758911333,"dur":20.0,"song":"Dan Salvato — Poem Panic!","kind":"video","audio":true},{"id":"3731182975095162879","section":"gaming","highlight":"Epic gamersauce","t":1759011691,"dur":20.0,"song":" — ","kind":"video","audio":true},{"id":"3731715717956427631","section":"gaming","highlight":"Epic gamersauce","t":1759075199,"dur":20.0,"song":"Juicy J, Lex Luger — So Damn Fucked Up","kind":"video","audio":true},{"id":"3731859913891681802","section":"gaming","highlight":"Epic gamersauce","t":1759092389,"dur":20.0,"song":"Lil Soda Boi — sigma male grindset","kind":"video","audio":true},{"id":"3731901962871385240","section":"gaming","highlight":"Epic gamersauce","t":1759097401,"dur":20.0,"song":"Pharozen — Johnny Theme \"JoJo's Bizarre Adventure: Steel Ball Run\" Trailer Song (Instrumental Version)","kind":"video","audio":true},{"id":"3733200587891172981","section":"gaming","highlight":"Epic gamersauce","t":1759252207,"dur":20.0,"song":"林振詮 — 莫札特小步舞曲","kind":"video","audio":true},{"id":"3734101521160762921","section":"gaming","highlight":"Epic gamersauce","t":1759359609,"dur":20.0,"song":"The Cathedral Singers, Richard Proulx, Lorelei McDermott, Stephen Hartman — Ave Maria, Op. 52 No. 6, D. 839 (Arr. for High Voice, Choir & Harp)","kind":"video","audio":true},{"id":"3734758565475824692","section":"gaming","highlight":"Epic gamersauce","t":1759437935,"dur":20.0,"song":"Prince — Soft and Wet","kind":"video","audio":false},{"id":"3735351296086509914","section":"gaming","highlight":"Epic gamersauce","t":1759508594,"dur":20.0,"song":"Hideki Taniuchi — L no Theme","kind":"video","audio":true},{"id":"3735352211703094127","section":"gaming","highlight":"Epic gamersauce","t":1759508703,"dur":20.0,"song":"Friedrich Habetler — Steel Ball Run Johnny Joestar Theme","kind":"video","audio":true},{"id":"3736114497111729923","section":"gaming","highlight":"Epic gamersauce","t":1759599574,"dur":20.0,"song":"Samuel Kim — Joseph Joestar Theme (Overdrive)","kind":"video","audio":true},{"id":"3741348980031283792","section":"gaming","highlight":"Epic gamersauce","t":1760223573,"dur":20.0,"song":"Gold Ship (CV: Hitomi Ueda) — Gorushin Gorushin Gorushinshin","kind":"video","audio":true},{"id":"3741349822574657915","section":"gaming","highlight":"Epic gamersauce","t":1760223673,"dur":20.0,"song":"Mark Mothersbaugh — Wise Master Wu","kind":"video","audio":true},{"id":"3742367314730322756","section":"gaming","highlight":"Epic gamersauce","t":1760344969,"dur":20.0,"song":"The London Symphony Orchestra — Waltz of the Flowers","kind":"video","audio":true},{"id":"3744602748529158778","section":"gaming","highlight":"Epic gamersauce","t":1760611453,"dur":20.0,"song":"Maes — MAGIE","kind":"video","audio":true},{"id":"3744603120136149653","section":"gaming","highlight":"Epic gamersauce","t":1760611497,"dur":20.0,"song":"Eugene Ormandy — Hallelujah Chorus - From the \"Messiah\"","kind":"video","audio":true},{"id":"3747812855253587446","section":"gaming","highlight":"Epic gamersauce","t":1760994126,"dur":6,"song":" — ","kind":"video","audio":true}]</script>
+<script>
+(() => {
+  "use strict";
+  const ALL = JSON.parse(document.getElementById("stories-data").textContent);
+  const $ = (id) => document.getElementById(id);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const EASE = "cubic-bezier(.2,.8,.2,1)";
+  const STILL_MS = 5000;
+  const MEDIA = "../media/";
+  const SECTIONS = { ducks: "Ducks", gaming: "Game wins" };
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } },
+  };
+  // "New" = posted after the newest story this visitor saw last time (nothing is new on a first visit)
+  const newestT = ALL.reduce((m, s) => Math.max(m, s.t), 0);
+  const lastSeen = Number(store.get("duckive:seen")) || 0;
+  store.set("duckive:seen", String(newestT));
+  const isNew = (s) => lastSeen > 0 && s.t > lastSeen;
+
+  const fmtDay = new Intl.DateTimeFormat(undefined, { day: "numeric" });
+  const fmtMon = new Intl.DateTimeFormat(undefined, { month: "short" });
+  const fmtMonthYear = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" });
+  const fmtShortMY = new Intl.DateTimeFormat(undefined, { month: "short", year: "numeric" });
+  const fmtFull = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", year: "numeric" });
+  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
+  const clock = (sec) => { sec = Math.max(0, Math.round(sec)); return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0"); };
+  const dateOf = (s) => new Date(s.t * 1000);
+  const ago = (d) => {
+    const days = Math.round((Date.now() - d.getTime()) / 864e5);
+    if (days < 1) return rtf.format(0, "day");
+    if (days < 14) return rtf.format(-days, "day");
+    if (days < 70) return rtf.format(-Math.round(days / 7), "week");
+    if (days < 365) return rtf.format(-Math.round(days / 30.4), "month");
+    return rtf.format(-Math.round(days / 365), "year");
+  };
+  const plural = (n, word) => n + " " + (n === 1 ? word : word.endsWith("y") ? word.slice(0, -1) + "ies" : word + "s");
+
+  /* ---------- state ---------- */
+  const hash = location.hash.replace("#", "");
+  const state = {
+    section: SECTIONS[hash] ? hash : (SECTIONS[store.get("mp:section")] ? store.get("mp:section") : "ducks"),
+    sort: "newest",
+  };
+  state.sort = store.get("mp:sort:" + state.section) === "oldest" ? "oldest" : "newest";
+  const deepMatch = location.hash.match(/^#story-(\d+)$/);
+  const deep = deepMatch ? ALL.find((s) => s.id === deepMatch[1]) : null;
+  if (deep) {
+    state.section = deep.section;
+    state.sort = store.get("mp:sort:" + deep.section) === "oldest" ? "oldest" : "newest";
+  }
+
+  function storiesFor(section, sort) {
+    const arr = ALL.filter((s) => s.section === section).sort((a, b) => a.t - b.t);
+    return sort === "newest" ? arr.reverse() : arr;
+  }
+
+  /* ---------- grid ---------- */
+  const grid = $("grid");
+  const tiles = new Map();
+  const heads = new Map();
+
+  function tileFor(s) {
+    let el = tiles.get(s.id);
+    if (el) return el;
+    const d = dateOf(s);
+    el = document.createElement("button");
+    el.type = "button";
+    el.className = "tile";
+    el.dataset.key = "s" + s.id;
+    el.dataset.id = s.id;
+    el.setAttribute("aria-label", "Story from " + fmtFull.format(d) + ", " + clock(s.dur) + (s.song ? ", song " + s.song : ""));
+    const img = document.createElement("img");
+    img.alt = "";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.width = 360;
+    img.height = 640;
+    img.src = MEDIA +s.id + ".jpg";
+    const date = document.createElement("span");
+    date.className = "t-date";
+    date.setAttribute("aria-hidden", "true");
+    const b = document.createElement("b");
+    b.textContent = fmtDay.format(d);
+    const i = document.createElement("i");
+    i.textContent = fmtMon.format(d);
+    date.append(b, i);
+    const dur = document.createElement("span");
+    dur.className = "t-dur";
+    dur.setAttribute("aria-hidden", "true");
+    dur.textContent = clock(s.dur);
+    el.append(img, date, dur);
+    if (isNew(s)) {
+      const badge = document.createElement("span");
+      badge.className = "t-new";
+      badge.textContent = "New";
+      el.append(badge);
+      el.setAttribute("aria-label", "New. " + el.getAttribute("aria-label"));
+    }
+    tiles.set(s.id, el);
+    return el;
+  }
+
+  function headFor(key, d, count) {
+    let el = heads.get(key);
+    if (!el) {
+      el = document.createElement("div");
+      el.className = "month";
+      el.dataset.key = "m" + key;
+      const h = document.createElement("h3");
+      h.textContent = fmtMonthYear.format(d);
+      el.append(h, document.createElement("span"));
+      heads.set(key, el);
+    }
+    el.lastChild.textContent = plural(count, "story");
+    return el;
+  }
+
+  function nodesFor(section, sort) {
+    const list = storiesFor(section, sort);
+    const groups = [];
+    for (const s of list) {
+      const d = dateOf(s);
+      const key = section + ":" + d.getFullYear() + "-" + d.getMonth();
+      const last = groups[groups.length - 1];
+      if (last && last.key === key) last.items.push(s);
+      else groups.push({ key, d, items: [s] });
+    }
+    const nodes = [];
+    for (const g of groups) {
+      nodes.push(headFor(g.key, g.d, g.items.length));
+      for (const s of g.items) nodes.push(tileFor(s));
+    }
+    return nodes;
+  }
+
+  function applyOrder() {
+    grid.replaceChildren(...nodesFor(state.section, state.sort));
+    grid.setAttribute("aria-labelledby", "tab-" + state.section);
+  }
+
+  function visibleChildren() {
+    const vh = innerHeight;
+    const out = [];
+    for (const el of grid.children) {
+      const r = el.getBoundingClientRect();
+      if (r.top >= vh) break;
+      if (r.bottom > 0) out.push([el, r]);
+    }
+    return out;
+  }
+
+  function cascadeIn(dx) {
+    if (reduced) return;
+    visibleChildren().forEach(([el], i) => {
+      el.animate(
+        [{ opacity: 0, transform: "translate(" + dx + "px, 18px) scale(.94)" }, { opacity: 1, transform: "none" }],
+        { duration: 480, delay: Math.min(i * 26, 380), easing: EASE, fill: "backwards" }
+      );
+    });
+  }
+
+  const bar = $("bar");
+  const sectionHead = document.querySelector(".section-head");
+  function scrollToGridTop() {
+    const top = sectionHead.getBoundingClientRect().top;
+    if (top < bar.offsetHeight) {
+      window.scrollTo({ top: window.scrollY + top - bar.offsetHeight, behavior: "instant" });
+    }
+  }
+
+  /* ---------- controls ---------- */
+  const tabs = $("tabs");
+  const sortSeg = $("sort");
+
+  function placePill(seg, btn, animate) {
+    const pill = seg.querySelector(".seg-pill");
+    if (!animate) pill.style.transition = "none";
+    pill.style.width = btn.offsetWidth + "px";
+    pill.style.transform = "translateX(" + btn.offsetLeft + "px)";
+    if (!animate) { pill.getBoundingClientRect(); pill.style.transition = ""; }
+  }
+
+  function syncControls(animate) {
+    for (const b of tabs.querySelectorAll("button")) {
+      const on = b.dataset.section === state.section;
+      b.setAttribute("aria-selected", on);
+      b.tabIndex = on ? 0 : -1;
+      if (on) placePill(tabs, b, animate);
+    }
+    for (const b of sortSeg.querySelectorAll("button")) {
+      const on = b.dataset.sort === state.sort;
+      b.setAttribute("aria-checked", on);
+      b.tabIndex = on ? 0 : -1;
+      if (on) placePill(sortSeg, b, animate);
+    }
+  }
+
+  function syncMeta() {
+    const list = storiesFor(state.section, "oldest");
+    const names = [];
+    for (const s of list) if (!names.includes(s.highlight)) names.push(s.highlight);
+    const meta = $("section-meta");
+    meta.replaceChildren();
+    if (!list.length) { meta.textContent = "No stories here yet."; return; }
+    const first = dateOf(list[0]);
+    const last = dateOf(list[list.length - 1]);
+    const strong = document.createElement("strong");
+    strong.textContent = plural(list.length, "story");
+    meta.append(strong, " from " + names.join(", ") + " · " + fmtShortMY.format(first) + " – " + fmtShortMY.format(last));
+    const mins = Math.round(list.reduce((a, s) => a + (s.dur || 0), 0) / 60);
+    const byMonth = new Map();
+    for (const s of list) { const d = dateOf(s); const k = d.getFullYear() * 12 + d.getMonth(); byMonth.set(k, (byMonth.get(k) || 0) + 1); }
+    let topK = 0, topN = 0;
+    for (const [k, n] of byMonth) if (n > topN) { topK = k; topN = n; }
+    const stats = document.createElement("span");
+    stats.className = "section-stats";
+    stats.textContent = mins + " min of " + (state.section === "ducks" ? "ducks" : "wins") + " · busiest month: " +
+      fmtShortMY.format(new Date(Math.floor(topK / 12), topK % 12, 1)) + " (" + plural(topN, "story") + ")";
+    meta.append(stats);
+  }
+
+  let swapToken = 0;
+  function setSection(section) {
+    if (section === state.section) return;
+    const dir = section === "gaming" ? 1 : -1;
+    state.section = section;
+    state.sort = store.get("mp:sort:" + section) === "oldest" ? "oldest" : "newest";
+    store.set("mp:section", section);
+    syncControls(true);
+    const token = ++swapToken;
+    const swap = () => {
+      if (token !== swapToken) return;
+      applyOrder();
+      syncMeta();
+      scrollToGridTop();
+      if (!reduced) grid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease-out" });
+      cascadeIn(dir * 26);
+    };
+    if (reduced) { swap(); return; }
+    const out = grid.animate(
+      [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateX(" + (-dir * 28) + "px)" }],
+      { duration: 170, easing: "ease-in", fill: "forwards" }
+    );
+    out.onfinish = () => { swap(); out.cancel(); };
+  }
+
+  function setSort(sort) {
+    if (sort === state.sort) return;
+    state.sort = sort;
+    store.set("mp:sort:" + state.section, sort);
+    syncControls(true);
+    if (reduced) { applyOrder(); return; }
+    scrollToGridTop();
+    const first = new Map(visibleChildren().map(([el, r]) => [el.dataset.key, r]));
+    applyOrder();
+    let i = 0;
+    for (const [el, r] of visibleChildren()) {
+      const f = first.get(el.dataset.key);
+      if (f) {
+        el.animate(
+          [{ transform: "translate(" + (f.left - r.left) + "px, " + (f.top - r.top) + "px)" }, { transform: "none" }],
+          { duration: 620, easing: "cubic-bezier(.3,1.25,.5,1)" }
+        );
+      } else {
+        el.animate(
+          [{ opacity: 0, transform: "translateY(" + (sort === "newest" ? -22 : 22) + "px) rotate(" + (i % 2 ? 2 : -2) + "deg) scale(.9)" }, { opacity: 1, transform: "none" }],
+          { duration: 460, delay: Math.min(i * 22, 360), easing: EASE, fill: "backwards" }
+        );
+      }
+      i++;
+    }
+  }
+
+  tabs.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b) setSection(b.dataset.section);
+  });
+  tabs.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    const next = state.section === "ducks" ? "gaming" : "ducks";
+    setSection(next);
+    $("tab-" + next).focus();
+  });
+  sortSeg.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b) setSort(b.dataset.sort);
+  });
+  sortSeg.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    setSort(state.sort === "newest" ? "oldest" : "newest");
+    sortSeg.querySelector('[aria-checked="true"]').focus();
+  });
+  grid.addEventListener("click", (e) => {
+    const t = e.target.closest(".tile");
+    if (t) openViewer(t.dataset.id, t);
+  });
+  addEventListener("resize", () => syncControls(false));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => syncControls(false));
+  new IntersectionObserver(([en]) => bar.classList.toggle("stuck", en.intersectionRatio < 1), { threshold: [1], rootMargin: "-1px 0px 0px 0px" }).observe(bar);
+
+  /* ---------- player ---------- */
+  const V = {
+    root: $("viewer"), backdrop: $("v-backdrop"), stage: $("v-stage"), media: $("v-media"),
+    video: $("v-video"), still: $("v-still"), ghost: $("v-ghost"), spin: $("v-spin"),
+    prog: $("v-prog"), chip: $("v-chip"), date: $("v-date"), count: $("v-count"),
+    sound: $("v-sound"), close: $("v-close"), hint: $("v-hint"), song: $("v-song"),
+    track: $("v-track"), songText: $("v-song-text"), prev: $("v-prev"), next: $("v-next"), live: $("v-live"),
+  };
+  const ICON_ON = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3.5v-11L6 8H3Z" fill="currentColor"/><path d="M13 7.2a4 4 0 0 1 0 5.6M15.2 5a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  const ICON_OFF = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3.5v-11L6 8H3Z" fill="currentColor"/><path d="m13 8 4 4m0-4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+
+  let list = [];
+  let idx = 0;
+  let open = false;
+  let muted = false;
+  let paused = false;
+  let mode = "video";
+  let stillStart = 0;
+  let stillElapsed = 0;
+  let raf = 0;
+  let spinTimer = 0;
+  let hintTimer = 0;
+  let opener = null;
+  let closing = null;
+  let ghostToken = 0;
+  let shuffled = false;
+  const story = () => list[idx];
+
+  function setSoundButton() {
+    const s = story();
+    if (!s.audio) {
+      V.sound.innerHTML = ICON_OFF;
+      V.sound.disabled = true;
+      V.sound.setAttribute("aria-label", "This story has no sound");
+      V.sound.title = "This story has no sound";
+    } else {
+      V.sound.innerHTML = muted ? ICON_OFF : ICON_ON;
+      V.sound.disabled = false;
+      V.sound.setAttribute("aria-label", muted ? "Turn sound on" : "Mute");
+      V.sound.title = "";
+    }
+  }
+
+  function showHint(text) {
+    V.hint.textContent = text || "Tap the speaker for sound";
+    V.hint.hidden = false;
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => { V.hint.hidden = true; }, 3200);
+  }
+
+  function setSong(s) {
+    V.song.hidden = !s.song;
+    if (!s.song) return;
+    V.songText.textContent = s.song;
+    V.track.classList.remove("scroll");
+    requestAnimationFrame(() => {
+      const over = V.songText.scrollWidth - V.track.clientWidth;
+      if (over > 4 && !reduced) {
+        V.songText.textContent = s.song + "  " + s.song;
+        const shift = V.songText.scrollWidth / 2;
+        V.track.style.setProperty("--mq", -shift + "px");
+        V.track.style.setProperty("--mq-dur", Math.max(6, shift / 28) + "s");
+        V.track.classList.add("scroll");
+      }
+    });
+  }
+
+  function drawGhost() {
+    const src = mode === "video" && V.video.readyState >= 2 ? V.video : V.still;
+    const sw = src.videoWidth || src.naturalWidth;
+    const sh = src.videoHeight || src.naturalHeight;
+    if (!sw || !sh) return false;
+    const r = V.stage.getBoundingClientRect();
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const c = V.ghost;
+    c.width = Math.round(r.width * dpr);
+    c.height = Math.round(r.height * dpr);
+    const ctx = c.getContext("2d");
+    const k = Math.min(c.width / sw, c.height / sh);
+    try { ctx.drawImage(src, (c.width - sw * k) / 2, (c.height - sh * k) / 2, sw * k, sh * k); } catch (e) { return false; }
+    return true;
+  }
+
+  function slide(dir) {
+    if (reduced) return;
+    if (drawGhost()) {
+      V.ghost.hidden = false;
+      const token = ++ghostToken;
+      const hide = () => { if (token === ghostToken) V.ghost.hidden = true; };
+      const g = V.ghost.animate(
+        [{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-dir * 30) + "%) scale(.9)", opacity: 0 }],
+        { duration: 340, easing: EASE }
+      );
+      g.onfinish = hide;
+      setTimeout(hide, 500);
+    }
+    V.media.animate(
+      [{ transform: "translateX(" + (dir * 30) + "%) scale(.9)", opacity: 0 }, { transform: "none", opacity: 1 }],
+      { duration: 340, easing: EASE }
+    );
+  }
+
+  function load(i, dir) {
+    if (dir) slide(dir);
+    idx = i;
+    const s = story();
+    const d = dateOf(s);
+    cancelAnimationFrame(raf);
+    setPaused(false);
+    V.prog.style.transform = "scaleX(0)";
+    V.chip.textContent = s.highlight;
+    V.date.textContent = fmtFull.format(d);
+    V.count.textContent = ago(d) + " · " + (shuffled ? "🎲 " : "") + (i + 1) + " of " + list.length;
+    V.live.textContent = "Story " + (i + 1) + " of " + list.length + ", " + fmtFull.format(d);
+    V.prev.disabled = i === 0;
+    V.next.disabled = false;
+    setSong(s);
+
+    V.still.classList.remove("gone", "kb");
+    V.still.src = MEDIA +s.id + ".jpg";
+    mode = s.kind === "video" ? "video" : (s.audio ? "audio" : "still");
+    if (mode !== "video") {
+      V.still.style.setProperty("--kb", (mode === "audio" ? Math.max(s.dur, 4) : STILL_MS / 1000) + "s");
+      V.still.getBoundingClientRect();
+      V.still.classList.add("kb");
+    }
+    V.video.classList.toggle("audio-only", mode !== "video");
+    setSoundButton();
+
+    clearTimeout(spinTimer);
+    V.spin.hidden = true;
+    if (mode === "still") {
+      V.video.pause();
+      V.video.removeAttribute("src");
+      V.video.load();
+      stillStart = performance.now();
+      stillElapsed = 0;
+    } else {
+      V.video.src = MEDIA +s.id + ".mp4";
+      V.video.muted = muted || !s.audio;
+      play();
+      spinTimer = setTimeout(() => { if (V.video.readyState < 3) V.spin.hidden = false; }, 350);
+    }
+    const n = list[i + 1];
+    if (n) { const im = new Image(); im.src = MEDIA +n.id + ".jpg"; }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    const p = V.video.play();
+    if (!p) return;
+    p.catch((err) => {
+      if (err && err.name === "NotAllowedError" && !V.video.muted) {
+        muted = true;
+        V.video.muted = true;
+        setSoundButton();
+        showHint();
+        V.video.play().catch(() => fallbackToStill());
+      } else if (!err || err.name !== "AbortError") {
+        fallbackToStill();
+      }
+    });
+  }
+
+  function fallbackToStill() {
+    if (!open) return;
+    mode = "still";
+    V.spin.hidden = true;
+    V.still.classList.remove("gone");
+    stillStart = performance.now();
+    stillElapsed = 0;
+  }
+
+  function tick() {
+    if (!open) return;
+    let p = 0;
+    if (mode === "still") {
+      const elapsed = stillElapsed + (paused ? 0 : performance.now() - stillStart);
+      p = elapsed / STILL_MS;
+      if (p >= 1) { next(); return; }
+    } else {
+      const d = V.video.duration;
+      p = d && isFinite(d) ? V.video.currentTime / d : 0;
+    }
+    V.prog.style.transform = "scaleX(" + Math.min(1, p) + ")";
+    raf = requestAnimationFrame(tick);
+  }
+
+  function setPaused(v) {
+    if (paused === v) return;
+    paused = v;
+    if (mode === "still") {
+      if (v) stillElapsed += performance.now() - stillStart;
+      else stillStart = performance.now();
+    } else if (v) {
+      V.video.pause();
+    } else {
+      play();
+    }
+    V.still.style.animationPlayState = v ? "paused" : "running";
+  }
+
+  function next() {
+    if (idx < list.length - 1) load(idx + 1, 1);
+    else closeViewer();
+  }
+  function prev() {
+    if (idx > 0) load(idx - 1, -1);
+    else load(0, 0);
+  }
+
+  V.video.addEventListener("playing", () => {
+    clearTimeout(spinTimer);
+    V.spin.hidden = true;
+    if (mode === "video" && V.video.currentSrc.indexOf(story().id + ".mp4") !== -1) V.still.classList.add("gone");
+  });
+  V.video.addEventListener("waiting", () => {
+    clearTimeout(spinTimer);
+    spinTimer = setTimeout(() => { if (open && !paused) V.spin.hidden = false; }, 350);
+  });
+  V.video.addEventListener("ended", () => { if (open) next(); });
+  V.video.addEventListener("error", () => { if (open && V.video.getAttribute("src")) fallbackToStill(); });
+
+  /* open / close with a zoom from the tapped tile */
+  function zoomTo(tile) {
+    const to = V.stage.getBoundingClientRect();
+    const from = tile.getBoundingClientRect();
+    const cw = Math.min(to.width, to.height * 9 / 16);
+    const k = from.width / cw;
+    const dx = from.left + from.width / 2 - (to.left + to.width / 2);
+    const dy = from.top + from.height / 2 - (to.top + to.height / 2);
+    return "translate(" + dx + "px, " + dy + "px) scale(" + k + ")";
+  }
+
+  function openViewer(id, tile, customList) {
+    if (open) return;
+    if (closing) closing();
+    list = customList || storiesFor(state.section, state.sort);
+    shuffled = !!customList;
+    const i = list.findIndex((s) => s.id === id);
+    if (i < 0) return;
+    opener = tile || document.activeElement;
+    open = true;
+    V.root.hidden = false;
+    document.documentElement.classList.add("locked");
+    load(i, 0);
+    V.close.focus({ preventScroll: true });
+    if (reduced) return;
+    const r = tile && tile.getBoundingClientRect();
+    const fromTile = r && r.bottom > 0 && r.top < innerHeight;
+    V.stage.animate(fromTile
+      ? [{ transform: zoomTo(tile) }, { transform: "none" }]
+      : [{ transform: "scale(.86)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 440, easing: EASE });
+    V.backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: "ease-out" });
+    for (const el of V.stage.querySelectorAll(".v-top, .v-bottom, .v-shade")) {
+      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 260, fill: "backwards" });
+    }
+    for (const el of [V.prev, V.next]) el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 200, fill: "backwards" });
+  }
+
+  function closeViewer() {
+    if (!open) return;
+    open = false;
+    cancelAnimationFrame(raf);
+    clearTimeout(spinTimer);
+    V.video.pause();
+    V.spin.hidden = true;
+    V.hint.hidden = true;
+    const tile = tiles.get(story().id);
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      closing = null;
+      V.ghost.hidden = true;
+      for (const el of V.root.querySelectorAll(".v-top, .v-bottom, .v-shade, .v-nav")) el.getAnimations().forEach((x) => x.cancel());
+      V.root.hidden = true;
+      V.stage.style.transform = "";
+      V.backdrop.style.opacity = "";
+      V.stage.getAnimations().forEach((a) => a.cancel());
+      V.backdrop.getAnimations().forEach((a) => a.cancel());
+      V.video.removeAttribute("src");
+      V.video.load();
+      document.documentElement.classList.remove("locked");
+      if (location.hash.startsWith("#story-")) history.replaceState(null, "", location.pathname + location.search);
+      const target = tile && tile.isConnected ? tile : opener;
+      if (target) target.focus({ preventScroll: true });
+    };
+    closing = finish;
+    if (reduced) { finish(); return; }
+    let target = null;
+    if (tile && tile.isConnected) {
+      const r = tile.getBoundingClientRect();
+      if (r.top < bar.offsetHeight || r.bottom > innerHeight) tile.scrollIntoView({ block: "center", behavior: "instant" });
+      target = zoomTo(tile);
+    }
+    if (mode === "video" && drawGhost()) {
+      V.still.classList.add("gone");
+      V.ghost.hidden = false;
+    } else {
+      V.still.classList.remove("gone", "kb");
+    }
+    const startT = getComputedStyle(V.stage).transform;
+    const startO = getComputedStyle(V.backdrop).opacity;
+    for (const el of V.stage.querySelectorAll(".v-top, .v-bottom, .v-shade")) {
+      el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: "forwards" });
+    }
+    for (const el of [V.prev, V.next]) el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: "forwards" });
+    V.backdrop.animate([{ opacity: startO }, { opacity: 0 }], { duration: 340, easing: "ease-out", fill: "forwards" });
+    const a = V.stage.animate(
+      [{ transform: startT === "none" ? "none" : startT, opacity: 1 }, target ? { transform: target, opacity: 1 } : { transform: "translateY(60px) scale(.85)", opacity: 0 }],
+      { duration: 380, easing: EASE, fill: "forwards" }
+    );
+    a.onfinish = finish;
+    setTimeout(finish, 700); // in case the browser throttles animations mid-close
+  }
+
+  /* gestures: tap sides, hold to pause, swipe sideways, drag down to close */
+  let ptr = null;
+  V.stage.addEventListener("pointerdown", (e) => {
+    if (!open || e.target.closest("button") || (e.pointerType === "mouse" && e.button !== 0)) return;
+    ptr = { id: e.pointerId, x: e.clientX, y: e.clientY, held: false, axis: null, dx: 0, dy: 0 };
+    ptr.timer = setTimeout(() => {
+      if (ptr && !ptr.axis) { ptr.held = true; setPaused(true); V.root.classList.add("is-held"); }
+    }, 220);
+    try { V.stage.setPointerCapture(e.pointerId); } catch (err) { /* pointer already gone */ }
+  });
+  V.stage.addEventListener("pointermove", (e) => {
+    if (!ptr || e.pointerId !== ptr.id) return;
+    ptr.dx = e.clientX - ptr.x;
+    ptr.dy = e.clientY - ptr.y;
+    if (!ptr.axis && Math.hypot(ptr.dx, ptr.dy) > 10) {
+      ptr.axis = Math.abs(ptr.dy) > Math.abs(ptr.dx) ? "y" : "x";
+      clearTimeout(ptr.timer);
+    }
+    if (ptr.axis === "y" && !reduced) {
+      const dy = Math.max(0, ptr.dy);
+      V.stage.style.transform = "translate(" + ptr.dx * 0.4 + "px, " + dy + "px) scale(" + (1 - Math.min(dy / 1400, 0.22)) + ")";
+      V.backdrop.style.opacity = String(1 - Math.min(dy / 420, 0.75));
+    } else if (ptr.axis === "x" && !reduced) {
+      V.media.style.transform = "translateX(" + ptr.dx * 0.35 + "px)";
+    }
+  });
+  function endPointer(e, cancelled) {
+    if (!ptr || e.pointerId !== ptr.id) return;
+    const p = ptr;
+    ptr = null;
+    clearTimeout(p.timer);
+    V.media.style.transform = "";
+    if (p.held) {
+      V.root.classList.remove("is-held");
+      setPaused(false);
+      if (p.axis !== "y") return;
+    }
+    if (p.axis === "y") {
+      if (!cancelled && p.dy > 110) { closeViewer(); return; }
+      const t = getComputedStyle(V.stage).transform;
+      V.stage.style.transform = "";
+      V.backdrop.style.opacity = "";
+      if (!reduced && t !== "none") V.stage.animate([{ transform: t }, { transform: "none" }], { duration: 300, easing: EASE });
+      return;
+    }
+    if (cancelled) return;
+    if (p.axis === "x") {
+      if (p.dx < -50) next();
+      else if (p.dx > 50) prev();
+      return;
+    }
+    const r = V.stage.getBoundingClientRect();
+    if (e.clientX - r.left < r.width * 0.3) prev();
+    else next();
+  }
+  V.stage.addEventListener("pointerup", (e) => endPointer(e, false));
+  V.stage.addEventListener("pointercancel", (e) => endPointer(e, true));
+  V.stage.addEventListener("contextmenu", (e) => e.preventDefault());
+
+  V.close.addEventListener("click", closeViewer);
+  V.prev.addEventListener("click", prev);
+  V.next.addEventListener("click", next);
+  V.sound.addEventListener("click", () => {
+    if (!story().audio) return;
+    muted = !muted;
+    V.video.muted = muted;
+    V.hint.hidden = true;
+    if (!muted && V.video.paused && !paused && mode !== "still") play();
+    setSoundButton();
+  });
+  V.backdrop.addEventListener("click", closeViewer);
+
+  document.addEventListener("keydown", (e) => {
+    if (!open) return;
+    if (e.key === "Escape") { e.preventDefault(); closeViewer(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); next(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); prev(); }
+    else if (e.key === " " && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); setPaused(!paused); }
+    else if (e.key === "m" || e.key === "M") { V.sound.click(); }
+    else if (e.key === "Tab") {
+      const f = [...V.root.querySelectorAll("button:not([disabled])")].filter((b) => b.offsetParent !== null);
+      if (!f.length) return;
+      const at = f.indexOf(document.activeElement);
+      if (e.shiftKey && at <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && at === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  let pausedByHide = false;
+  document.addEventListener("visibilitychange", () => {
+    if (!open) return;
+    if (document.hidden && !paused) { pausedByHide = true; setPaused(true); }
+    else if (!document.hidden && pausedByHide) { pausedByHide = false; setPaused(false); }
+  });
+
+  /* ---------- lab extras ---------- */
+  $("v-share").addEventListener("click", async () => {
+    const s = story();
+    const url = location.origin + location.pathname + "#story-" + s.id;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Duckive 🦆", text: s.section === "ducks" ? "Look at this duck 🦆" : "Look at this win 🎮", url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      showHint("Link copied");
+    } catch (e) {
+      if (!e || e.name !== "AbortError") showHint("Copy this link: " + url);
+    }
+  });
+
+  addEventListener("hashchange", () => {
+    const m = location.hash.match(/^#story-(\d+)$/);
+    const s = m && ALL.find((x) => x.id === m[1]);
+    if (!s || open) return;
+    if (s.section !== state.section) {
+      state.section = s.section;
+      state.sort = store.get("mp:sort:" + s.section) === "oldest" ? "oldest" : "newest";
+      applyOrder();
+      syncMeta();
+      syncControls(false);
+    }
+    openViewer(s.id, tiles.get(s.id));
+  });
+
+  $("surprise").addEventListener("click", () => {
+    const pool = storiesFor(state.section, state.sort).slice();
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    if (pool.length) openViewer(pool[0].id, null, pool);
+  });
+
+  let audioCtx = null;
+  function quack() {
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const now = audioCtx.currentTime;
+      [[0, 640, 340], [0.2, 580, 310]].forEach(([off, f0, f1]) => {
+        const osc = audioCtx.createOscillator();
+        const band = audioCtx.createBiquadFilter();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(f0, now + off);
+        osc.frequency.exponentialRampToValueAtTime(f1, now + off + 0.15);
+        band.type = "bandpass";
+        band.frequency.value = 1150;
+        band.Q.value = 3;
+        gain.gain.setValueAtTime(0.0001, now + off);
+        gain.gain.exponentialRampToValueAtTime(0.5, now + off + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + off + 0.17);
+        osc.connect(band).connect(gain).connect(audioCtx.destination);
+        osc.start(now + off);
+        osc.stop(now + off + 0.2);
+      });
+    } catch (e) { /* no Web Audio here */ }
+  }
+  const duckBtn = $("duck-btn");
+  duckBtn.addEventListener("click", () => {
+    quack();
+    if (reduced) return;
+    duckBtn.animate(
+      [{ transform: "none" }, { transform: "translateY(-.3em) scale(1.15) rotate(-12deg)" }, { transform: "none" }],
+      { duration: 480, easing: "cubic-bezier(.34,1.56,.64,1)" }
+    );
+    const r = duckBtn.getBoundingClientRect();
+    const bubble = document.createElement("span");
+    bubble.className = "quack-bubble";
+    bubble.textContent = "Quack!";
+    bubble.style.left = r.left + r.width / 2 + window.scrollX + "px";
+    bubble.style.top = r.top + window.scrollY + "px";
+    document.body.append(bubble);
+    bubble.animate(
+      [{ opacity: 0, transform: "translate(-50%, 0) scale(.6)" },
+       { opacity: 1, transform: "translate(-50%, -115%) scale(1)", offset: 0.3 },
+       { opacity: 0, transform: "translate(-50%, -190%) scale(1)" }],
+      { duration: 1100, easing: "ease-out" }
+    ).onfinish = () => bubble.remove();
+  });
+
+  /* ---------- boot ---------- */
+  $("n-ducks").textContent = ALL.filter((s) => s.section === "ducks").length;
+  $("n-gaming").textContent = ALL.filter((s) => s.section === "gaming").length;
+  for (const sec of ["ducks", "gaming"]) {
+    const n = ALL.filter((s) => s.section === sec && isNew(s)).length;
+    if (!n) continue;
+    const badge = document.createElement("span");
+    badge.className = "new-count";
+    badge.textContent = n;
+    badge.setAttribute("aria-label", n + " new");
+    $("tab-" + sec).append(badge);
+  }
+  const footer = $("footer");
+  const link = document.createElement("a");
+  link.href = "https://www.instagram.com/marcus.phonk/";
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.textContent = "@marcus.phonk";
+  const updated = new Date(footer.dataset.updated);
+  footer.append(plural(ALL.length, "story") + " saved from the Instagram highlights of ", link,
+    isNaN(updated) ? "." : ". Updated " + fmtFull.format(updated) + ".");
+  applyOrder();
+  syncMeta();
+  syncControls(false);
+  cascadeIn(0);
+  if (deep) openViewer(deep.id, tiles.get(deep.id));
+})();
+</script>
+</body>
+</html>
