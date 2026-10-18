@@ -644,6 +644,16 @@ footer a { color: var(--plum); font-weight: 700; }
 .mona.right { right: 0; }
 .mona:focus-visible { outline: 3px dashed var(--plum); outline-offset: 4px; }
 
+/* Duck console: admin buttons */
+.term-admin { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 10px; }
+.term-admin button {
+  min-height: 32px; padding: 6px 9px;
+  border: 0; background: var(--plum); color: var(--butter-2);
+  font: 9px/1 var(--font-pixel); cursor: pointer;
+  box-shadow: 0 -2px var(--pink-2), 0 2px var(--pink-2), -2px 0 var(--pink-2), 2px 0 var(--pink-2);
+}
+.term-admin button:focus-visible { outline: 2px dashed var(--sprout); outline-offset: 3px; }
+
 </style>
 </head>
 <body>
@@ -708,7 +718,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-18T12:59:22+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T13:45:43+00:00"></footer>
 <div class="pond" aria-hidden="true">
   <div class="pond-water"></div>
   <div class="pond-duck"><span class="mama" id="pond-mama"></span><span class="baby" id="pond-baby"></span></div>
@@ -949,6 +959,53 @@ footer a { color: var(--plum); font-weight: 700; }
         peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
         happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
         eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
+    },
+    ellen: {
+      pal: {
+        O: "#121019", H: "#2c2836", h: "#1e1b26", V: "#f7f2f5", v: "#e3dbe4", P: "#e8577e", p: "#ff8fae",
+        W: "#2b2734", w: "#1f1c28", x: "#5d5670", B: "#ffb347", b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c",
+        E: "#0c0a10", R: "#0c0a10", K: "#ff9fc4", X: "#ff5a3c", U: "#f4f1f6", u: "#cfc9d6", c: "#f4f1f6",
+        T: "#f4f1f6", t: "#d9d4e0", S: "#1f1c27", s: "#2b2734", q: "#f4f1f6", G: "#5d6a80", g: "#dfe6ee",
+        L: "#ff6f9a", l: "#ffffff",
+      },
+      rows: [
+        "..........................",
+        "..........OOOOO...........",
+        "........OOuUuUuO..........",
+        ".......OHHHHHHHO..........",
+        "......OHHHHHHHHpO.........",
+        ".....OHPHHHHHHHHPO........",
+        ".....OVVEEVVHHHHhO....O...",
+        "..OOOOVVREVVVHHHhOO..OGO..",
+        ".OBBBBVVVVVVVHHHhOGOOGGO..",
+        ".OBBBBVVVVVVHHHhPGGOGggO..",
+        "OLLbbbVVVVVHHPhWWWWWWWWO..",
+        "OLlOOOWcTTcWWWWWWWWWWWO...",
+        ".OO.OWWWTtWWxxxxWWWWWWWO..",
+        "....OWWWTTWxWWWWxWWWWWWO..",
+        "....OWWWTTWxWWWWWxWWWWWO..",
+        "....OWWTTTTWxwwwwPPWWWwO..",
+        "....OwWWTTWWWxxxxpWWWwO...",
+        ".....OsSSSsSSSsSSSsSSO....",
+        "......OSSSsSSSsSSSsSO.....",
+        ".......OqqqqqqqqqqqO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
         walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
         walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
       },
@@ -2190,6 +2247,7 @@ footer a { color: var(--plum); font-weight: 700; }
     { name: "jolyne", label: "Jolyne", title: "Jolyne", hearts: 4, hello: "Yare yare dawa... Jolyne cosplay!" },
     // secret: found through the duck console
     { name: "kira", label: "Kira", title: "Yoshikage Kira", secret: true, hello: "My name is Yoshikage Kira. I just want a quiet life." },
+    { name: "ellen", label: "Ellen", title: "Ellen Joe", secret: true, hello: "Ellen Joe, Victoria Housekeeping. ...Can I clock out yet?" },
   ];
   const COSPLAY_BY = Object.fromEntries(COSPLAYS.map((c) => [c.name, c]));
   const BREAD_LINES = [
@@ -2203,6 +2261,8 @@ footer a { color: var(--plum); font-weight: 700; }
   const TSUN_BREAD = ["I-it's not like I forgive you!", "Hmph! Bribery won't work! ...nom."];
   const FULL_LINES = ["I'm stuffed! Come back in a bit.", "No more... I'm full! ...thanks."];
   const KIRA_BREAD = ["Killer Queen has already touched this bread.", "Bread, then eight hours of sleep. A quiet life."];
+  const ELLEN_BREAD = ["Bread's okay. Got any candy, though?", "Nom... fine, I'll eat it on my break."];
+  const SKIN_BREAD = { kira: KIRA_BREAD, ellen: ELLEN_BREAD };
 
   const love = {
     pts: Math.max(0, Math.min(100, +store.get("duckive-love") || 0)),
@@ -2260,7 +2320,7 @@ footer a { color: var(--plum); font-weight: 700; }
     chime([523, 659, 784, 1047]);
     const fresh = unlockCosplays(lv);
     const perk = lv === 4 ? "Now she'll face you." : "";
-    const line = fresh.length ? "New cosplay unlocked: " + fresh.map((c) => c.title).join(" & ") + "!" + (perk ? " " + perk : "") : perk;
+    const line = fresh.length ? "New form unlocked: " + fresh.map((c) => c.title).join(" & ") + (perk ? ". " + perk : "") : perk;
     toast("Level up! " + LEVELS[lv], line);
   }
   // unlock every cosplay this many hearts has earned; returns the new ones
@@ -2448,7 +2508,7 @@ footer a { color: var(--plum); font-weight: 700; }
       syncFeed();
       if (!line) line = pick(FULL_LINES);
     }
-    if (!line) { line = skin === "kira" && Math.random() < 0.5 ? pick(KIRA_BREAD) : pick(BREAD_LINES[lv]); mood = lv < 2 ? "tsun" : ""; }
+    if (!line) { line = SKIN_BREAD[skin] && Math.random() < 0.5 ? pick(SKIN_BREAD[skin]) : pick(BREAD_LINES[lv]); mood = lv < 2 ? "tsun" : ""; }
     if (!duck.away) setFrame(duck.tsun ? "hmph" : "happy");
     heartPop();
     bubble(line, mood);
@@ -2513,7 +2573,7 @@ footer a { color: var(--plum); font-weight: 700; }
   function syncCloset() {
     const next = nextSkin();
     closetText.textContent = next === "marin" ? "Uniform" : COSPLAY_BY[next].label;
-    closetBtn.setAttribute("aria-label", next === "marin" ? "Change back into the school uniform" : "Change into the " + COSPLAY_BY[next].title + " cosplay");
+    closetBtn.setAttribute("aria-label", next === "marin" ? "Change back into the school uniform" : "Switch to " + COSPLAY_BY[next].title);
   }
   function showCloset(fresh) {
     closetBtn.hidden = false;
@@ -2629,18 +2689,24 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   function closeTerm() {
     if (term.hidden) return;
+    setPwMode(false);
     term.hidden = true;
     if (termReturn && termReturn.isConnected && termReturn.focus) termReturn.focus({ preventScroll: true });
   }
   const COMMANDS = {
-    help: () => { say("Commands: help, quack, feed, hearts, cosplay, clear, exit."); say("Some words aren't on this list."); },
+    help: () => { say("Commands: help, quack, feed, hearts, forms, clear, exit."); say("Some words aren't on this list."); },
     quack: () => { quack({ pitch: 1.1, count: 2 }); if (!duck.away) bubble("Quack!", ""); say("Quack!"); },
     feed: () => { feedBtn.click(); say("You threw some bread."); },
     hearts: () => { const lv = heartsOf(love.pts); say(lv + "/5 hearts: " + LEVELS[lv] + "."); },
-    cosplay: () => {
-      say("Closet: " + ["Uniform", ...COSPLAYS.filter((c) => unlockedSet.has(c.name)).map((c) => c.title)].join(", ") + ".");
-      if (!unlockedSet.has("kira")) say("One cosplay is a secret. Some paintings hide more than a smile.");
+    cosplay: () => COMMANDS.forms(),
+    forms: () => {
+      say("Forms: " + ["Uniform", ...COSPLAYS.filter((c) => unlockedSet.has(c.name)).map((c) => c.title)].join(", ") + ".");
+      const hidden = COSPLAYS.filter((c) => c.secret && !unlockedSet.has(c.name)).length;
+      if (hidden) say(hidden + (hidden > 1 ? " secret forms are" : " secret form is") + " still hidden.");
+      if (!unlockedSet.has("kira")) say("Some paintings hide more than a smile.");
+      if (!unlockedSet.has("ellen")) say("Something in here is hungry, and it has very sharp teeth.");
     },
+    admin: () => (isAdmin() ? (say("Admin mode is on."), showAdmin()) : askPassword()),
     clear: () => termOut.replaceChildren(),
     exit: closeTerm,
     close: closeTerm,
@@ -2649,6 +2715,19 @@ footer a { color: var(--plum); font-weight: 700; }
     const cmd = raw.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
     if (!cmd) return;
     say("> " + raw.trim(), "you");
+    if (cmd === "nom nom shark" || cmd === "nomnomshark") {
+      const already = unlockedSet.has("ellen");
+      say(already ? "Ellen is already unlocked." : "Nom nom... a shark maid just clocked in.", "secret");
+      if (!already) {
+        unlockedSet.add("ellen");
+        store.set("duckive-cosplays", [...unlockedSet].join(","));
+        showCloset(true);
+      }
+      chime([392, 523, 659, 523, 784]);
+      applySkin("ellen", true);
+      toast(already ? "Already unlocked:" : "New form unlocked:", "Ellen Joe");
+      return;
+    }
     if (cmd === "killer queen" || cmd === "killerqueen") {
       say("Killer Queen... a painting is hanging somewhere on the side of the page.", "secret");
       say("It won't stay up for long.", "secret");
@@ -2659,8 +2738,9 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   $("term-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    runCommand(termIn.value);
+    const value = termIn.value;
     termIn.value = "";
+    if (pwMode) tryPassword(value); else runCommand(value);
   });
   $("term-x").addEventListener("click", closeTerm);
   addEventListener("keydown", (e) => {
@@ -2669,6 +2749,93 @@ footer a { color: var(--plum); font-weight: 700; }
     e.preventDefault();
     if (term.hidden) openTerm(); else closeTerm();
   });
+
+  /* admin mode: a password unlocks every form and some owner buttons (all of it only touches this browser) */
+  const ADMIN = {"salt": "58fcd90f90c9f31a63d567d1f53c7277", "hash": "d362f96c78480efe05462446f36fc0a625274489768b37400aca675fb4ce7885", "iterations": 210000};
+  let pwMode = false;
+  let pwFails = 0;
+  let pwLockedUntil = 0;
+  const isAdmin = () => store.get("duckive-admin") === "1";
+  const hexOf = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  async function passwordOk(pw) {
+    const enc = new TextEncoder();
+    const salt = new Uint8Array(ADMIN.salt.match(/../g).map((h) => parseInt(h, 16)));
+    const key = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+    const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: ADMIN.iterations }, key, 256);
+    return hexOf(bits) === ADMIN.hash;
+  }
+  function setPwMode(on) {
+    pwMode = on;
+    termIn.type = on ? "password" : "text";
+    termIn.setAttribute("aria-label", on ? "Admin password" : "Type a command");
+  }
+  function askPassword() {
+    if (Date.now() < pwLockedUntil) { say("Too many tries. Wait a bit."); return; }
+    if (!window.crypto || !crypto.subtle) { say("Admin needs a secure (https) page."); return; }
+    say("Password:");
+    setPwMode(true);
+    termIn.focus();
+  }
+  async function tryPassword(pw) {
+    setPwMode(false);
+    say("> " + "*".repeat(Math.min(pw.length, 12)), "you");
+    let ok = false;
+    try { ok = await passwordOk(pw); } catch (e) { ok = false; }
+    if (!ok) {
+      pwFails += 1;
+      if (pwFails >= 5) { pwFails = 0; pwLockedUntil = Date.now() + 30000; }
+      say("Wrong password.");
+      return;
+    }
+    pwFails = 0;
+    store.set("duckive-admin", "1");
+    const fresh = COSPLAYS.filter((c) => !unlockedSet.has(c.name));
+    COSPLAYS.forEach((c) => unlockedSet.add(c.name));
+    store.set("duckive-cosplays", [...unlockedSet].join(","));
+    showCloset(fresh.length > 0);
+    syncCloset();
+    chime([523, 659, 784, 1047, 1319]);
+    say("Welcome back, admin. Every form is unlocked.", "secret");
+    if (fresh.length) toast("New forms unlocked:", fresh.map((c) => c.title).join(", "));
+    showAdmin();
+  }
+  function showAdmin() {
+    termOut.querySelectorAll(".term-admin").forEach((x) => x.remove());
+    const box = document.createElement("div");
+    box.className = "term-admin";
+    const actions = [
+      ["Fill hearts", () => { changeLove(100 - love.pts, true); say("Hearts filled: 5/5, " + LEVELS[5] + "."); }],
+      ["Reset hearts", () => { changeLove(-love.pts, true); say("Hearts reset to 0."); }],
+      ["Reset forms", () => {
+        unlockedSet.clear();
+        store.set("duckive-cosplays", "");
+        store.set("duckive-cosplay", "");
+        applySkin("marin", false);
+        closetBtn.hidden = true;
+        say("Every form is locked again (hearts still count, so earned ones come back on reload).");
+      }],
+      ["Sync", () => {
+        const updated = new Date($("footer").dataset.updated);
+        if (!isNaN(updated)) say("Site last updated " + updated.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) + ".");
+        say("Instagram is checked every 3 hours, 9 AM to 9 PM, while the Mac is on.");
+        say("A one-tap sync from here needs a small helper on the Mac. Ask Claude to set it up.");
+      }],
+      ["Log out", () => {
+        store.set("duckive-admin", "");
+        box.remove();
+        say("Logged out of admin.");
+      }],
+    ];
+    for (const [label, run] of actions) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = label;
+      b.addEventListener("click", run);
+      box.append(b);
+    }
+    termOut.append(box);
+    termOut.scrollTop = termOut.scrollHeight;
+  }
 
   // the painting peeks in from the left or right edge, somewhere just below where you are, for a minute
   function hangPainting() {
@@ -2710,7 +2877,7 @@ footer a { color: var(--plum); font-weight: 700; }
       showCloset(true);
     }
     applySkin("kira", true);
-    toast(already ? "You found the painting again" : "Secret cosplay unlocked!", already ? "Kira is already in the closet." : "Yoshikage Kira is in the closet.");
+    toast(already ? "Already unlocked:" : "New form unlocked:", "Yoshikage Kira");
   }
 
   /* ---------- boot ---------- */
@@ -2719,7 +2886,7 @@ footer a { color: var(--plum); font-weight: 700; }
   applySkin(skin, false);
   // hearts earned before a cosplay existed still count
   const owed = unlockCosplays(heartsOf(love.pts));
-  if (owed.length) setTimeout(() => toast("New cosplay unlocked!", owed.map((c) => c.title).join(" & ") + (owed.length > 1 ? " are" : " is") + " in the closet."), 1500);
+  if (owed.length) setTimeout(() => toast("New form unlocked:", owed.map((c) => c.title).join(" & ")), 1500);
   drawLove();
   syncFeed();
   greet();
