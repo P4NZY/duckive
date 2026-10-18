@@ -718,7 +718,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-18T13:45:43+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T15:30:01+00:00"></footer>
 <div class="pond" aria-hidden="true">
   <div class="pond-water"></div>
   <div class="pond-duck"><span class="mama" id="pond-mama"></span><span class="baby" id="pond-baby"></span></div>
@@ -2789,6 +2789,7 @@ footer a { color: var(--plum); font-weight: 700; }
     }
     pwFails = 0;
     store.set("duckive-admin", "1");
+    try { store.set("duckive-sync-topic", await topicFor(pw)); } catch (e) { /* syncing stays off on this device */ }
     const fresh = COSPLAYS.filter((c) => !unlockedSet.has(c.name));
     COSPLAYS.forEach((c) => unlockedSet.add(c.name));
     store.set("duckive-cosplays", [...unlockedSet].join(","));
@@ -2798,6 +2799,86 @@ footer a { color: var(--plum); font-weight: 700; }
     say("Welcome back, admin. Every form is unlocked.", "secret");
     if (fresh.length) toast("New forms unlocked:", fresh.map((c) => c.title).join(", "));
     showAdmin();
+  }
+  // the Sync button: ask the Duckive Sync helper on the Mac (through a private ntfy.sh topic) to sync now
+  const SYNC_TOPIC = {"salt": "523595917783be94142479b14348854e", "iterations": 210000};
+  const RELAY = "https://ntfy.sh/";
+  let syncing = false;
+  async function topicFor(pw) {
+    const enc = new TextEncoder();
+    const salt = new Uint8Array(SYNC_TOPIC.salt.match(/../g).map((h) => parseInt(h, 16)));
+    const key = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+    const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: SYNC_TOPIC.iterations }, key, 128);
+    return "dk" + hexOf(bits);
+  }
+  function syncReport(st) {
+    if (st.status === "done") {
+      const m = /\+(\d+) ducks, \+(\d+) game wins, -(\d+) removed/.exec(st.summary || "");
+      const [d, g, r] = m ? [+m[1], +m[2], +m[3]] : [0, 0, 0];
+      const parts = [];
+      if (d) parts.push(d + " new duck " + (d === 1 ? "story" : "stories"));
+      if (g) parts.push(g + " new game-win " + (g === 1 ? "story" : "stories"));
+      if (r) parts.push(r + " removed");
+      say("Done: " + (parts.length ? parts.join(", ") + "." : "nothing new on Instagram."), "secret");
+      if (st.changed) say("The site will show it in a minute or two.");
+      return;
+    }
+    const why = {
+      "logged-out": "Safari on the Mac isn't signed in to Instagram.",
+      "safari-js-off": "In Safari's Developer settings, turn on Allow JavaScript from Apple Events.",
+      "automation-denied": "Duckive Sync isn't allowed to control Safari (System Settings > Privacy & Security > Automation).",
+      busy: "Another sync is already running. Try again in a minute.",
+      "no-data": "Instagram didn't send any highlight data. Try again in a bit.",
+    }[st.reason];
+    say("Sync didn't finish: " + (why || st.detail || st.reason || "unknown error"));
+  }
+  async function syncNow() {
+    if (syncing) { say("A sync is already on its way."); return; }
+    const topic = store.get("duckive-sync-topic");
+    if (!topic) {
+      store.set("duckive-admin", "");
+      say("Enter the admin password once more to turn on syncing.");
+      askPassword();
+      return;
+    }
+    syncing = true;
+    say("Asking the Mac to sync...");
+    try {
+      const sent = await (await fetch(RELAY + topic, { method: "POST", body: "sync" })).json();
+      let since = sent.id;
+      let heard = false;
+      const ackBy = Date.now() + 100000;
+      const giveUp = Date.now() + 8 * 60000;
+      while (Date.now() < giveUp) {
+        await new Promise((r) => setTimeout(r, 4000));
+        const text = await (await fetch(RELAY + topic + "/json?poll=1&since=" + since)).text();
+        for (const line of text.split("\n")) {
+          let m = null;
+          try { m = JSON.parse(line); } catch (e) { continue; }
+          if (!m || m.event !== "message") continue;
+          since = m.id;
+          let st = null;
+          try { st = JSON.parse(m.message); } catch (e) { continue; }
+          if (!st || st.for !== sent.id) continue;
+          if (st.status === "working") {
+            if (!heard) say("The Mac is reading your highlights in Safari...");
+            heard = true;
+            continue;
+          }
+          syncReport(st);
+          return;
+        }
+        if (!heard && Date.now() > ackBy) {
+          say("No answer from the Mac. Make sure it's on and awake, and that Duckive Sync is installed.");
+          return;
+        }
+      }
+      say("The Mac is still working on it. Check back in a few minutes.");
+    } catch (e) {
+      say("Couldn't reach the sync relay. Check your connection and try again.");
+    } finally {
+      syncing = false;
+    }
   }
   function showAdmin() {
     termOut.querySelectorAll(".term-admin").forEach((x) => x.remove());
@@ -2814,14 +2895,10 @@ footer a { color: var(--plum); font-weight: 700; }
         closetBtn.hidden = true;
         say("Every form is locked again (hearts still count, so earned ones come back on reload).");
       }],
-      ["Sync", () => {
-        const updated = new Date($("footer").dataset.updated);
-        if (!isNaN(updated)) say("Site last updated " + updated.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) + ".");
-        say("Instagram is checked every 3 hours, 9 AM to 9 PM, while the Mac is on.");
-        say("A one-tap sync from here needs a small helper on the Mac. Ask Claude to set it up.");
-      }],
+      ["Sync", () => syncNow()],
       ["Log out", () => {
         store.set("duckive-admin", "");
+        store.set("duckive-sync-topic", "");
         box.remove();
         say("Logged out of admin.");
       }],
