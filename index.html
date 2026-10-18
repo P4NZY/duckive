@@ -347,6 +347,70 @@ footer a { color: var(--plum); font-weight: 700; }
 }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+.duck-btn {
+  border: 0; background: none; padding: 0;
+  font: inherit; color: inherit; line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.duck-btn:focus-visible { outline: 3px solid var(--plum); outline-offset: 4px; border-radius: 14px; }
+.quack-bubble {
+  position: absolute; z-index: 20;
+  padding: 5px 11px; border-radius: 999px;
+  background: var(--surface); color: var(--plum);
+  font: 750 15px var(--font-body);
+  box-shadow: 0 8px 18px -8px rgba(36, 20, 51, .6);
+  pointer-events: none; white-space: nowrap;
+}
+.t-new {
+  position: absolute; top: 6px; right: 6px; z-index: 1;
+  padding: 3px 7px; border-radius: 999px;
+  background: var(--plum); color: var(--plum-ink);
+  font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(20, 10, 31, .35);
+}
+.new-count {
+  display: inline-grid; place-items: center;
+  min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px;
+  border-radius: 999px;
+  background: var(--sprout); color: var(--plum);
+  font-size: 11px; font-weight: 800; vertical-align: 1px;
+}
+.head-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.surprise {
+  border: 0; border-radius: 999px;
+  padding: 9px 14px;
+  background: var(--plum); color: var(--plum-ink);
+  font-weight: 700; font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px -6px rgba(75, 29, 116, .75);
+  transition: transform .2s var(--ease-out);
+}
+.surprise:active { transform: scale(.94); }
+.surprise:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.surprise .die { display: inline-block; margin-right: 3px; transition: transform .5s var(--ease-spring); }
+.v-hint { max-width: calc(100% - 24px); overflow-wrap: anywhere; }
+.surprise:hover .die { transform: rotate(180deg); }
+.section-stats { display: block; margin-top: 2px; }
+.daily {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; max-width: 440px;
+  padding: 8px 12px 8px 8px;
+  border: 0; border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--line), 0 12px 26px -18px rgba(75, 29, 116, .7);
+  text-align: left; color: var(--ink);
+  cursor: pointer;
+  transition: transform .25s var(--ease-out);
+}
+.daily:active { transform: scale(.98); }
+.daily:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; }
+.daily img { flex: none; width: 54px; height: 96px; object-fit: cover; border-radius: 11px; background: var(--bg-2); }
+.daily-text { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.daily-text b { color: var(--plum); font-size: 16px; font-weight: 780; }
+.daily-text span { color: var(--ink-2); font-size: 13px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.daily-go { flex: none; padding: 8px 13px; border-radius: 999px; background: var(--plum); color: var(--plum-ink); font-weight: 700; font-size: 14px; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; animation-iteration-count: 1 !important; }
 }
@@ -358,8 +422,13 @@ footer a { color: var(--plum); font-weight: 700; }
     <span class="handle-dot" aria-hidden="true">🦈</span>@marcus.phonk
     <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2.5h6v6M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
-  <h1>Duckive <span class="duck" aria-hidden="true">🦆</span></h1>
+  <h1>Duckive <button type="button" class="duck-btn" id="duck-btn" aria-label="Make the duck quack"><span class="duck">🦆</span></button></h1>
   <p class="lede">Every story from my highlights, saved in one spot. Tap one to watch.</p>
+  <button type="button" class="daily" id="daily" hidden>
+    <img alt="">
+    <span class="daily-text"><b>Duck of the day</b><span id="daily-note"></span></span>
+    <span class="daily-go" aria-hidden="true">Watch ▶</span>
+  </button>
 </header>
 
 <div class="bar" id="bar">
@@ -375,16 +444,19 @@ footer a { color: var(--plum); font-weight: 700; }
 <main class="wrap">
   <div class="section-head">
     <p class="section-meta" id="section-meta"></p>
+    <div class="head-actions">
+    <button type="button" class="surprise" id="surprise"><span class="die" aria-hidden="true">🎲</span> Surprise me</button>
     <div class="seg sort" id="sort" role="radiogroup" aria-label="Order">
       <span class="seg-pill" aria-hidden="true"></span>
       <button type="button" role="radio" data-sort="newest" aria-checked="true"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2v8M2.5 6.5 6 10l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Newest</button>
       <button type="button" role="radio" data-sort="oldest" aria-checked="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Oldest</button>
     </div>
+    </div>
   </div>
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-17T23:54:34+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T08:18:10+00:00"></footer>
 
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Story player" hidden>
   <div class="v-backdrop" id="v-backdrop"></div>
@@ -402,6 +474,9 @@ footer a { color: var(--plum); font-weight: 700; }
       <div class="v-meta">
         <span class="v-chip" id="v-chip"></span>
         <div class="v-when"><b id="v-date"></b><span id="v-count"></span></div>
+        <button type="button" class="v-btn" id="v-share" aria-label="Share this story">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v5.5c0 .8.7 1.5 1.5 1.5h7c.8 0 1.5-.7 1.5-1.5V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
         <button type="button" class="v-btn" id="v-sound" aria-label="Mute"></button>
         <button type="button" class="v-btn" id="v-close" aria-label="Close">
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -438,6 +513,11 @@ footer a { color: var(--plum); font-weight: 700; }
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } },
   };
+  // "New" = posted after the newest story this visitor saw last time (nothing is new on a first visit)
+  const newestT = ALL.reduce((m, s) => Math.max(m, s.t), 0);
+  const lastSeen = Number(store.get("duckive:seen")) || 0;
+  store.set("duckive:seen", String(newestT));
+  const isNew = (s) => lastSeen > 0 && s.t > lastSeen;
 
   const fmtDay = new Intl.DateTimeFormat(undefined, { day: "numeric" });
   const fmtMon = new Intl.DateTimeFormat(undefined, { month: "short" });
@@ -464,6 +544,12 @@ footer a { color: var(--plum); font-weight: 700; }
     sort: "newest",
   };
   state.sort = store.get("mp:sort:" + state.section) === "oldest" ? "oldest" : "newest";
+  const deepMatch = location.hash.match(/^#story-(\d+)$/);
+  const deep = deepMatch ? ALL.find((s) => s.id === deepMatch[1]) : null;
+  if (deep) {
+    state.section = deep.section;
+    state.sort = store.get("mp:sort:" + deep.section) === "oldest" ? "oldest" : "newest";
+  }
 
   function storiesFor(section, sort) {
     const arr = ALL.filter((s) => s.section === section).sort((a, b) => a.t - b.t);
@@ -505,6 +591,13 @@ footer a { color: var(--plum); font-weight: 700; }
     dur.setAttribute("aria-hidden", "true");
     dur.textContent = clock(s.dur);
     el.append(img, date, dur);
+    if (isNew(s)) {
+      const badge = document.createElement("span");
+      badge.className = "t-new";
+      badge.textContent = "New";
+      el.append(badge);
+      el.setAttribute("aria-label", "New. " + el.getAttribute("aria-label"));
+    }
     tiles.set(s.id, el);
     return el;
   }
@@ -616,6 +709,16 @@ footer a { color: var(--plum); font-weight: 700; }
     const strong = document.createElement("strong");
     strong.textContent = plural(list.length, "story");
     meta.append(strong, " from " + names.join(", ") + " · " + fmtShortMY.format(first) + " – " + fmtShortMY.format(last));
+    const mins = Math.round(list.reduce((a, s) => a + (s.dur || 0), 0) / 60);
+    const byMonth = new Map();
+    for (const s of list) { const d = dateOf(s); const k = d.getFullYear() * 12 + d.getMonth(); byMonth.set(k, (byMonth.get(k) || 0) + 1); }
+    let topK = 0, topN = 0;
+    for (const [k, n] of byMonth) if (n > topN) { topK = k; topN = n; }
+    const stats = document.createElement("span");
+    stats.className = "section-stats";
+    stats.textContent = mins + " min of " + (state.section === "ducks" ? "ducks" : "wins") + " · busiest month: " +
+      fmtShortMY.format(new Date(Math.floor(topK / 12), topK % 12, 1)) + " (" + plural(topN, "story") + ")";
+    meta.append(stats);
   }
 
   let swapToken = 0;
@@ -724,6 +827,7 @@ footer a { color: var(--plum); font-weight: 700; }
   let opener = null;
   let closing = null;
   let ghostToken = 0;
+  let shuffled = false;
   const story = () => list[idx];
 
   function setSoundButton() {
@@ -741,7 +845,8 @@ footer a { color: var(--plum); font-weight: 700; }
     }
   }
 
-  function showHint() {
+  function showHint(text) {
+    V.hint.textContent = text || "Tap the speaker for sound";
     V.hint.hidden = false;
     clearTimeout(hintTimer);
     hintTimer = setTimeout(() => { V.hint.hidden = true; }, 3200);
@@ -809,7 +914,7 @@ footer a { color: var(--plum); font-weight: 700; }
     V.prog.style.transform = "scaleX(0)";
     V.chip.textContent = s.highlight;
     V.date.textContent = fmtFull.format(d);
-    V.count.textContent = ago(d) + " · " + (i + 1) + " of " + list.length;
+    V.count.textContent = ago(d) + " · " + (shuffled ? "🎲 " : "") + (i + 1) + " of " + list.length;
     V.live.textContent = "Story " + (i + 1) + " of " + list.length + ", " + fmtFull.format(d);
     V.prev.disabled = i === 0;
     V.next.disabled = false;
@@ -931,20 +1036,27 @@ footer a { color: var(--plum); font-weight: 700; }
     return "translate(" + dx + "px, " + dy + "px) scale(" + k + ")";
   }
 
-  function openViewer(id, tile) {
+  let returnTo = null;
+  function openViewer(id, tile, customList, back) {
     if (open) return;
     if (closing) closing();
-    list = storiesFor(state.section, state.sort);
+    returnTo = back || null;
+    list = customList || storiesFor(state.section, state.sort);
+    shuffled = !!customList && customList.length > 1;
     const i = list.findIndex((s) => s.id === id);
     if (i < 0) return;
-    opener = tile;
+    opener = tile || document.activeElement;
     open = true;
     V.root.hidden = false;
     document.documentElement.classList.add("locked");
     load(i, 0);
     V.close.focus({ preventScroll: true });
     if (reduced) return;
-    V.stage.animate([{ transform: zoomTo(tile) }, { transform: "none" }], { duration: 440, easing: EASE });
+    const r = tile && tile.getBoundingClientRect();
+    const fromTile = r && r.bottom > 0 && r.top < innerHeight;
+    V.stage.animate(fromTile
+      ? [{ transform: zoomTo(tile) }, { transform: "none" }]
+      : [{ transform: "scale(.86)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 440, easing: EASE });
     V.backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: "ease-out" });
     for (const el of V.stage.querySelectorAll(".v-top, .v-bottom, .v-shade")) {
       el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 260, fill: "backwards" });
@@ -960,7 +1072,7 @@ footer a { color: var(--plum); font-weight: 700; }
     V.video.pause();
     V.spin.hidden = true;
     V.hint.hidden = true;
-    const tile = tiles.get(story().id);
+    const tile = returnTo || tiles.get(story().id);
     let done = false;
     const finish = () => {
       if (done) return;
@@ -976,6 +1088,7 @@ footer a { color: var(--plum); font-weight: 700; }
       V.video.removeAttribute("src");
       V.video.load();
       document.documentElement.classList.remove("locked");
+      if (location.hash.startsWith("#story-")) history.replaceState(null, "", location.pathname + location.search);
       const target = tile && tile.isConnected ? tile : opener;
       if (target) target.focus({ preventScroll: true });
     };
@@ -1102,9 +1215,123 @@ footer a { color: var(--plum); font-weight: 700; }
     else if (!document.hidden && pausedByHide) { pausedByHide = false; setPaused(false); }
   });
 
+  /* ---------- lab extras ---------- */
+  $("v-share").addEventListener("click", async () => {
+    const s = story();
+    const url = location.origin + location.pathname + "#story-" + s.id;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Duckive 🦆", text: s.section === "ducks" ? "Look at this duck 🦆" : "Look at this win 🎮", url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      showHint("Link copied");
+    } catch (e) {
+      if (!e || e.name !== "AbortError") showHint("Copy this link: " + url);
+    }
+  });
+
+  addEventListener("hashchange", () => {
+    const m = location.hash.match(/^#story-(\d+)$/);
+    const s = m && ALL.find((x) => x.id === m[1]);
+    if (!s || open) return;
+    if (s.section !== state.section) {
+      state.section = s.section;
+      state.sort = store.get("mp:sort:" + s.section) === "oldest" ? "oldest" : "newest";
+      applyOrder();
+      syncMeta();
+      syncControls(false);
+    }
+    openViewer(s.id, tiles.get(s.id));
+  });
+
+  // Duck of the day: the same pick for everyone all day, a new one tomorrow
+  const ducksAll = ALL.filter((s) => s.section === "ducks").sort((a, b) => a.t - b.t);
+  if (ducksAll.length) {
+    const now = new Date();
+    let h = now.getFullYear() * 372 + now.getMonth() * 31 + now.getDate();
+    h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+    h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+    h ^= h >>> 16;
+    const pick = ducksAll[(h >>> 0) % ducksAll.length];
+    const daily = $("daily");
+    const thumb = daily.querySelector("img");
+    thumb.src = MEDIA + pick.id + ".jpg";
+    $("daily-note").textContent = "From " + fmtFull.format(dateOf(pick)) + (pick.song ? " · ♫ " + pick.song : "");
+    daily.setAttribute("aria-label", "Duck of the day, from " + fmtFull.format(dateOf(pick)) + ". Watch it");
+    daily.hidden = false;
+    daily.addEventListener("click", () => openViewer(pick.id, thumb, [pick], thumb));
+  }
+
+  $("surprise").addEventListener("click", () => {
+    const pool = storiesFor(state.section, state.sort).slice();
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    if (pool.length) openViewer(pool[0].id, null, pool);
+  });
+
+  let audioCtx = null;
+  function quack() {
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const now = audioCtx.currentTime;
+      [[0, 640, 340], [0.2, 580, 310]].forEach(([off, f0, f1]) => {
+        const osc = audioCtx.createOscillator();
+        const band = audioCtx.createBiquadFilter();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(f0, now + off);
+        osc.frequency.exponentialRampToValueAtTime(f1, now + off + 0.15);
+        band.type = "bandpass";
+        band.frequency.value = 1150;
+        band.Q.value = 3;
+        gain.gain.setValueAtTime(0.0001, now + off);
+        gain.gain.exponentialRampToValueAtTime(0.5, now + off + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + off + 0.17);
+        osc.connect(band).connect(gain).connect(audioCtx.destination);
+        osc.start(now + off);
+        osc.stop(now + off + 0.2);
+      });
+    } catch (e) { /* no Web Audio here */ }
+  }
+  const duckBtn = $("duck-btn");
+  duckBtn.addEventListener("click", () => {
+    quack();
+    if (reduced) return;
+    duckBtn.animate(
+      [{ transform: "none" }, { transform: "translateY(-.3em) scale(1.15) rotate(-12deg)" }, { transform: "none" }],
+      { duration: 480, easing: "cubic-bezier(.34,1.56,.64,1)" }
+    );
+    const r = duckBtn.getBoundingClientRect();
+    const bubble = document.createElement("span");
+    bubble.className = "quack-bubble";
+    bubble.textContent = "Quack!";
+    bubble.style.left = r.left + r.width / 2 + window.scrollX + "px";
+    bubble.style.top = r.top + window.scrollY + "px";
+    document.body.append(bubble);
+    bubble.animate(
+      [{ opacity: 0, transform: "translate(-50%, 0) scale(.6)" },
+       { opacity: 1, transform: "translate(-50%, -115%) scale(1)", offset: 0.3 },
+       { opacity: 0, transform: "translate(-50%, -190%) scale(1)" }],
+      { duration: 1100, easing: "ease-out" }
+    ).onfinish = () => bubble.remove();
+  });
+
   /* ---------- boot ---------- */
   $("n-ducks").textContent = ALL.filter((s) => s.section === "ducks").length;
   $("n-gaming").textContent = ALL.filter((s) => s.section === "gaming").length;
+  for (const sec of ["ducks", "gaming"]) {
+    const n = ALL.filter((s) => s.section === sec && isNew(s)).length;
+    if (!n) continue;
+    const badge = document.createElement("span");
+    badge.className = "new-count";
+    badge.textContent = n;
+    badge.setAttribute("aria-label", n + " new");
+    $("tab-" + sec).append(badge);
+  }
   const footer = $("footer");
   const link = document.createElement("a");
   link.href = "https://www.instagram.com/marcus.phonk/";
@@ -1118,6 +1345,7 @@ footer a { color: var(--plum); font-weight: 700; }
   syncMeta();
   syncControls(false);
   cascadeIn(0);
+  if (deep) openViewer(deep.id, tiles.get(deep.id));
 })();
 </script>
 </body>
