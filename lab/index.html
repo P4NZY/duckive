@@ -613,6 +613,38 @@ footer a { color: var(--plum); font-weight: 700; }
 }
 .love-toast b { display: block; color: #fff; font-weight: 400; text-transform: uppercase; }
 
+/* Duck console + hidden painting (easter egg) */
+.term-btn {
+  display: inline-grid; place-items: center;
+  min-width: 34px; height: 26px; margin-left: 6px; padding: 0 6px;
+  border: 0; background: var(--night); color: var(--sprout);
+  font: 9px/1 var(--font-pixel); vertical-align: 1px;
+  cursor: pointer;
+  box-shadow: 0 -2px var(--plum-dark), 0 2px var(--plum-dark), -2px 0 var(--plum-dark), 2px 0 var(--plum-dark);
+}
+.term-btn:focus-visible { outline: 3px dashed var(--plum); outline-offset: 4px; }
+.term {
+  position: fixed; z-index: 70; top: 12px; left: 50%;
+  width: min(520px, calc(100vw - 24px));
+  background: var(--night); color: var(--sprout);
+  font: 9px/1.9 var(--font-pixel);
+  box-shadow: 0 -3px var(--plum-dark), 0 3px var(--plum-dark), -3px 0 var(--plum-dark), 3px 0 var(--plum-dark), 6px 6px 0 var(--pink-2);
+  transform: translateX(-50%);
+}
+.term-bar { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 4px 10px; background: var(--plum); color: var(--butter-2); }
+.term-x { min-width: 32px; min-height: 28px; border: 0; background: none; color: var(--butter-2); font: inherit; cursor: pointer; }
+.term-out { max-height: 38vh; overflow-y: auto; padding: 10px 10px 0; overflow-wrap: anywhere; }
+.term-out p { margin: 0 0 6px; }
+.term-out .you { color: #fff; }
+.term-out .secret { color: var(--pink-2); }
+.term-line { display: flex; align-items: center; gap: 8px; margin: 0; padding: 4px 10px 10px; }
+.term-line span { color: var(--pink-2); font-size: 12px; }
+.term-in { flex: 1; min-width: 0; padding: 4px 0; border: 0; background: none; color: #fff; font: 600 16px/1.4 var(--font-body); outline: none; caret-color: var(--sprout); }
+.mona { position: absolute; z-index: 40; width: 66px; height: 78px; padding: 0; border: 0; background: none; cursor: pointer; filter: drop-shadow(4px 4px 0 rgba(46, 18, 72, .35)); }
+.mona.left { left: 0; }
+.mona.right { right: 0; }
+.mona:focus-visible { outline: 3px dashed var(--plum); outline-offset: 4px; }
+
 /* Lab banner */
 .lab-bar { position: relative; z-index: 2; background: var(--plum); color: var(--plum-ink); font-size: 13px; }
 .lab-bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; }
@@ -652,6 +684,11 @@ footer a { color: var(--plum); font-weight: 700; }
   </button>
 </header>
 <div class="love-toast" id="love-toast" role="status" aria-live="polite"></div>
+<div class="term" id="term" role="dialog" aria-label="Duck console" hidden>
+  <div class="term-bar"><span>DUCK-OS v1.0</span><button type="button" class="term-x" id="term-x" aria-label="Close the console">X</button></div>
+  <div class="term-out" id="term-out" aria-live="polite"></div>
+  <form class="term-line" id="term-form" autocomplete="off"><span aria-hidden="true">&gt;</span><input class="term-in" id="term-in" type="text" aria-label="Type a command" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send"></form>
+</div>
 
 <div class="bar" id="bar">
   <div class="wrap">
@@ -678,7 +715,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-18T12:17:50+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T12:32:09+00:00"></footer>
 <div class="pond" aria-hidden="true">
   <div class="pond-water"></div>
   <div class="pond-duck"><span class="mama" id="pond-mama"></span><span class="baby" id="pond-baby"></span></div>
@@ -856,6 +893,52 @@ footer a { color: var(--plum); font-weight: 700; }
         "....OWWlolWxWWWWWxWWWWWO..",
         "....OWWWWWWWxwwwwPPWWWwO..",
         "....OwWWWWWWWxxxxpWWWwO...",
+        ".....OsSSSsSSSsSSSsSSO....",
+        "......OSSSsSSSsSSSsSO.....",
+        ".......OqqqqqqqqqqqO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
+    },
+    kira: {
+      pal: {
+        O: "#2a1f36", V: "#ecd67c", v: "#cdb35e", h: "#fff3b8", W: "#bba5dd", w: "#9d87c4", x: "#8670ad",
+        B: "#ffb347", b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#241a30", R: "#a9bfd3", K: "#ff9fc4",
+        X: "#e2553f", U: "#ecd67c", u: "#fff3b8", P: "#dccff2", p: "#efe8fa", c: "#f1fae6", g: "#c6e4a5",
+        T: "#4b2f23", t: "#efe6d4", S: "#a790cd", s: "#8f79b9", q: "#7b66a5",
+      },
+      rows: [
+        "..........................",
+        ".........OOO..............",
+        "........OVVVOOO...........",
+        ".......OVhhVVVVO..........",
+        "......OVVVhVVVvvO.........",
+        ".....OVVVVVVVVVVvO........",
+        ".....OVVEEVVVVVVvO....O...",
+        "..OOOOVVREVVVVVVvO...OPO..",
+        ".OBBBBVVVVVVVVVVvO..OpPO..",
+        ".OBBBBVVVVVVVVVvvOOOWWpO..",
+        "..ObbbVVVVVVVVvWWWWWWWWO..",
+        "...OOOWcTTcWWWWWWWWWWWO...",
+        "....OWWgTTgWxxxxWWWWWWWO..",
+        "....OWWgtTgxWWWWxWWWWWWO..",
+        "....OWWWTTWxWWWWWxWWWWWO..",
+        "....OWWTttTWxwwwwPPWWWwO..",
+        "....OwWWTTWWWxxxxpWWWwO...",
         ".....OsSSSsSSSsSSSsSSO....",
         "......OSSSsSSSsSSSsSO.....",
         ".......OqqqqqqqqqqqO......",
@@ -2112,6 +2195,8 @@ footer a { color: var(--plum); font-weight: 700; }
   const COSPLAYS = [
     { name: "shizuku", label: "Shizuku", title: "Shizuku-tan", hearts: 3, hello: "Shizuku-tan cosplay! How do I look?!" },
     { name: "jolyne", label: "Jolyne", title: "Jolyne", hearts: 4, hello: "Yare yare dawa... Jolyne cosplay!" },
+    // secret: found through the duck console
+    { name: "kira", label: "Kira", title: "Yoshikage Kira", secret: true, hello: "My name is Yoshikage Kira. I just want a quiet life." },
   ];
   const COSPLAY_BY = Object.fromEntries(COSPLAYS.map((c) => [c.name, c]));
   const BREAD_LINES = [
@@ -2124,6 +2209,7 @@ footer a { color: var(--plum); font-weight: 700; }
   ];
   const TSUN_BREAD = ["I-it's not like I forgive you!", "Hmph! Bribery won't work! ...nom."];
   const FULL_LINES = ["I'm stuffed! Come back in a bit.", "No more... I'm full! ...thanks."];
+  const KIRA_BREAD = ["Killer Queen has already touched this bread.", "Bread, then eight hours of sleep. A quiet life."];
 
   const love = {
     pts: Math.max(0, Math.min(100, +store.get("duckive-love") || 0)),
@@ -2186,7 +2272,7 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   // unlock every cosplay this many hearts has earned; returns the new ones
   function unlockCosplays(lv) {
-    const fresh = COSPLAYS.filter((c) => lv >= c.hearts && !unlockedSet.has(c.name));
+    const fresh = COSPLAYS.filter((c) => !c.secret && lv >= c.hearts && !unlockedSet.has(c.name));
     if (!fresh.length) return fresh;
     fresh.forEach((c) => unlockedSet.add(c.name));
     store.set("duckive-cosplays", [...unlockedSet].join(","));
@@ -2369,7 +2455,7 @@ footer a { color: var(--plum); font-weight: 700; }
       syncFeed();
       if (!line) line = pick(FULL_LINES);
     }
-    if (!line) { line = pick(BREAD_LINES[lv]); mood = lv < 2 ? "tsun" : ""; }
+    if (!line) { line = skin === "kira" && Math.random() < 0.5 ? pick(KIRA_BREAD) : pick(BREAD_LINES[lv]); mood = lv < 2 ? "tsun" : ""; }
     if (!duck.away) setFrame(duck.tsun ? "hmph" : "happy");
     heartPop();
     bubble(line, mood);
@@ -2496,13 +2582,151 @@ footer a { color: var(--plum); font-weight: 700; }
     }, 2600);
   }
 
+  /* ---------- easter egg: the duck console, a hidden Mona Lisa and a secret cosplay ---------- */
+  const MONA = [
+    ".OOOOOOOOOOOOOOOOOOOO.",
+    "OYYYYYYYYYYYYYYYYYYYYO",
+    "OYGGGGGGGGGGGGGGGGGGYO",
+    "OYGmmmmmmmmmmmmmmmmGYO",
+    "OYGmmmmmmHHHHmmmmmmGYO",
+    "OYGlmmmmHHHHHHmmmmlGYO",
+    "OYGllmmHHffffHHmmllGYO",
+    "OYGlllmHfeffefHmlllGYO",
+    "OYGlllHHffffffHHlllGYO",
+    "OYGlllHHfffsffHHlllGYO",
+    "OYGdllHHffwwffHHlldGYO",
+    "OYGddlHHsffffsHHlddGYO",
+    "OYGddHHHHsffsHHHHddGYO",
+    "OYGdHHDDDffffDDDHHdGYO",
+    "OYGdHDDDgffffgDDDHdGYO",
+    "OYGdDDDDDgffgDDDDDdGYO",
+    "OYGDDDDDDDggDDDDDDDGYO",
+    "OYGDDDDDDDDDDDDDDDDGYO",
+    "OYGDDDffffDDDDDDDDDGYO",
+    "OYGDDffffffffDDDDDDGYO",
+    "OYGDDDDsffffffDDDDDGYO",
+    "OYGDDDDDDDDDDDDDDDDGYO",
+    "OYGDDDDDDDDDDDDDDDDGYO",
+    "OYGGGGGGGGGGGGGGGGGGYO",
+    "OYYYYYYYYYYYYYYYYYYYYO",
+    ".OOOOOOOOOOOOOOOOOOOO.",
+  ];
+  const MONA_PAL = { O: "#2e1248", Y: "#8a5a12", G: "#e2b13c", m: "#a9b48c", l: "#6f7a4a", d: "#3a3a22", H: "#2a1c10", f: "#e3b878", s: "#bf8d52", e: "#3b2a18", w: "#b0704f", D: "#1c1712", g: "#5a4523" };
+  const term = $("term");
+  const termOut = $("term-out");
+  const termIn = $("term-in");
+  let termReturn = null;
+  let painting = null;
+  let paintingTimer = 0;
+
+  function say(text, cls) {
+    const p = document.createElement("p");
+    if (cls) p.className = cls;
+    p.textContent = text;
+    termOut.append(p);
+    termOut.scrollTop = termOut.scrollHeight;
+  }
+  function openTerm() {
+    if (!term.hidden) { termIn.focus(); return; }
+    termReturn = document.activeElement;
+    term.hidden = false;
+    if (!termOut.childElementCount) say("DUCK-OS v1.0. Type help and press enter.");
+    termIn.focus();
+    if (!reduced) term.animate([{ opacity: 0, transform: "translate(-50%, -12px)" }, { opacity: 1, transform: "translate(-50%, 0)" }], { duration: 240, easing: "steps(4)" });
+  }
+  function closeTerm() {
+    if (term.hidden) return;
+    term.hidden = true;
+    if (termReturn && termReturn.isConnected && termReturn.focus) termReturn.focus({ preventScroll: true });
+  }
+  const COMMANDS = {
+    help: () => { say("Commands: help, quack, feed, hearts, cosplay, clear, exit."); say("Some words aren't on this list."); },
+    quack: () => { quack({ pitch: 1.1, count: 2 }); if (!duck.away) bubble("Quack!", ""); say("Quack!"); },
+    feed: () => { feedBtn.click(); say("You threw some bread."); },
+    hearts: () => { const lv = heartsOf(love.pts); say(lv + "/5 hearts: " + LEVELS[lv] + "."); },
+    cosplay: () => {
+      say("Closet: " + ["Uniform", ...COSPLAYS.filter((c) => unlockedSet.has(c.name)).map((c) => c.title)].join(", ") + ".");
+      if (!unlockedSet.has("kira")) say("One cosplay is a secret. Some paintings hide more than a smile.");
+    },
+    clear: () => termOut.replaceChildren(),
+    exit: closeTerm,
+    close: closeTerm,
+  };
+  function runCommand(raw) {
+    const cmd = raw.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+    if (!cmd) return;
+    say("> " + raw.trim(), "you");
+    if (cmd === "killer queen" || cmd === "killerqueen") {
+      say("Killer Queen... a painting is hanging somewhere on the side of the page.", "secret");
+      say("It won't stay up for long.", "secret");
+      setTimeout(() => { closeTerm(); hangPainting(); }, 1400);
+      return;
+    }
+    (COMMANDS[cmd] || (() => say("Unknown command: " + cmd + ". Try help.")))();
+  }
+  $("term-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    runCommand(termIn.value);
+    termIn.value = "";
+  });
+  $("term-x").addEventListener("click", closeTerm);
+  addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !term.hidden) { closeTerm(); return; }
+    if (e.key !== "`" || (e.target instanceof Element && e.target.closest("input, textarea"))) return;
+    e.preventDefault();
+    if (term.hidden) openTerm(); else closeTerm();
+  });
+
+  // the painting peeks in from the left or right edge, somewhere just below where you are, for a minute
+  function hangPainting() {
+    removePainting(false);
+    const right = Math.random() < 0.5;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mona " + (right ? "right" : "left");
+    b.setAttribute("aria-label", "A mysterious painting");
+    b.innerHTML = sprite(MONA, null, MONA_PAL);
+    const top = scrollY + innerHeight * (0.5 + Math.random() * 1.5);
+    b.style.top = Math.max(0, Math.min(top, document.documentElement.scrollHeight - 160)) + "px";
+    const peek = right ? "translateX(38%) rotate(-6deg)" : "translateX(-38%) rotate(6deg)";
+    b.style.transform = peek;
+    b.addEventListener("click", foundPainting);
+    document.body.append(b);
+    painting = b;
+    if (!reduced) b.animate([{ transform: right ? "translateX(110%)" : "translateX(-110%)" }, { transform: peek }], { duration: 700, easing: "steps(7)" });
+    paintingTimer = setTimeout(() => removePainting(true), 60000);
+  }
+  function removePainting(missed) {
+    clearTimeout(paintingTimer);
+    if (!painting) return;
+    const b = painting;
+    painting = null;
+    if (missed) toast("The painting is gone...", "Say the words again to bring it back.");
+    if (reduced) { b.remove(); return; }
+    const gone = once(() => b.remove());
+    b.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, easing: "steps(5)" }).onfinish = gone;
+    setTimeout(gone, 800);
+  }
+  function foundPainting() {
+    const already = unlockedSet.has("kira");
+    removePainting(false);
+    chime([330, 392, 494, 659]);
+    if (!already) {
+      unlockedSet.add("kira");
+      store.set("duckive-cosplays", [...unlockedSet].join(","));
+      showCloset(true);
+    }
+    applySkin("kira", true);
+    toast(already ? "You found the painting again" : "Secret cosplay unlocked!", already ? "Kira is already in the closet." : "Yoshikage Kira is in the closet.");
+  }
+
   /* ---------- boot ---------- */
   $("pond-baby").innerHTML = sprite(CHICK, null, SKINS.marin.pal);
   if (unlockedSet.size) showCloset(false);
   applySkin(skin, false);
   // hearts earned before a cosplay existed still count
   const owed = unlockCosplays(heartsOf(love.pts));
-  if (owed.length) setTimeout(() => toast("New cosplay unlocked!", owed.map((c) => c.title).join(" & ") + " is in the closet."), 1500);
+  if (owed.length) setTimeout(() => toast("New cosplay unlocked!", owed.map((c) => c.title).join(" & ") + (owed.length > 1 ? " are" : " is") + " in the closet."), 1500);
   drawLove();
   syncFeed();
   greet();
@@ -2525,6 +2749,13 @@ footer a { color: var(--plum); font-weight: 700; }
   const updated = new Date(footer.dataset.updated);
   footer.append(plural(ALL.length, "story") + " saved from the Instagram highlights of ", link,
     isNaN(updated) ? "." : ". Updated " + fmtFull.format(updated) + ".");
+  const termBtn = document.createElement("button");
+  termBtn.type = "button";
+  termBtn.className = "term-btn";
+  termBtn.textContent = ">_";
+  termBtn.setAttribute("aria-label", "Open the duck console");
+  termBtn.addEventListener("click", openTerm);
+  footer.append(" ", termBtn);
   applyOrder();
   syncCount();
   syncControls(false);
