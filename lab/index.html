@@ -158,9 +158,9 @@ header, main, footer, .pond { position: relative; z-index: 1; }
 @keyframes duck-drop { 0% { opacity: 0; transform: translateY(-90px); } 60% { opacity: 1; transform: translateY(6px); } 80% { transform: translateY(-4px); } 100% { transform: none; } }
 .duck { display: block; animation: bob .9s steps(1) infinite; }
 @keyframes bob { 0%, 100% { transform: none; } 50% { transform: translateY(-3px); } }
-.duck-face { display: block; width: 78px; height: 72px; }
+.duck-face { display: block; width: 84px; height: 76px; }
 .duck-face.face-right .sprite { transform: scaleX(-1); }
-@media (min-width: 620px) { .duck-face { width: 104px; height: 96px; } }
+@media (min-width: 620px) { .duck-face { width: 126px; height: 114px; } }
 .duck-slot.away::after {
   content: "BRB...";
   position: absolute; left: 50%; bottom: 26px;
@@ -197,9 +197,14 @@ header, main, footer, .pond { position: relative; z-index: 1; }
   pointer-events: none;
 }
 .walker { position: fixed; z-index: 30; pointer-events: none; will-change: transform; }
-.walker .waddle { display: block; width: 100%; height: 100%; animation: waddle .32s steps(1) infinite; }
+.walker .waddle { position: relative; display: block; width: 100%; height: 100%; animation: waddle .32s steps(1) infinite; }
+.walker .wf { position: absolute; inset: 0; }
+.walker .wf.a { animation: step-a .32s steps(1) infinite; }
+.walker .wf.b { animation: step-b .32s steps(1) infinite; }
+@keyframes step-a { 50% { opacity: 0; } }
+@keyframes step-b { 0% { opacity: 0; } 50% { opacity: 1; } }
 .walker .waddle.face-right .sprite { transform: scaleX(-1); }
-@keyframes waddle { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg) translateY(-4px); } }
+@keyframes waddle { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg) translateY(-3px); } }
 .print { position: fixed; z-index: 29; width: 6px; height: 3px; background: var(--plum); pointer-events: none; }
 
 .lede { margin: 0; max-width: 40ch; min-height: 1.4em; color: var(--ink-2); font: 600 19px/1.4 var(--font-body); }
@@ -434,8 +439,8 @@ footer a { color: var(--plum); font-weight: 700; }
 .pond-water::after { top: -12px; filter: brightness(.93); animation-duration: 3.4s; animation-direction: reverse; }
 @keyframes wave-x2 { to { background-position: 48px 0; } }
 .pond-duck { position: absolute; left: 0; bottom: 30px; display: flex; align-items: flex-end; gap: 6px; animation: paddle 36s linear -15s infinite; }
-.pond-duck .mama { display: block; width: 52px; height: 48px; animation: bob .8s steps(1) infinite; }
-.pond-duck .baby { display: block; width: 24px; height: 16px; animation: bob .8s steps(1) infinite -.4s; }
+.pond-duck .mama { display: block; width: 63px; height: 57px; animation: bob .8s steps(1) infinite; }
+.pond-duck .baby { display: block; width: 32px; height: 24px; animation: bob .8s steps(1) infinite -.4s; }
 @keyframes paddle { from { transform: translateX(calc(100vw + 20px)); } to { transform: translateX(-140px); } }
 
 /* Story player */
@@ -630,7 +635,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-18T10:58:14+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T11:22:55+00:00"></footer>
 <div class="pond" aria-hidden="true">
   <div class="pond-water"></div>
   <div class="pond-duck"><span class="mama" id="pond-mama"></span><span class="baby" id="pond-baby"></span></div>
@@ -689,59 +694,112 @@ footer a { color: var(--plum); font-weight: 700; }
 
   /* ---------- pixel sprites ---------- */
   const PAL = {
-    O: "#2e1248", W: "#ffffff", w: "#e6e0f0", C: "#d6d0e6",
-    B: "#ffb347", b: "#f08a24", F: "#ff9a3c",
-    E: "#2e1248", R: "#ff4f7b", K: "#ff9fc4", X: "#e2553f",
-    H: "#ffd84d", h: "#fff3a6", y: "#e8ae2e", P: "#ff9ac1", p: "#f0679a",
-    T: "#2b2d5c", t: "#4b4f8f", S: "#3a4278", s: "#ff9ac1", q: "#2f3766", G: "#c9b6ff", Y: "#ffe08a",
+    O: "#2e1248",
+    W: "#ffffff",
+    w: "#ece6f6",
+    x: "#cfc4e6",
+    A: "#ffd98a",
+    B: "#ffbe55",
+    b: "#f59a2c",
+    n: "#c9661b",
+    F: "#ff9f3d",
+    f: "#d9741c",
+    H: "#ffd84d",
+    h: "#fff4b0",
+    y: "#f0b33a",
+    Y: "#c98a24",
+    p: "#ffc6da",
+    P: "#ff94bd",
+    Q: "#ee6a99",
+    E: "#2e1248",
+    R: "#c2185b",
+    r: "#ff5c8d",
+    D: "#5b0d2e",
+    L: "#ffffff",
+    K: "#ff9fc4",
+    k: "#ffc3da",
+    T: "#2b2d5c",
+    t: "#4b4f8f",
+    c: "#a99bcf",
+    S: "#3a4278",
+    s: "#5a68a8",
+    v: "#ff9ac1",
+    q: "#262b55",
+    G: "#b9a2ff",
+    g: "#ffffff",
+    N: "#ff8fb8",
+    X: "#e2553f",
+    Z: "#ffe27a",
+    z: "#f2c14e",
   };
-  // A white duck dressed like Marin: blonde hair with pink tips, red-pink eye, earring, shirt, navy tie, plaid skirt
+  // A white duck dressed like Marin: blonde hair with pink tips and an ahoge, big red-pink eyes, an earring,
+  // shirt collar with a loose navy tie, pink "nails" on the wing tip, plaid skirt. Faces left. Frames are pixel overrides.
   const DUCK = [
-    "......OOOOOOO.............",
-    ".....OHHHHHHHOO...........",
-    "....OHHhhhHHHHHO..........",
-    ".....OhhHHHHHyyO..........",
-    "....OHHHHHHHHHyO..........",
-    "....OHHWHHWHHHHyO.........",
-    "....OWWEEWWHHhHyO.........",
-    ".OOOOWREWWWHHhHHyO........",
-    "OBBBBWWWWWWHHHHHyO........",
-    "OBBBBWWWWWWGHHhHHyO....O..",
-    ".ObbbWWWWWWWWHHHHyO...OWO.",
-    "..OOOOWCTTCWWWHHHHyO.OWWO.",
-    ".....OWWTtWWWWHHHHyWOWWO..",
-    ".....OWWTTWWWWPPPPPPWWWO..",
-    "....OWWWTTWWWWWPPPPpWWO...",
-    "....OWWTTTTWWWWPWPwPwwO...",
-    "....OWWWTTWWWWWWWwwwwwO...",
-    ".....OsSSSsSSSsSSSsSSO....",
-    "......OSSSsSSSsSSSsSO.....",
-    ".......OOqqqqqqqqqOO......",
-    "........OFFOOOFFOO........",
-    ".......OFFFOOFFFO.........",
-    "........OOO..OOO..........",
-    "..........................",
+    "..................OO......................",
+    ".................OyyO.....................",
+    "...............OOyOOyO....................",
+    "............OOOHYYOOOOO...................",
+    "..........OOhYYhhhYYHHYOOO................",
+    ".........OhyhhyYYhHhYYHHYYO...............",
+    "........OhhyHHyHHYYHHHYHHHYO..............",
+    "........OHHyHHyHHyHYHHHYHHHYO.............",
+    ".......OHHHyHHyHHHyHYHHHYHHYyO............",
+    "......OWHHHWHHHEHHyHHYHHHYHHYyO...........",
+    "......OWWHEEEEEEHHyHHHYHHHYHyYO...........",
+    "......OWWWERRREWHWHHHHYHHHYyyYO...........",
+    "....OOOWWWELDREWWWWHHHHYHHyYyyYO..........",
+    "..OOBBBBWWERDrEWWWWWHHHYHHyYyyYO..........",
+    ".OBAAnAAABErrkEWWWWWWHHHYHyyYyyO..........",
+    ".OBABBBBBBWEEEWWWWWWWHHHYHyyYyyYO.........",
+    ".OBBBBBBBBWWWWWWWWWWGHHyYyyyyYyyO.........",
+    "..OnnnnnnnWWWWWWWWWWgHHyyYyyyYyyO....OOO..",
+    "..ObbbbbbbWWWWWWWWWWGHHyOYyyyyYyYO..OWwwO.",
+    "...OOOOOOOWWWWWWWWWWWHyO.OYyyyYyyYO.OWwwO.",
+    "..........OWWWWwwwwwwpO...OpppppppOOWWwwO.",
+    "..........OcWWWwwwwwcpOOOOOOOpQpQppOWWwwO.",
+    "..........OcWcWWWWcWcPWWWWWWWWQPQPPPwwwwO.",
+    "..........OWcWcTTcWcWWWWxxxxxxPQPQPPwxwwO.",
+    "..........OWWWWTTWWWWWWxWWWWWWWQPQPPwwxwO.",
+    "..........OWWWWTtWWWWWxWWWWWWWWWQQQQwwwO..",
+    "...........OOWtTTtWWWWxWWwWWWwWWQWQWQwO...",
+    "...........OWWTTTtWWWWWxWWwWWWwWWWxWwwwO..",
+    "...........OWWTtTTWWWWWWxxWxxxWxNNxWwwwO..",
+    "...........OWWtTtTWWWWWWWWxWWWxWxxWWwwwO..",
+    "............OWWTTWWWWWWWWWWWWWWWWWWWwwO...",
+    "............OSsSSSSsSSSSsSSSSsSSSSsSSSO...",
+    ".............OvssssvssssvssssvssssvssO....",
+    "..............OOSSSsSSSSsSSSSsSSSSsOO.....",
+    "................OOOqqqqqqqqqqqqqOOO.......",
+    "..................OOFFOOOqOOFFOO..........",
+    ".................OFfFfFO.OOFfFfFO.........",
+    "..................OOOOO....OOOOO..........",
   ];
   const CHICK = [
-    "...OOOO.....",
-    "..OYYYYO....",
-    ".OYYEYYYO...",
-    "OBBYYYYYO...",
-    ".OOYYYYYYOOO",
-    "..OYYYYYYYYO",
-    "..OYYYYYYYO.",
-    "...OOOOOOO..",
+    ".....OOO........",
+    "....OkKkO.......",
+    "...OkKKKkO......",
+    "...OZZZZZO......",
+    "..OZZZZZZZO.....",
+    ".OZZEZZZZZOOOO..",
+    "OBBZZZZZZZZZZZO.",
+    ".ObZZZZZzZZZZZZO",
+    "..OZZZZzzzZZZZO.",
+    "...OZZZZZZZZZO..",
+    "....OFOOFOOOO...",
+    ".....O..O.......",
   ];
   const FRAMES = {
     normal: {},
-    blink: { "6,6": "W", "7,6": "W", "6,7": "E", "7,7": "E" },
-    hmph: { "6,6": "W", "7,6": "W", "6,7": "E", "7,7": "E", "7,8": "K", "8,8": "K" },
-    peek: { "7,8": "K", "8,8": "K" },
-    annoyed: { "6,6": "E", "8,5": "E" },
-    angry: { "6,6": "E", "8,5": "E", "6,7": "X", "17,0": "X", "19,0": "X", "18,1": "X", "17,2": "X", "19,2": "X" },
+    blink: {"10,10":"W","11,10":"W","12,10":"W","13,10":"W","14,10":"W","15,9":"W","15,10":"W","10,11":"W","11,11":"W","12,11":"W","13,11":"W","14,11":"W","10,12":"E","11,12":"W","12,12":"W","13,12":"W","14,12":"E","10,13":"W","11,13":"E","12,13":"E","13,13":"E","14,13":"W","10,14":"W","11,14":"W","12,14":"W","13,14":"W","14,14":"W","11,15":"W","12,15":"W","13,15":"W","15,11":"E"},
+    hmph: {"10,10":"W","11,10":"W","12,10":"W","13,10":"W","14,10":"W","15,9":"W","15,10":"W","10,11":"W","11,11":"W","12,11":"W","13,11":"W","14,11":"W","10,12":"W","11,12":"E","12,12":"E","13,12":"E","14,12":"W","10,13":"E","11,13":"W","12,13":"W","13,13":"W","14,13":"E","10,14":"W","11,14":"W","12,14":"W","13,14":"W","14,14":"W","11,15":"W","12,15":"W","13,15":"W","15,11":"E","9,16":"k","10,16":"K","11,16":"K","12,16":"K","13,16":"k"},
+    peek: {"9,16":"k","10,16":"K","11,16":"K","12,16":"K","13,16":"k","11,12":"R","12,12":"L","13,12":"D","12,13":"r","13,13":"D"},
+    annoyed: {"11,11":"E","12,11":"E","13,11":"E"},
+    angry: {"11,11":"E","12,11":"E","13,11":"E","11,12":"r","12,12":"D","13,12":"r","11,13":"R","13,13":"R","26,2":"X","28,2":"X","25,3":"X","26,3":"X","28,3":"X","29,3":"X","25,5":"X","26,5":"X","28,5":"X","29,5":"X","26,6":"X","28,6":"X"},
+    walk1: {"15,35":"O","16,35":"F","17,35":"f","18,35":"F","19,35":"f","21,35":"q","28,35":"q","30,35":"F","16,36":"O","18,36":"O","19,36":"O","20,36":"O","21,36":"O","22,36":".","23,36":".","18,37":".","19,37":".","20,37":".","21,37":".","22,37":"."},
+    walk2: {"28,35":"q","30,35":"f","31,35":"F","32,35":"f","33,35":"F","34,35":"O","26,36":".","27,36":".","28,36":"O","29,36":"O","30,36":"O","31,36":"O","33,36":"O","27,37":".","28,37":".","29,37":".","30,37":".","31,37":"."},
   };
   function sprite(art, frame) {
-    const ov = FRAMES[frame] || {};
+    const ov = Object.assign({}, ...[].concat(frame || []).map((f) => FRAMES[f] || {}));
     const at = (x, y) => ov[x + "," + y] || art[y][x];
     let rects = "";
     for (let y = 0; y < art.length; y++) {
@@ -1727,7 +1785,7 @@ footer a { color: var(--plum); font-weight: 700; }
     w.style.height = rect.height + "px";
     const body = document.createElement("span");
     body.className = "waddle" + (faceRight ? " face-right" : "");
-    body.innerHTML = sprite(DUCK, frame);
+    body.innerHTML = '<span class="wf a">' + sprite(DUCK, [frame, "walk1"]) + '</span><span class="wf b">' + sprite(DUCK, [frame, "walk2"]) + "</span>";
     w.append(body);
     document.body.append(w);
     return w;
