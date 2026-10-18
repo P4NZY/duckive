@@ -671,7 +671,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-18T12:04:52+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T12:17:50+00:00"></footer>
 <div class="pond" aria-hidden="true">
   <div class="pond-water"></div>
   <div class="pond-duck"><span class="mama" id="pond-mama"></span><span class="baby" id="pond-baby"></span></div>
@@ -729,49 +729,151 @@ footer a { color: var(--plum); font-weight: 700; }
   const SECTIONS = { ducks: "Ducks", gaming: "Game wins" };
 
   /* ---------- pixel sprites ---------- */
-  // Drawn by tools/paint_duck.py: a 26x24 white duck in Marin's school uniform (faces left) with pink
-  // feather highlights, a simple eye, a collar and navy tie, and a plaid skirt. Frames are pixel overrides.
+  // Drawn by tools/paint_duck.py: a 26x24 white duck (faces left) with pink highlights and a simple eye, in a
+  // sailor uniform, plus her cosplays. Each skin has its own palette, rows and frames (pixel overrides).
   const SKINS = {
     marin: {
-      O: "#2e1248", V: "#ffffff", v: "#e6e0f0", W: "#ffffff", w: "#e6e0f0", x: "#d3c9e8", B: "#ffb347",
-      b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#2e1248", R: "#ff4f7b", K: "#ff9fc4", X: "#e2553f",
-      U: "#ff8fb8", u: "#ffc6da", P: "#ff8fb8", p: "#ffc6da", c: "#cbb5ee", T: "#2b2d5c", t: "#4b4f8f",
-      S: "#3a4278", s: "#ff9ac1", q: "#2f3766", Y: "#ffe08a",
+      pal: {
+        O: "#2e1248", V: "#ffffff", v: "#e6e0f0", W: "#ffffff", w: "#e6e0f0", x: "#d3c9e8", B: "#ffb347",
+        b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#2e1248", R: "#2e1248", K: "#ff9fc4", X: "#e2553f",
+        U: "#ff8fb8", u: "#ffc6da", P: "#ff8fb8", p: "#ffc6da", N: "#2b2d5c", n: "#ffffff", T: "#ff5f8f",
+        t: "#d9406f", S: "#3a4278", q: "#262b55", Y: "#ffe08a",
+      },
+      rows: [
+        "............OO............",
+        "...........OUuO...........",
+        "........OOOOUOO...........",
+        ".......OVVVVVVVO..........",
+        "......OVVVVVVVpPO.........",
+        ".....OVVVVVVVVVVPO........",
+        ".....OVVEEVVVVVVvO....O...",
+        "..OOOOVVREVVVVVVvO...OPO..",
+        ".OBBBBVVVVVVVVVVvO..OpPO..",
+        ".OBBBBVVVVVVVVVvvOOOWWpO..",
+        "..ObbbVVVVVVVVvNNnWWWWWO..",
+        "...OOONTtTNNNNNNNnWWWWO...",
+        "....OWWTTTWWWWWNnnWWWWWO..",
+        "....OWWWTWWxxxxNNNWWWWWO..",
+        "....OWWWWWxWWWWxWWWWWWWO..",
+        "....OWWWWWxwwwwNnWWWWWwO..",
+        "....OwWWWWWxxxxxWWWWWwO...",
+        ".....OSSSqSSSqSSSqSSSO....",
+        "......OSSqSSSqSSSqSSO.....",
+        ".......OSqSSSqSSSqSO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
     },
     shizuku: {
-      O: "#1c0b2e", V: "#7a4bbd", v: "#5d3196", W: "#45216f", w: "#361a59", x: "#7a52b8", B: "#ffb347",
-      b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#12061f", R: "#f4eeff", K: "#ff8fc8", X: "#ff5a3c",
-      U: "#140a1f", u: "#f4eeff", P: "#b48cff", p: "#d9c4ff", c: "#d4cfe2", T: "#f4eeff", t: "#d6cbec",
-      S: "#1f1230", s: "#2e1d45", q: "#f4eeff", Y: "#ffe08a",
+      pal: {
+        O: "#1c0b2e", V: "#7a4bbd", v: "#5d3196", W: "#45216f", w: "#361a59", x: "#7a52b8", B: "#ffb347",
+        b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#12061f", R: "#f4eeff", K: "#ff8fc8", X: "#ff5a3c",
+        U: "#140a1f", u: "#f4eeff", P: "#b48cff", p: "#d9c4ff", c: "#d4cfe2", T: "#f4eeff", t: "#d6cbec",
+        S: "#1f1230", s: "#2e1d45", q: "#f4eeff", Y: "#ffe08a",
+      },
+      rows: [
+        "............OO............",
+        "...........OUuO...........",
+        "........OOOOUOO...........",
+        ".......OVVVVVVVO..........",
+        "......OVVVVVVVpPO.........",
+        ".....OVVVVVVVVVVPO........",
+        ".....OVVEEVVVVVVvO....O...",
+        "..OOOOVVREVVVVVVvO...OPO..",
+        ".OBBBBVVVVVVVVVVvO..OpPO..",
+        ".OBBBBVVVVVVVVVvvOOOWWpO..",
+        "..ObbbVVVVVVVVvWWWWWWWWO..",
+        "...OOOWcTTcWWWWWWWWWWWO...",
+        "....OWWWTtWWxxxxWWWWWWWO..",
+        "....OWWWTTWxWWWWxWWWWWWO..",
+        "....OWWWTTWxWWWWWxWWWWWO..",
+        "....OWWTTTTWxwwwwPPWWWwO..",
+        "....OwWWTTWWWxxxxpWWWwO...",
+        ".....OsSSSsSSSsSSSsSSO....",
+        "......OSSSsSSSsSSSsSO.....",
+        ".......OqqqqqqqqqqqO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
+    },
+    jolyne: {
+      pal: {
+        O: "#0e2622", V: "#4d9e5c", v: "#3a7d48", Y: "#f6df86", W: "#1f6e69", w: "#185854", x: "#e8d6a4",
+        B: "#ffb347", b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#0b1f1c", R: "#6ff0c4", K: "#ff9fc4",
+        X: "#ff5a3c", U: "#4d9e5c", u: "#f6df86", P: "#b8f08c", p: "#dcffc4", c: "#ff9a3c", L: "#4aa8ff",
+        l: "#2fd1c0", o: "#ff9a3c", S: "#123f3b", s: "#e8d6a4", q: "#0c2e2b",
+      },
+      rows: [
+        ".......OOO...OOO..........",
+        "......OVVVO.OVVVO.........",
+        ".....OVYVVVOVVYVVO........",
+        "......OVVYVVVYVVO.........",
+        "......OYYVVVVVVVO.........",
+        ".....OYYVVVVVVVVvO........",
+        ".....OVVEEVVVVVVvO....O...",
+        "..OOOOVVREVVVVVVvO...OPO..",
+        ".OBBBBVVVVVVVVVVvO..OpPO..",
+        ".OBBBBVVVVVVVVVvvOOOWWpO..",
+        "..ObbbVVVVVVVVvWWWWWWWWO..",
+        "...OOOWcWWcWWWWWWWWWWWO...",
+        "....OWWLoLWWxxxxWWWWWWWO..",
+        "....OWWWoWWxWWWWxWWWWWWO..",
+        "....OWWlolWxWWWWWxWWWWWO..",
+        "....OWWWWWWWxwwwwPPWWWwO..",
+        "....OwWWWWWWWxxxxpWWWwO...",
+        ".....OsSSSsSSSsSSSsSSO....",
+        "......OSSSsSSSsSSSsSO.....",
+        ".......OqqqqqqqqqqqO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
     },
   };
-  let PAL = SKINS.marin;
-  const DUCK = [
-    "............OO............",
-    "...........OUuO...........",
-    "........OOOOUOO...........",
-    ".......OVVVVVVVO..........",
-    "......OVVVVVVVpPO.........",
-    ".....OVVVVVVVVVVPO........",
-    ".....OVVEEVVVVVVvO....O...",
-    "..OOOOVVREVVVVVVvO...OPO..",
-    ".OBBBBVVVVVVVVVVvO..OpPO..",
-    ".OBBBBVVVVVVVVVvvOOOWWpO..",
-    "..ObbbVVVVVVVVvWWWWWWWWO..",
-    "...OOOWcTTcWWWWWWWWWWWO...",
-    "....OWWWTtWWxxxxWWWWWWWO..",
-    "....OWWWTTWxWWWWxWWWWWWO..",
-    "....OWWWTTWxWWWWWxWWWWWO..",
-    "....OWWTTTTWxwwwwPPWWWwO..",
-    "....OwWWTTWWWxxxxpWWWwO...",
-    ".....OsSSSsSSSsSSSsSSO....",
-    "......OSSSsSSSsSSSsSO.....",
-    ".......OqqqqqqqqqqqO......",
-    "........OOFFOOOFFOO.......",
-    "........OFFFOOFFFO........",
-    ".........OOO..OOO.........",
-    "..........................",
-  ];
+  let PAL = SKINS.marin.pal;
+  let DUCK = SKINS.marin.rows;
+  let FRAMES = SKINS.marin.frames;
   const CHICK = [
     "....PpP.....",
     "...OOOO.....",
@@ -783,18 +885,6 @@ footer a { color: var(--plum); font-weight: 700; }
     "..OYYYYYYYO.",
     "...OOOOOOO..",
   ];
-  const FRAMES = {
-    normal: {},
-    blink: {"8,6":"V","9,6":"V","8,7":"E"},
-    annoyed: {"10,6":"E"},
-    angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
-    hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
-    peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
-    happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
-    eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
-    walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
-    walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
-  };
   function sprite(art, frame, pal) {
     const ov = Object.assign({}, ...[].concat(frame || []).map((f) => FRAMES[f] || {}));
     const at = (x, y) => ov[x + "," + y] || art[y][x];
@@ -2011,7 +2101,12 @@ footer a { color: var(--plum); font-weight: 700; }
   const FULL_MS = 90000;        // how long she stays full
   const MEAL_GAP_MS = 180000;   // a pause this long starts a new meal
   const STORM_LOVE = -10;       // spam-poking her until she storms off
-  const COSPLAY_AT = 3;         // hearts that unlock the Shizuku-tan cosplay
+  // cosplays unlock as she warms up to you; each one is a skin in SKINS
+  const COSPLAYS = [
+    { name: "shizuku", label: "Shizuku", title: "Shizuku-tan", hearts: 3, hello: "Shizuku-tan cosplay! How do I look?!" },
+    { name: "jolyne", label: "Jolyne", title: "Jolyne", hearts: 4, hello: "Yare yare dawa... Jolyne cosplay!" },
+  ];
+  const COSPLAY_BY = Object.fromEntries(COSPLAYS.map((c) => [c.name, c]));
   const BREAD_LINES = [
     ["I-it's not like I wanted bread!", "Hmph. ...acceptable.", "Don't think this changes anything!"],
     ["...okay, that was good bread.", "Hmph! Fine. One more.", "You're kinda okay. Kinda."],
@@ -2077,13 +2172,20 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   function levelUp(lv) {
     chime([523, 659, 784, 1047]);
-    let line = lv === 4 ? "Now she'll face you." : "";
-    if (lv >= COSPLAY_AT && store.get("duckive-cosplay") !== "1") {
-      store.set("duckive-cosplay", "1");
-      showCloset(true);
-      line = "New cosplay unlocked: Shizuku-tan!";
-    }
+    const fresh = unlockCosplays(lv);
+    const perk = lv === 4 ? "Now she'll face you." : "";
+    const line = fresh.length ? "New cosplay unlocked: " + fresh.map((c) => c.title).join(" & ") + "!" + (perk ? " " + perk : "") : perk;
     toast("Level up! " + LEVELS[lv], line);
+  }
+  // unlock every cosplay this many hearts has earned; returns the new ones
+  function unlockCosplays(lv) {
+    const fresh = COSPLAYS.filter((c) => lv >= c.hearts && !unlockedSet.has(c.name));
+    if (!fresh.length) return fresh;
+    fresh.forEach((c) => unlockedSet.add(c.name));
+    store.set("duckive-cosplays", [...unlockedSet].join(","));
+    showCloset(true);
+    syncCloset();
+    return fresh;
   }
   function stormLove() {
     if (love.pts <= 0) return;
@@ -2288,8 +2390,11 @@ footer a { color: var(--plum); font-weight: 700; }
     if (right !== duck.right) face(right);
   }
 
-  /* cosplays: palette swaps of the same sprite */
-  let skin = store.get("duckive-cosplay") === "1" && store.get("duckive-skin") === "shizuku" ? "shizuku" : "marin";
+  /* cosplays: each skin has its own palette, shape and frames */
+  // unlocked cosplays are stored as "shizuku,jolyne" (earlier visits saved duckive-cosplay = "1" for Shizuku)
+  const unlockedSet = new Set((store.get("duckive-cosplays") || "").split(",").filter((n) => COSPLAY_BY[n]));
+  if (store.get("duckive-cosplay") === "1") unlockedSet.add("shizuku");
+  let skin = unlockedSet.has(store.get("duckive-skin")) ? store.get("duckive-skin") : "marin";
   function setFavicon() {
     try {
       let icon = document.querySelector('link[rel="icon"]');
@@ -2299,19 +2404,30 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   function applySkin(name, announce) {
     skin = name;
-    PAL = SKINS[name];
+    PAL = SKINS[name].pal;
+    DUCK = SKINS[name].rows;
+    FRAMES = SKINS[name].frames;
     store.set("duckive-skin", name);
     const f = duck.frame || "normal";
     duck.frame = "";
     setFrame(f);
     $("pond-mama").innerHTML = sprite(DUCK, "normal");
     setFavicon();
-    closetText.textContent = name === "shizuku" ? "Uniform" : "Cosplay";
-    closetBtn.setAttribute("aria-label", name === "shizuku" ? "Change back into the school uniform" : "Change into the Shizuku-tan cosplay");
+    syncCloset();
     if (!announce) return;
     poof();
-    chime(name === "shizuku" ? [392, 523, 659] : [659, 523, 392]);
-    bubble(name === "shizuku" ? "Shizuku-tan cosplay! How do I look?!" : "Back in my uniform!", "");
+    chime(name === "marin" ? [659, 523, 392] : [392, 523, 659]);
+    bubble(name === "marin" ? "Back in my uniform!" : COSPLAY_BY[name].hello, "");
+  }
+  // the closet button names the outfit it switches to next: each unlocked cosplay in turn, then the uniform
+  function nextSkin() {
+    const order = ["marin", ...COSPLAYS.filter((c) => unlockedSet.has(c.name)).map((c) => c.name)];
+    return order[(order.indexOf(skin) + 1) % order.length];
+  }
+  function syncCloset() {
+    const next = nextSkin();
+    closetText.textContent = next === "marin" ? "Uniform" : COSPLAY_BY[next].label;
+    closetBtn.setAttribute("aria-label", next === "marin" ? "Change back into the school uniform" : "Change into the " + COSPLAY_BY[next].title + " cosplay");
   }
   function showCloset(fresh) {
     closetBtn.hidden = false;
@@ -2330,7 +2446,7 @@ footer a { color: var(--plum); font-weight: 700; }
       p.className = "poof";
       p.style.left = cx + "px";
       p.style.top = cy + "px";
-      p.style.background = k % 2 ? "#ffffff" : skin === "shizuku" ? "#7a4bbd" : "#ff8fb8";
+      p.style.background = k % 2 ? "#ffffff" : skin === "marin" ? "#ff8fb8" : PAL.V;
       document.body.append(p);
       const a = (k / 10) * Math.PI * 2;
       const d = 34 + (k % 3) * 8;
@@ -2341,7 +2457,7 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   closetBtn.addEventListener("click", () => {
     if (duck.away || love.busy) return;
-    applySkin(skin === "shizuku" ? "marin" : "shizuku", true);
+    applySkin(nextSkin(), true);
   });
 
   // she remembers you: a hello when you come back, and a sulk if you stayed away for days
@@ -2374,9 +2490,12 @@ footer a { color: var(--plum); font-weight: 700; }
   }
 
   /* ---------- boot ---------- */
-  $("pond-baby").innerHTML = sprite(CHICK, null, SKINS.marin);
-  if (store.get("duckive-cosplay") === "1") showCloset(false);
+  $("pond-baby").innerHTML = sprite(CHICK, null, SKINS.marin.pal);
+  if (unlockedSet.size) showCloset(false);
   applySkin(skin, false);
+  // hearts earned before a cosplay existed still count
+  const owed = unlockCosplays(heartsOf(love.pts));
+  if (owed.length) setTimeout(() => toast("New cosplay unlocked!", owed.map((c) => c.title).join(" & ") + " is in the closet."), 1500);
   drawLove();
   syncFeed();
   greet();
