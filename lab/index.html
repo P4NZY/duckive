@@ -583,6 +583,40 @@ footer a { color: var(--plum); font-weight: 700; }
 .lab-bar { position: relative; z-index: 2; background: var(--plum); color: var(--plum-ink); font-size: 13px; }
 .lab-bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; }
 .lab-bar a { color: var(--butter-2); font-weight: 750; white-space: nowrap; }
+/* Lab: feed the duck, affection hearts, cosplay closet */
+.duck-hud { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; animation: rise .6s 1.1s steps(5) backwards; }
+.love {
+  display: inline-grid; gap: 6px; justify-items: start;
+  margin: 3px; padding: 7px 9px 6px;
+  background: var(--surface);
+  box-shadow: 0 -3px var(--plum-dark), 0 3px var(--plum-dark), -3px 0 var(--plum-dark), 3px 0 var(--plum-dark);
+}
+.hearts { display: flex; gap: 2px; }
+.hearts span { display: block; width: 18px; height: 16px; }
+.love-label { font: 8px/1 var(--font-pixel); color: var(--plum); text-transform: uppercase; white-space: nowrap; }
+.feed .bread { display: block; width: 20px; height: 18px; }
+.closet .hanger { display: block; width: 26px; height: 18px; }
+.feed:hover .bread { animation: wobble .4s steps(4); }
+.feed.full { background: var(--lilac-2); color: var(--plum-dark); }
+.closet { background: var(--butter-2); color: var(--plum-dark); }
+.closet.fresh { animation: shimmy .5s steps(4) 5; }
+@keyframes shimmy { 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+.flying-bread { position: absolute; z-index: 25; left: 0; top: 0; width: 20px; height: 18px; pointer-events: none; }
+.crumb { position: absolute; z-index: 24; width: 4px; height: 4px; background: #ffe3a3; box-shadow: 0 0 0 2px #c97a2e; pointer-events: none; }
+.heart-pop { position: absolute; z-index: 26; width: 18px; height: 16px; margin-left: -9px; pointer-events: none; }
+.poof { position: absolute; z-index: 26; width: 6px; height: 6px; margin: -3px 0 0 -3px; pointer-events: none; }
+.love-toast {
+  position: fixed; z-index: 60; left: 50%; top: 12px;
+  width: max-content; max-width: calc(100vw - 40px);
+  padding: 10px 12px;
+  background: var(--plum); color: var(--butter-2);
+  font: 9px/1.8 var(--font-pixel); text-align: center;
+  box-shadow: 0 -3px var(--plum-dark), 0 3px var(--plum-dark), -3px 0 var(--plum-dark), 3px 0 var(--plum-dark), 6px 6px 0 var(--pink-2);
+  transform: translateX(-50%);
+  opacity: 0; pointer-events: none;
+}
+.love-toast b { display: block; color: #fff; font-weight: 400; text-transform: uppercase; }
+
 </style>
 </head>
 <body>
@@ -600,6 +634,14 @@ footer a { color: var(--plum); font-weight: 700; }
     <span class="sr-only">Duckive</span><span class="word" aria-hidden="true"><span class="l" style="--i:0"><span>D</span></span><span class="l" style="--i:1"><span>u</span></span><span class="l" style="--i:2"><span>c</span></span><span class="l" style="--i:3"><span>k</span></span><span class="l" style="--i:4"><span>i</span></span><span class="l" style="--i:5"><span>v</span></span><span class="l" style="--i:6"><span>e</span></span></span><span class="duck-slot" id="duck-slot"><button type="button" class="duck-btn" id="duck-btn" aria-label="Poke the duck"><span class="duck"><span class="duck-face" id="duck-face"></span></span></button></span>
   </h1>
   <p class="lede"><span class="sr-only">Marcus' ventures in search of wisdom</span><span id="lede-type" aria-hidden="true">Marcus' ventures in search of <mark>wisdom</mark></span><span class="caret" aria-hidden="true"></span></p>
+  <div class="duck-hud" id="duck-hud">
+    <div class="love" id="love" role="meter" aria-label="How much the duck likes you" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <span class="hearts" id="hearts" aria-hidden="true"></span>
+      <span class="love-label" id="love-label" aria-hidden="true">Tsun-tsun</span>
+    </div>
+    <button type="button" class="surprise feed" id="feed"><span class="bread" id="feed-icon" aria-hidden="true"></span><span id="feed-text">Feed</span></button>
+    <button type="button" class="surprise closet" id="closet" hidden><span class="hanger" id="closet-icon" aria-hidden="true"></span><span id="closet-text">Cosplay</span></button>
+  </div>
   <button type="button" class="daily" id="daily" hidden>
     <span class="daily-bar"><span>★ DUCK OF THE DAY</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></span>
     <span class="daily-body">
@@ -609,6 +651,7 @@ footer a { color: var(--plum); font-weight: 700; }
     </span>
   </button>
 </header>
+<div class="love-toast" id="love-toast" role="status" aria-live="polite"></div>
 
 <div class="bar" id="bar">
   <div class="wrap">
@@ -635,7 +678,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-18T11:50:16+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-18T12:02:13+00:00"></footer>
 <div class="pond" aria-hidden="true">
   <div class="pond-water"></div>
   <div class="pond-duck"><span class="mama" id="pond-mama"></span><span class="baby" id="pond-baby"></span></div>
@@ -695,12 +738,21 @@ footer a { color: var(--plum); font-weight: 700; }
   /* ---------- pixel sprites ---------- */
   // Drawn by tools/paint_duck.py: a 26x24 white duck in Marin's school uniform (faces left) with pink
   // feather highlights, a simple eye, a collar and navy tie, and a plaid skirt. Frames are pixel overrides.
-  const PAL = {
-    O: "#2e1248", V: "#ffffff", v: "#e6e0f0", W: "#ffffff", w: "#e6e0f0", x: "#d3c9e8", B: "#ffb347",
-    b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#2e1248", R: "#ff4f7b", K: "#ff9fc4", X: "#e2553f",
-    U: "#ff8fb8", u: "#ffc6da", P: "#ff8fb8", p: "#ffc6da", c: "#cbb5ee", T: "#2b2d5c", t: "#4b4f8f",
-    S: "#3a4278", s: "#ff9ac1", q: "#2f3766", Y: "#ffe08a",
+  const SKINS = {
+    marin: {
+      O: "#2e1248", V: "#ffffff", v: "#e6e0f0", W: "#ffffff", w: "#e6e0f0", x: "#d3c9e8", B: "#ffb347",
+      b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#2e1248", R: "#ff4f7b", K: "#ff9fc4", X: "#e2553f",
+      U: "#ff8fb8", u: "#ffc6da", P: "#ff8fb8", p: "#ffc6da", c: "#cbb5ee", T: "#2b2d5c", t: "#4b4f8f",
+      S: "#3a4278", s: "#ff9ac1", q: "#2f3766", Y: "#ffe08a",
+    },
+    shizuku: {
+      O: "#1c0b2e", V: "#7a4bbd", v: "#5d3196", W: "#45216f", w: "#361a59", x: "#7a52b8", B: "#ffb347",
+      b: "#f08a24", D: "#7a1f3d", F: "#ff9a3c", E: "#12061f", R: "#f4eeff", K: "#ff8fc8", X: "#ff5a3c",
+      U: "#140a1f", u: "#f4eeff", P: "#b48cff", p: "#d9c4ff", c: "#d4cfe2", T: "#f4eeff", t: "#d6cbec",
+      S: "#1f1230", s: "#2e1d45", q: "#f4eeff", Y: "#ffe08a",
+    },
   };
+  let PAL = SKINS.marin;
   const DUCK = [
     "............OO............",
     "...........OUuO...........",
@@ -750,7 +802,7 @@ footer a { color: var(--plum); font-weight: 700; }
     walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
     walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
   };
-  function sprite(art, frame) {
+  function sprite(art, frame, pal) {
     const ov = Object.assign({}, ...[].concat(frame || []).map((f) => FRAMES[f] || {}));
     const at = (x, y) => ov[x + "," + y] || art[y][x];
     let rects = "";
@@ -761,7 +813,7 @@ footer a { color: var(--plum); font-weight: 700; }
         if (ch === ".") { x++; continue; }
         let x2 = x + 1;
         while (x2 < art[y].length && at(x2, y) === ch) x2++;
-        rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x) + '" height="1" fill="' + PAL[ch] + '"/>';
+        rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x) + '" height="1" fill="' + (pal || PAL)[ch] + '"/>';
         x = x2;
       }
     }
@@ -1634,7 +1686,7 @@ footer a { color: var(--plum); font-weight: 700; }
   const duckBtn = $("duck-btn");
   const duckSlot = $("duck-slot");
   const duckFace = $("duck-face");
-  const duck = { clicks: [], away: false, calm: 0, tsun: false, tsunTimer: 0, tsunLine: 0, frame: "", right: false };
+  const duck = { clicks: [], away: false, calm: 0, tsun: false, tsunTimer: 0, tsunLine: 0, frame: "", right: false, eating: false };
   let audioCtx = null;
 
   function setFrame(f) {
@@ -1761,6 +1813,7 @@ footer a { color: var(--plum); font-weight: 700; }
   function once(fn) { let ran = false; return () => { if (!ran) { ran = true; fn(); } }; }
 
   function storm() {
+    stormLove();
     duck.away = true;
     duck.clicks = [];
     duck.tsun = false;
@@ -1826,6 +1879,7 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   function startTsun() {
     duck.tsun = true;
+    love.tsunBread = 0;
     setFrame("hmph");
     if (pointerX == null) face(true); else turnAway(true);
     clearTimeout(duck.tsunTimer);
@@ -1853,14 +1907,14 @@ footer a { color: var(--plum); font-weight: 700; }
   }
   const trackPointer = (e) => {
     pointerX = e.clientX;
-    if (!duck.tsun || turnRaf) return;
-    turnRaf = requestAnimationFrame(() => { turnRaf = 0; turnAway(); });
+    if (turnRaf || !(duck.tsun || heartsOf(love.pts) >= 4)) return;
+    turnRaf = requestAnimationFrame(() => { turnRaf = 0; if (duck.tsun) turnAway(); else lookAtYou(); });
   };
   addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") trackPointer(e); }, { passive: true });
   addEventListener("pointerdown", trackPointer, { passive: true });
 
   duckBtn.addEventListener("click", () => {
-    if (duck.away) return;
+    if (duck.away || duck.eating) return;
     const now = performance.now();
     duck.clicks = duck.clicks.filter((t) => now - t < 2600);
     duck.clicks.push(now);
@@ -1879,11 +1933,13 @@ footer a { color: var(--plum); font-weight: 700; }
       }
       return;
     }
-    const lines = ["Quack!", "Quack!", "Quack?", "Quack quack!", "Hey!!", "QUACK!!"];
+    const friendly = heartsOf(love.pts) >= 3;
+    const lines = friendly ? ["Quack!", "Hi hi!", "Quack quack!", "Hehe, hey!", "Hey!!", "QUACK!!"] : ["Quack!", "Quack!", "Quack?", "Quack quack!", "Hey!!", "QUACK!!"];
     quack(n >= 5 ? { pitch: 0.82, count: 2, rough: true } : { pitch: 1 + (n - 1) * 0.05 });
     bubble(lines[n - 1], n >= 5 ? "annoyed" : "");
     ripple();
-    setFrame(n >= 4 ? "annoyed" : "normal");
+    setFrame(n >= 4 ? "annoyed" : friendly ? "happy" : "normal");
+    if (friendly && n <= 3) heartPop();
     clearTimeout(duck.calm);
     duck.calm = setTimeout(() => { if (!duck.away && !duck.tsun) setFrame("normal"); }, 2600);
     if (reduced) return;
@@ -1896,7 +1952,7 @@ footer a { color: var(--plum); font-weight: 700; }
   if (!reduced) {
     // blinks every few seconds, and now and then looks around
     const blink = () => {
-      if (duck.frame === "normal" && !duck.away && !document.hidden) {
+      if (duck.frame === "normal" && !duck.away && !duck.eating && !document.hidden) {
         setFrame("blink");
         setTimeout(() => { if (duck.frame === "blink") setFrame("normal"); }, 140);
       }
@@ -1904,7 +1960,7 @@ footer a { color: var(--plum); font-weight: 700; }
     };
     setTimeout(blink, 2500);
     const lookAround = () => {
-      if (duck.frame === "normal" && !duck.tsun && !duck.away && !document.hidden) {
+      if (duck.frame === "normal" && !duck.tsun && !duck.away && !duck.eating && heartsOf(love.pts) < 4 && !document.hidden) {
         duckFace.animate(
           [{ transform: "scaleX(1)" }, { transform: "scaleX(-1)", offset: 0.1 }, { transform: "scaleX(-1)", offset: 0.85 }, { transform: "scaleX(1)" }],
           { duration: 1800, easing: "steps(1)" }
@@ -1915,14 +1971,422 @@ footer a { color: var(--plum); font-weight: 700; }
     setTimeout(lookAround, 7000);
   }
 
+  /* ---------- lab: feed her bread, win her over, unlock cosplays ---------- */
+  const PIX = { O: "#2e1248", A: "#e0973f", a: "#ffe3a3", h: "#fff6dc", P: "#ff8fb8", p: "#ffd3e4", e: "#ece3fa" };
+  const BREAD = [
+    "..OOOOOO..",
+    ".OAAAAAAO.",
+    "OAAahhaAAO",
+    "OAaaaaaaAO",
+    ".OAaaaaAO.",
+    ".OAaaaaAO.",
+    ".OAaaaaAO.",
+    ".OAAAAAAO.",
+    "..OOOOOO..",
+  ];
+  const HEART = [
+    ".OO...OO.",
+    "OPPO.OPPO",
+    "OPpPOPPPO",
+    "OPPPPPPPO",
+    ".OPPPPPO.",
+    "..OPPPO..",
+    "...OPO...",
+    "....O....",
+  ];
+  const HANGER = [
+    ".....OO......",
+    "....O..O.....",
+    ".......O.....",
+    "......O......",
+    ".....O.O.....",
+    "...OO...OO...",
+    ".OO.......OO.",
+    "O...........O",
+    "OOOOOOOOOOOOO",
+  ];
+  // a heart filled up to column x (-1 = empty, 4 = left half)
+  const heartRows = (x) => HEART.map((r) => [...r].map((c, i) => ((c === "P" || c === "p") && i > x ? "e" : c)).join(""));
+  const HEART_SVG = { full: sprite(HEART, null, PIX), empty: sprite(heartRows(-1), null, PIX) };
+  // each heart is 20 points and fills left to right, so every bread shows
+  const heartSvg = (f) => (f >= 20 ? HEART_SVG.full : f <= 0 ? HEART_SVG.empty
+    : (HEART_SVG[f] = HEART_SVG[f] || sprite(heartRows(Math.round((f / 20) * 8)), null, PIX)));
+
+  const LEVELS = ["Tsun-tsun", "Suspicious", "Warming up", "Friends", "Dere-dere", "Besties"];
+  const BREAD_LOVE = 5;         // 20 points per heart, 100 max
+  const MEAL = 12;              // breads before she's full
+  const FULL_MS = 90000;        // how long she stays full
+  const MEAL_GAP_MS = 180000;   // a pause this long starts a new meal
+  const STORM_LOVE = -10;       // spam-poking her until she storms off
+  const COSPLAY_AT = 3;         // hearts that unlock the Shizuku-tan cosplay
+  const BREAD_LINES = [
+    ["I-it's not like I wanted bread!", "Hmph. ...acceptable.", "Don't think this changes anything!"],
+    ["...okay, that was good bread.", "Hmph! Fine. One more.", "You're kinda okay. Kinda."],
+    ["Nom nom! ...don't stare!", "Is this sourdough?!", "More? I-if you insist."],
+    ["Thanks for the bread!", "You're my favorite bread person!", "Nom! The good stuff."],
+    ["You always bring the best bread!", "Stay a while, okay?", "Quack quack! Thank you!"],
+    ["Best friends forever! Quack!", "You're the best!!", "Bread AND you? Perfect day."],
+  ];
+  const TSUN_BREAD = ["I-it's not like I forgive you!", "Hmph! Bribery won't work! ...nom."];
+  const FULL_LINES = ["I'm stuffed! Come back in a bit.", "No more... I'm full! ...thanks."];
+
+  const love = {
+    pts: Math.max(0, Math.min(100, +store.get("duckive-love") || 0)),
+    meal: +store.get("duckive-meal") || 0,
+    mealAt: +store.get("duckive-meal-at") || 0,
+    fullUntil: +store.get("duckive-full-until") || 0,
+    busy: false,
+    tsunBread: 0,
+  };
+  const heartsOf = (p) => Math.floor(p / 20);
+  const lastPick = new Map();
+  function pick(list) {
+    let i = Math.floor(Math.random() * list.length);
+    if (list.length > 1 && i === lastPick.get(list)) i = (i + 1) % list.length;
+    lastPick.set(list, i);
+    return list[i];
+  }
+
+  const loveEl = $("love");
+  const heartsEl = $("hearts");
+  const loveLabel = $("love-label");
+  const feedBtn = $("feed");
+  const feedText = $("feed-text");
+  const closetBtn = $("closet");
+  const closetText = $("closet-text");
+  const toastEl = $("love-toast");
+  $("feed-icon").innerHTML = sprite(BREAD, null, PIX);
+  $("closet-icon").innerHTML = sprite(HANGER, null, PIX);
+
+  function drawLove(beat) {
+    const p = love.pts;
+    const lv = heartsOf(p);
+    heartsEl.innerHTML = [0, 1, 2, 3, 4].map((i) => {
+      const f = p - i * 20;
+      return "<span>" + heartSvg(f) + "</span>";
+    }).join("");
+    loveLabel.textContent = LEVELS[lv];
+    loveEl.setAttribute("aria-valuenow", p);
+    loveEl.setAttribute("aria-valuetext", lv + " of 5 hearts, " + LEVELS[lv]);
+    const h = beat == null ? null : heartsEl.children[beat];
+    if (h && !reduced) h.animate([{ transform: "none" }, { transform: "translateY(-3px) scale(1.4)" }, { transform: "none" }], { duration: 450, easing: "steps(4)" });
+  }
+
+  // returns the new number of hearts
+  function changeLove(delta, quiet) {
+    const before = heartsOf(love.pts);
+    love.pts = Math.max(0, Math.min(100, love.pts + delta));
+    store.set("duckive-love", String(love.pts));
+    const after = heartsOf(love.pts);
+    drawLove(delta > 0 && love.pts > 0 ? Math.min(4, Math.floor((love.pts - 1) / 20)) : null);
+    if (!quiet && after > before) levelUp(after);
+    return after;
+  }
+  function levelUp(lv) {
+    chime([523, 659, 784, 1047]);
+    let line = lv === 4 ? "Now she'll face you." : "";
+    if (lv >= COSPLAY_AT && store.get("duckive-cosplay") !== "1") {
+      store.set("duckive-cosplay", "1");
+      showCloset(true);
+      line = "New cosplay unlocked: Shizuku-tan!";
+    }
+    toast("Level up! " + LEVELS[lv], line);
+  }
+  function stormLove() {
+    if (love.pts <= 0) return;
+    changeLove(STORM_LOVE, true);
+    toast("Too many pokes!", "She likes you a bit less now.");
+  }
+
+  let toastTimer = 0;
+  function toast(title, line) {
+    const b = document.createElement("b");
+    b.textContent = title;
+    toastEl.replaceChildren(b);
+    if (line) toastEl.append(line);
+    toastEl.getAnimations().forEach((a) => a.cancel());
+    clearTimeout(toastTimer);
+    if (reduced) {
+      toastEl.style.opacity = 1;
+      toastTimer = setTimeout(() => { toastEl.style.opacity = ""; }, 3400);
+      return;
+    }
+    toastEl.animate(
+      [{ opacity: 0, transform: "translate(-50%, -14px)" }, { opacity: 1, transform: "translate(-50%, 0)", offset: 0.08 },
+       { opacity: 1, transform: "translate(-50%, 0)", offset: 0.9 }, { opacity: 0, transform: "translate(-50%, -8px)" }],
+      { duration: 3400, easing: "steps(20)" });
+  }
+
+  function blips(notes, opts) {
+    const o = Object.assign({ type: "square", gap: 0.1, len: 0.1, volume: 0.07 }, opts);
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const now = audioCtx.currentTime;
+      notes.forEach((f, k) => {
+        const t = now + k * o.gap;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = o.type;
+        osc.frequency.setValueAtTime(f, t);
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(o.volume, t + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + o.len);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + o.len + 0.02);
+      });
+    } catch (e) { /* no Web Audio here */ }
+  }
+  const nom = () => blips([220, 175, 220, 175, 220], { gap: 0.13, len: 0.06, volume: 0.08 });
+  const chime = (notes) => blips(notes, { gap: 0.1, len: 0.14 });
+
+  let fullTick = 0;
+  function syncFeed() {
+    clearTimeout(fullTick);
+    const left = love.fullUntil - Date.now();
+    if (left > 0) {
+      feedBtn.classList.add("full");
+      feedText.textContent = "Full " + Math.ceil(left / 1000) + "s";
+      feedBtn.setAttribute("aria-label", "She's full. Try again in " + Math.ceil(left / 1000) + " seconds");
+      fullTick = setTimeout(syncFeed, 1000);
+      return;
+    }
+    feedBtn.classList.remove("full");
+    feedText.textContent = "Feed";
+    feedBtn.setAttribute("aria-label", "Feed the duck some bread");
+    if (love.fullUntil) {
+      love.fullUntil = 0;
+      love.meal = 0;
+      store.set("duckive-full-until", "0");
+      store.set("duckive-meal", "0");
+    }
+  }
+
+  // where her bill is on the page right now (she faces left unless flipped)
+  function billPoint() {
+    const r = duckFace.getBoundingClientRect();
+    return { x: r.left + r.width * (duck.right ? 23 / 26 : 3 / 26) + scrollX, y: r.top + r.height * (9.5 / 24) + scrollY };
+  }
+
+  function throwBread() {
+    return new Promise((done) => {
+      if (reduced) { done(); return; }
+      const from = $("feed-icon").getBoundingClientRect();
+      const to = billPoint();
+      const b = document.createElement("span");
+      b.className = "flying-bread";
+      b.innerHTML = sprite(BREAD, null, PIX);
+      document.body.append(b);
+      const x0 = from.left + scrollX;
+      const y0 = from.top + scrollY;
+      const x1 = to.x - 10;
+      const y1 = to.y - 9;
+      const peak = Math.min(y0, y1) - 60;
+      const frames = [];
+      for (let i = 0; i <= 12; i++) {
+        const t = i / 12;
+        const x = x0 + (x1 - x0) * t;
+        const y = (1 - t) * (1 - t) * y0 + 2 * (1 - t) * t * peak + t * t * y1;
+        frames.push({ transform: "translate(" + x + "px, " + y + "px) rotate(" + Math.round(t * 4) * 90 + "deg)" });
+      }
+      const fin = once(() => { b.remove(); done(); });
+      b.animate(frames, { duration: 620, easing: "linear" }).onfinish = fin;
+      setTimeout(fin, 900);
+    });
+  }
+
+  function crumbs() {
+    const p = billPoint();
+    for (let k = 0; k < 5; k++) {
+      const c = document.createElement("span");
+      c.className = "crumb";
+      c.style.left = p.x + Math.random() * 14 - 7 + "px";
+      c.style.top = p.y + 4 + "px";
+      document.body.append(c);
+      c.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translate(" + (Math.random() * 30 - 15) + "px, " + (22 + Math.random() * 20) + "px)" }],
+        { duration: 650, delay: k * 90, easing: "steps(6)", fill: "backwards" }).onfinish = () => c.remove();
+    }
+  }
+
+  function heartPop() {
+    if (reduced) return;
+    const r = duckFace.getBoundingClientRect();
+    const h = document.createElement("span");
+    h.className = "heart-pop";
+    h.innerHTML = HEART_SVG.full;
+    h.style.left = r.left + r.width * (duck.right ? 0.4 : 0.6) + scrollX + "px";
+    h.style.top = r.top - 4 + scrollY + "px";
+    document.body.append(h);
+    h.animate([{ opacity: 0, transform: "translateY(6px) scale(.5)" }, { opacity: 1, transform: "translateY(-6px)", offset: 0.25 }, { opacity: 0, transform: "translateY(-30px)" }],
+      { duration: 1100, easing: "steps(8)" }).onfinish = () => h.remove();
+  }
+
+  feedBtn.addEventListener("click", () => {
+    if (love.busy) return;
+    if (duck.away) { toast("She's not here!", "Wait for her to come back."); return; }
+    if (love.fullUntil > Date.now()) {
+      bubble(pick(FULL_LINES), duck.tsun ? "tsun" : "");
+      if (!reduced) feedBtn.animate([{ transform: "none" }, { transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "none" }], { duration: 300, easing: "steps(4)" });
+      return;
+    }
+    if (Date.now() - love.mealAt > MEAL_GAP_MS) love.meal = 0;
+    love.busy = true;
+    duck.eating = true;
+    clearTimeout(duck.calm);
+    throwBread().then(eat);
+  });
+
+  function eat() {
+    if (duck.away) { duck.eating = false; love.busy = false; return; }
+    const rest = duck.tsun ? "hmph" : "normal";
+    const chews = ["eat", rest, "eat", rest, "eat"];
+    nom();
+    if (!reduced) crumbs();
+    chews.forEach((f, k) => setTimeout(() => { if (!duck.away) setFrame(f); }, k * 130));
+    setTimeout(fed, chews.length * 130 + 40);
+  }
+
+  function fed() {
+    love.meal += 1;
+    love.mealAt = Date.now();
+    store.set("duckive-meal", String(love.meal));
+    store.set("duckive-meal-at", String(love.mealAt));
+    let line = null;
+    let mood = "";
+    if (duck.tsun) {
+      love.tsunBread += 1;
+      mood = "tsun";
+      if (love.tsunBread >= 2) { forgive(); line = "...fine. Bread works. You're forgiven."; }
+      else line = pick(TSUN_BREAD);
+    }
+    const lv = changeLove(BREAD_LOVE);
+    if (love.meal >= MEAL) {
+      love.fullUntil = Date.now() + FULL_MS;
+      store.set("duckive-full-until", String(love.fullUntil));
+      syncFeed();
+      if (!line) line = pick(FULL_LINES);
+    }
+    if (!line) { line = pick(BREAD_LINES[lv]); mood = lv < 2 ? "tsun" : ""; }
+    if (!duck.away) setFrame(duck.tsun ? "hmph" : "happy");
+    heartPop();
+    bubble(line, mood);
+    clearTimeout(duck.calm);
+    duck.calm = setTimeout(() => {
+      duck.eating = false;
+      if (!duck.away) setFrame(duck.tsun ? "hmph" : "normal");
+    }, 1200);
+    love.busy = false;
+  }
+
+  // two breads while she's sulking and she gives up the act
+  function forgive() {
+    duck.tsun = false;
+    clearTimeout(duck.tsunTimer);
+    love.tsunBread = 0;
+    face(false);
+  }
+
+  // at four hearts she turns to face you instead of away
+  function lookAtYou() {
+    if (duck.tsun || duck.away || duck.eating || pointerX == null || heartsOf(love.pts) < 4) return;
+    const r = duckFace.getBoundingClientRect();
+    const right = pointerX > r.left + r.width / 2;
+    if (right !== duck.right) face(right);
+  }
+
+  /* cosplays: palette swaps of the same sprite */
+  let skin = store.get("duckive-cosplay") === "1" && store.get("duckive-skin") === "shizuku" ? "shizuku" : "marin";
+  function setFavicon() {
+    try {
+      let icon = document.querySelector('link[rel="icon"]');
+      if (!icon) { icon = document.createElement("link"); icon.rel = "icon"; document.head.append(icon); }
+      icon.href = "data:image/svg+xml," + encodeURIComponent(sprite(DUCK, "normal"));
+    } catch (e) { /* keep the default icon */ }
+  }
+  function applySkin(name, announce) {
+    skin = name;
+    PAL = SKINS[name];
+    store.set("duckive-skin", name);
+    const f = duck.frame || "normal";
+    duck.frame = "";
+    setFrame(f);
+    $("pond-mama").innerHTML = sprite(DUCK, "normal");
+    setFavicon();
+    closetText.textContent = name === "shizuku" ? "Uniform" : "Cosplay";
+    closetBtn.setAttribute("aria-label", name === "shizuku" ? "Change back into the school uniform" : "Change into the Shizuku-tan cosplay");
+    if (!announce) return;
+    poof();
+    chime(name === "shizuku" ? [392, 523, 659] : [659, 523, 392]);
+    bubble(name === "shizuku" ? "Shizuku-tan cosplay! How do I look?!" : "Back in my uniform!", "");
+  }
+  function showCloset(fresh) {
+    closetBtn.hidden = false;
+    if (fresh && !reduced) {
+      closetBtn.classList.add("fresh");
+      setTimeout(() => closetBtn.classList.remove("fresh"), 2600);
+    }
+  }
+  function poof() {
+    if (reduced) return;
+    const r = duckFace.getBoundingClientRect();
+    const cx = r.left + r.width / 2 + scrollX;
+    const cy = r.top + r.height / 2 + scrollY;
+    for (let k = 0; k < 10; k++) {
+      const p = document.createElement("span");
+      p.className = "poof";
+      p.style.left = cx + "px";
+      p.style.top = cy + "px";
+      p.style.background = k % 2 ? "#ffffff" : skin === "shizuku" ? "#7a4bbd" : "#ff8fb8";
+      document.body.append(p);
+      const a = (k / 10) * Math.PI * 2;
+      const d = 34 + (k % 3) * 8;
+      p.animate([{ opacity: 1, transform: "scale(.5)" }, { opacity: 0, transform: "translate(" + Math.cos(a) * d + "px, " + Math.sin(a) * d + "px) scale(1.4)" }],
+        { duration: 600, easing: "steps(6)" }).onfinish = () => p.remove();
+    }
+    duckBtn.animate([{ transform: "none" }, { transform: "scale(1.15, .8)" }, { transform: "scale(.9, 1.15)" }, { transform: "none" }], { duration: 420, easing: "steps(4)" });
+  }
+  closetBtn.addEventListener("click", () => {
+    if (duck.away || love.busy) return;
+    applySkin(skin === "shizuku" ? "marin" : "shizuku", true);
+  });
+
+  // she remembers you: a hello when you come back, and a sulk if you stayed away for days
+  function greet() {
+    const now = Date.now();
+    const seen = +store.get("duckive-seen") || 0;
+    store.set("duckive-seen", String(now));
+    if (!seen) return;
+    const days = Math.floor((now - seen) / 86400000);
+    let line = null;
+    if (days >= 3 && love.pts > 0) {
+      changeLove(-Math.min(15, (days - 2) * 5), true);
+      line = "Where WERE you?! ...not that I was waiting.";
+    } else if (now - seen > 6 * 3600000 && love.pts >= 20) {
+      const lv = heartsOf(love.pts);
+      line = lv >= 4 ? "You're back!! I missed you! Quack!" : lv >= 2 ? "Oh, you're back! ...whatever." : "Oh. It's you. Hmph.";
+    }
+    if (!line) return;
+    const say = () => { if (!duck.away) bubble(line, heartsOf(love.pts) < 2 ? "tsun" : ""); };
+    setTimeout(() => {
+      if (!document.hidden) { say(); return; }
+      // opened in a background tab: say hello once it's actually on screen
+      const onShow = () => {
+        if (document.hidden) return;
+        document.removeEventListener("visibilitychange", onShow);
+        setTimeout(say, 800);
+      };
+      document.addEventListener("visibilitychange", onShow);
+    }, 2600);
+  }
+
   /* ---------- boot ---------- */
-  $("pond-mama").innerHTML = sprite(DUCK, "normal");
-  $("pond-baby").innerHTML = sprite(CHICK);
-  try {
-    let icon = document.querySelector('link[rel="icon"]');
-    if (!icon) { icon = document.createElement("link"); icon.rel = "icon"; document.head.append(icon); }
-    icon.href = "data:image/svg+xml," + encodeURIComponent(sprite(DUCK, "normal"));
-  } catch (e) { /* keep the default icon */ }
+  $("pond-baby").innerHTML = sprite(CHICK, null, SKINS.marin);
+  if (store.get("duckive-cosplay") === "1") showCloset(false);
+  applySkin(skin, false);
+  drawLove();
+  syncFeed();
+  greet();
   $("n-ducks").textContent = ALL.filter((s) => s.section === "ducks").length;
   $("n-gaming").textContent = ALL.filter((s) => s.section === "gaming").length;
   for (const sec of ["ducks", "gaming"]) {
