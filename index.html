@@ -715,6 +715,81 @@ footer a { color: var(--plum); font-weight: 700; }
 .hs-star { position: absolute; left: 50%; top: 46%; z-index: 2; width: 9px; height: 9px; background: #fff; box-shadow: 0 0 0 3px #ff8fd0; pointer-events: none; }
 @keyframes hs-spin { to { transform: rotate(360deg); } }
 
+/* No double-tap zoom: quick taps on the duck stay taps on phones (pinch zoom still works) */
+html, button { touch-action: manipulation; }
+.duck-btn { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+/* Volume: one slider for the duck's sounds and the stories */
+.vol {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 3px; padding: 4px 12px 4px 4px;
+  background: var(--surface);
+  box-shadow: 0 -3px var(--plum-dark), 0 3px var(--plum-dark), -3px 0 var(--plum-dark), 3px 0 var(--plum-dark);
+}
+.vol-btn { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; background: none; color: var(--plum); cursor: pointer; }
+.vol-btn svg { display: block; width: 20px; height: 20px; }
+.vol-range { -webkit-appearance: none; appearance: none; width: 104px; height: 28px; margin: 0; padding: 0; background: none; cursor: pointer; }
+.vol-range::-webkit-slider-runnable-track {
+  height: 8px;
+  background: linear-gradient(90deg, var(--pink-2) var(--fill, 60%), var(--lilac-2) var(--fill, 60%));
+  box-shadow: 0 -2px var(--plum-dark), 0 2px var(--plum-dark), -2px 0 var(--plum-dark), 2px 0 var(--plum-dark);
+}
+.vol-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 20px; margin-top: -6px; border: 0; border-radius: 0;
+  background: var(--butter-2);
+  box-shadow: 0 -2px var(--plum-dark), 0 2px var(--plum-dark), -2px 0 var(--plum-dark), 2px 0 var(--plum-dark);
+}
+.vol-range::-moz-range-track {
+  height: 8px; border: 0; border-radius: 0; background: var(--lilac-2);
+  box-shadow: 0 -2px var(--plum-dark), 0 2px var(--plum-dark), -2px 0 var(--plum-dark), 2px 0 var(--plum-dark);
+}
+.vol-range::-moz-range-progress { height: 8px; background: var(--pink-2); }
+.vol-range::-moz-range-thumb {
+  width: 12px; height: 20px; border: 0; border-radius: 0; background: var(--butter-2);
+  box-shadow: 0 -2px var(--plum-dark), 0 2px var(--plum-dark), -2px 0 var(--plum-dark), 2px 0 var(--plum-dark);
+}
+.vol-btn:focus-visible, .vol-range:focus-visible { outline: 3px dashed var(--plum); outline-offset: 3px; }
+
+/* The painting and the watch hang in this layer, which clips what pokes past the page edge (no sideways scrolling) */
+.peek-layer { position: absolute; top: 0; left: 0; z-index: 40; width: 100%; overflow: hidden; pointer-events: none; }
+.peek-layer > * { pointer-events: auto; }
+
+/* Ringo's gold watch (easter egg) and the dial you turn back */
+.watch-peek { position: absolute; z-index: 40; width: 63px; height: 87px; padding: 0; border: 0; background: none; cursor: pointer; filter: drop-shadow(4px 4px 0 rgba(46, 18, 72, .35)); }
+.watch-peek.left { left: 0; }
+.watch-peek.right { right: 0; }
+.watch-peek svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.watch-peek:focus-visible { outline: 3px dashed var(--plum); outline-offset: 4px; }
+.dial { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; overflow-y: auto; padding: 16px; background: rgba(20, 10, 31, .82); }
+.dial-box {
+  position: relative; display: grid; justify-items: center; gap: 10px;
+  width: min(380px, 100%); padding: 14px 16px 16px;
+  background: var(--night); color: var(--butter-2);
+  box-shadow: 0 -3px var(--plum-dark), 0 3px var(--plum-dark), -3px 0 var(--plum-dark), 3px 0 var(--plum-dark), 6px 6px 0 var(--pink-2);
+}
+.dial-title { margin: 6px 36px 0; font: 11px/1.5 var(--font-pixel); color: var(--butter-2); text-align: center; }
+.dial-x { position: absolute; top: 4px; right: 4px; min-width: 36px; min-height: 36px; border: 0; background: none; color: var(--butter-2); font: 10px/1 var(--font-pixel); cursor: pointer; }
+.dial-x:focus-visible { outline: 2px dashed var(--sprout); outline-offset: -4px; }
+.dial-face {
+  position: relative; aspect-ratio: 45 / 57;
+  width: min(300px, 64vmin);
+  width: min(300px, 64vmin, calc((100dvh - 200px) * .79));
+  touch-action: none; cursor: grab;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
+.dial-face.grabbing { cursor: grabbing; }
+.dial-face:focus-visible { outline: 3px dashed var(--butter-2); outline-offset: 6px; }
+.dial-face svg, .dial-hands { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.dial-tip { min-height: 3.6em; margin: 0; font: 9px/1.8 var(--font-pixel); color: #fff; text-align: center; }
+.dial-boom {
+  position: absolute; left: 0; right: 0; top: 44%; margin: 0;
+  font: clamp(22px, 8vw, 40px)/1 var(--font-pixel); color: var(--butter-2); text-align: center;
+  text-shadow: 4px 4px 0 var(--pink-2), -2px -2px 0 var(--plum-dark);
+  pointer-events: none;
+}
+.mandom-flash { position: fixed; inset: 0; z-index: 92; background: #fff0a0; pointer-events: none; }
+
 </style>
 </head>
 <body>
@@ -737,6 +812,7 @@ footer a { color: var(--plum); font-weight: 700; }
     </div>
     <button type="button" class="surprise feed" id="feed"><span class="bread" id="feed-icon" aria-hidden="true"></span><span id="feed-text">Feed</span></button>
     <button type="button" class="surprise closet" id="closet" hidden><span class="hanger" id="closet-icon" aria-hidden="true"></span><span id="closet-text">Cosplay</span></button>
+    <div class="vol" id="vol"><button type="button" class="vol-btn" id="vol-btn" aria-label="Mute the duck"></button><input class="vol-range" id="vol-range" type="range" min="0" max="100" step="5" value="60" aria-label="Volume"></div>
   </div>
   <button type="button" class="daily" id="daily" hidden>
     <span class="daily-bar"><span>★ DUCK OF THE DAY</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></span>
@@ -779,7 +855,7 @@ footer a { color: var(--plum); font-weight: 700; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-10-22T20:49:30+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-10-22T21:33:29+00:00"></footer>
 <div class="pond">
   <div class="pond-water" aria-hidden="true"></div>
   <span class="pond-bank" id="pond-bank" aria-hidden="true"></span>
@@ -1120,6 +1196,52 @@ footer a { color: var(--plum); font-weight: 700; }
       mouth: [12.5, 11.5],
       notDuck: true,
     },
+    ringo: {
+      pal: {
+        O: "#2b1d18", V: "#e8a86c", E: "#1d2140", R: "#7fb4ff", H: "#c4bedb", h: "#948db5", i: "#e9e6f4",
+        m: "#b3acd0", W: "#f8f7fb", w: "#dcdae6", x: "#b3afc6", c: "#c3c0d3", B: "#ffb347", b: "#f08a24",
+        D: "#7a1f3d", F: "#a8743f", K: "#ff8fa8", X: "#e2553f", y: "#e0b02c", Y: "#fff0a8", k: "#ff8fb8",
+        G: "#ffd84d", P: "#5b5868", p: "#7a7787", S: "#eeedf3", s: "#c9c7d6",
+      },
+      rows: [
+        "..........................",
+        "........OOOO..............",
+        ".......OHHHhOOO...........",
+        "......OHHiHHHHhO..........",
+        ".....OHHHHHhHHHhO.........",
+        ".....OHHHVVVhHHHhO........",
+        ".....OHHEEVVVhHHhO....O...",
+        "..OOOOhVREVVVVhHhO...OhO..",
+        ".OBBBBVVVVVVVVWWcO..OhHO..",
+        ".OBBBBmVVVVVVWWWcOOOWWhO..",
+        "..ObbbmWWWWWWWWWWWWWWWWO..",
+        "...OmmcVVVcWWWWWWWWWWWO...",
+        "....OWWcVcWWxxxxWWWWWWWO..",
+        "....OWWWcWWxWWWWxWWWWWWO..",
+        "....OWWWWWWxWWWWWxWWWWWO..",
+        "....OWWWWWWWxwwwGPPWWWwO..",
+        "....OwkkWWWWWxxxxpWWWwO...",
+        ".....OkkyyyYyyyYyyyYyO....",
+        "......OSSSsSSSSSsSSSO.....",
+        ".......OsSsSsSsSsSsO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
+    },
   };
   let PAL = SKINS.marin.pal;
   let DUCK = SKINS.marin.rows;
@@ -1159,6 +1281,11 @@ footer a { color: var(--plum); font-weight: 700; }
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } },
   };
+  // one volume for the page (0-100, saved in this browser): the duck's sounds, and the stories where the browser
+  // lets pages set video volume (iPhones don't). Loudness follows the square of the slider so the low end is usable.
+  const savedVolume = store.get("duckive-volume");
+  let volume = savedVolume === null || savedVolume === "" || isNaN(+savedVolume) ? 60 : Math.max(0, Math.min(100, Math.round(+savedVolume)));
+  const volumeGain = () => (volume / 100) ** 2;
   // "New" = posted after the newest story this visitor saw last time (nothing is new on a first visit)
   const newestT = ALL.reduce((m, s) => Math.max(m, s.t), 0);
   const lastSeen = Number(store.get("duckive:seen")) || 0;
@@ -1635,6 +1762,7 @@ footer a { color: var(--plum); font-weight: 700; }
     } else {
       V.video.src = MEDIA + s.id + ".mp4";
       V.video.muted = muted || !s.audio;
+      V.video.volume = volumeGain();
       play();
       spinTimer = setTimeout(() => { if (V.video.readyState < 3) V.spin.hidden = false; }, 350);
     }
@@ -2021,6 +2149,16 @@ footer a { color: var(--plum); font-weight: 700; }
   const duckFace = $("duck-face");
   const duck = { clicks: [], away: false, calm: 0, tsun: false, tsunTimer: 0, tsunLine: 0, frame: "", right: false, eating: false };
   let audioCtx = null;
+  let masterGain = null;
+  // every sound goes through one gain node that follows the volume slider; nothing plays at zero
+  function audioOut() {
+    if (!volume) return null;
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    if (!masterGain) { masterGain = audioCtx.createGain(); masterGain.connect(audioCtx.destination); }
+    masterGain.gain.value = volumeGain();
+    return masterGain;
+  }
 
   function setFrame(f) {
     if (duck.frame === f) return;
@@ -2036,8 +2174,8 @@ footer a { color: var(--plum); font-weight: 700; }
   function quack(opts) {
     const o = Object.assign({ pitch: 1, count: 2, rough: false, volume: 0.5 }, opts);
     try {
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === "suspended") audioCtx.resume();
+      const out = audioOut();
+      if (!out) return;
       const now = audioCtx.currentTime;
       for (let k = 0; k < o.count; k++) {
         const off = k * (o.rough ? 0.15 : 0.2);
@@ -2053,7 +2191,7 @@ footer a { color: var(--plum); font-weight: 700; }
         gain.gain.setValueAtTime(0.0001, now + off);
         gain.gain.exponentialRampToValueAtTime(o.volume, now + off + 0.025);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + off + 0.17);
-        osc.connect(band).connect(gain).connect(audioCtx.destination);
+        osc.connect(band).connect(gain).connect(out);
         osc.start(now + off);
         osc.stop(now + off + 0.2);
       }
@@ -2249,7 +2387,7 @@ footer a { color: var(--plum); font-weight: 700; }
   duckBtn.addEventListener("click", () => {
     if (duck.away || duck.eating) return;
     const now = performance.now();
-    duck.clicks = duck.clicks.filter((t) => now - t < 2600);
+    duck.clicks = duck.clicks.filter((t) => now - t < 3200);
     duck.clicks.push(now);
     const n = duck.clicks.length;
     if (n >= 7) { storm(); return; }
@@ -2362,6 +2500,7 @@ footer a { color: var(--plum); font-weight: 700; }
     { name: "kira", label: "Kira", title: "Yoshikage Kira", secret: true, hello: "My name is Yoshikage Kira. I just want a quiet life." },
     { name: "ellen", label: "Ellen", title: "Ellen Joe", secret: true, hello: "Ellen Joe, Victoria Housekeeping. ...Can I clock out yet?" },
     { name: "doto", label: "Doto", title: "Meisho Doto", secret: true, hello: "H-hello! Meisho Doto... I'll do my best!" },
+    { name: "ringo", label: "Ringo", title: "Ringo Roadagain", secret: true, hello: "Welcome... to the man's world." },
   ];
   const COSPLAY_BY = Object.fromEntries(COSPLAYS.map((c) => [c.name, c]));
   const BREAD_LINES = [
@@ -2377,7 +2516,8 @@ footer a { color: var(--plum); font-weight: 700; }
   const KIRA_BREAD = ["Killer Queen has already touched this bread.", "Bread, then eight hours of sleep. A quiet life."];
   const ELLEN_BREAD = ["Bread's okay. Got any candy, though?", "Nom... fine, I'll eat it on my break."];
   const DOTO_BREAD = ["Th-thank you... it's really good!", "Hauu... I'll do my best to earn this!", "Maybe a carrot next time...?"];
-  const SKIN_BREAD = { kira: KIRA_BREAD, ellen: ELLEN_BREAD, doto: DOTO_BREAD };
+  const RINGO_BREAD = ["Mandom. Five seconds back, and the bread is whole again.", "A fair trade. This is the man's world."];
+  const SKIN_BREAD = { kira: KIRA_BREAD, ellen: ELLEN_BREAD, doto: DOTO_BREAD, ringo: RINGO_BREAD };
 
   const love = {
     pts: Math.max(0, Math.min(100, +store.get("duckive-love") || 0)),
@@ -2476,8 +2616,8 @@ footer a { color: var(--plum); font-weight: 700; }
   function blips(notes, opts) {
     const o = Object.assign({ type: "square", gap: 0.1, len: 0.1, volume: 0.07 }, opts);
     try {
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === "suspended") audioCtx.resume();
+      const out = audioOut();
+      if (!out) return;
       const now = audioCtx.currentTime;
       notes.forEach((f, k) => {
         const t = now + k * o.gap;
@@ -2488,7 +2628,7 @@ footer a { color: var(--plum); font-weight: 700; }
         gain.gain.setValueAtTime(0.0001, t);
         gain.gain.exponentialRampToValueAtTime(o.volume, t + 0.01);
         gain.gain.exponentialRampToValueAtTime(0.0001, t + o.len);
-        osc.connect(gain).connect(audioCtx.destination);
+        osc.connect(gain).connect(out);
         osc.start(t);
         osc.stop(t + o.len + 0.02);
       });
@@ -2822,6 +2962,7 @@ footer a { color: var(--plum); font-weight: 700; }
       if (!unlockedSet.has("kira")) say("Some paintings hide more than a smile.");
       if (!unlockedSet.has("ellen")) say("Something in here is hungry, and it has very sharp teeth.");
       if (!unlockedSet.has("doto")) say("Someone at the very bottom of the page wants to be noticed.");
+      if (!unlockedSet.has("ringo")) say("A man named after an apple wants to show you his watch.");
     },
     admin: () => (isAdmin() ? (say("Admin mode is on."), showAdmin()) : askPassword()),
     clear: () => termOut.replaceChildren(),
@@ -2843,6 +2984,12 @@ footer a { color: var(--plum); font-weight: 700; }
       chime([392, 523, 659, 523, 784]);
       applySkin("ellen", true);
       toast(already ? "Already unlocked:" : "New form unlocked:", "Ellen Joe");
+      return;
+    }
+    if (cmd === "ringo" || cmd === "ringo roadagain" || cmd === "mandom") {
+      say("Ringo... somewhere on the side of the page, a gold watch is ticking.", "secret");
+      say("Turn back time, but only a little.", "secret");
+      setTimeout(() => { closeTerm(); hangWatch(); }, 1400);
       return;
     }
     if (cmd === "killer queen" || cmd === "killerqueen") {
@@ -2959,6 +3106,23 @@ footer a { color: var(--plum); font-weight: 700; }
     termOut.scrollTop = termOut.scrollHeight;
   }
 
+  // a page-sized layer for things that peek in past the page edge; it clips them, so the page never gets wider
+  function peekLayer() {
+    let layer = document.querySelector(".peek-layer");
+    if (!layer) {
+      layer = document.createElement("div");
+      layer.className = "peek-layer";
+      document.body.append(layer);
+    }
+    layer.style.height = "0";
+    layer.style.height = document.documentElement.scrollHeight + "px";
+    return layer;
+  }
+  function unpeek(el) {
+    const layer = el.parentNode;
+    el.remove();
+    if (layer && layer.classList.contains("peek-layer") && !layer.childElementCount) layer.remove();
+  }
   // the painting peeks in from the left or right edge, somewhere just below where you are, for a minute
   function hangPainting() {
     removePainting(false);
@@ -2973,7 +3137,7 @@ footer a { color: var(--plum); font-weight: 700; }
     const peek = right ? "translateX(38%) rotate(-6deg)" : "translateX(-38%) rotate(6deg)";
     b.style.transform = peek;
     b.addEventListener("click", foundPainting);
-    document.body.append(b);
+    peekLayer().append(b);
     painting = b;
     if (!reduced) b.animate([{ transform: right ? "translateX(110%)" : "translateX(-110%)" }, { transform: peek }], { duration: 700, easing: "steps(7)" });
     paintingTimer = setTimeout(() => removePainting(true), 60000);
@@ -2984,8 +3148,8 @@ footer a { color: var(--plum); font-weight: 700; }
     const b = painting;
     painting = null;
     if (missed) toast("The painting is gone...", "Say the words again to bring it back.");
-    if (reduced) { b.remove(); return; }
-    const gone = once(() => b.remove());
+    if (reduced) { unpeek(b); return; }
+    const gone = once(() => unpeek(b));
     b.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, easing: "steps(5)" }).onfinish = gone;
     setTimeout(gone, 800);
   }
@@ -3164,6 +3328,346 @@ footer a { color: var(--plum); font-weight: 700; }
     at(3900, () => { stage.innerHTML = sprite(D.rows, "normal", D.pal, D.frames); });
     at(4500, () => { stage.innerHTML = sprite(D.rows, "happy", D.pal, D.frames); burst(ov, 10); });
     at(6000, finish);
+  }
+
+  /* ---------- volume: one slider for the duck's sounds and the stories ---------- */
+  const volRange = $("vol-range");
+  const volBtn = $("vol-btn");
+  let volumeBefore = volume || 60;  // what the speaker button brings back after a mute
+  function showVolume() {
+    volRange.value = volume;
+    volRange.style.setProperty("--fill", volume + "%");
+    volRange.setAttribute("aria-valuetext", volume ? volume + "%" : "muted");
+    volBtn.innerHTML = volume ? ICON_ON : ICON_OFF;
+    volBtn.setAttribute("aria-label", volume ? "Mute the duck" : "Turn sound back on");
+  }
+  function setVolume(v, test) {
+    volume = Math.max(0, Math.min(100, Math.round(v)));
+    if (volume) volumeBefore = volume;
+    store.set("duckive-volume", String(volume));
+    if (masterGain) masterGain.gain.value = volumeGain();
+    V.video.volume = volumeGain();
+    showVolume();
+    if (test && volume) quack({ pitch: 1.1, count: 1 });
+  }
+  volRange.addEventListener("input", () => setVolume(+volRange.value, false));
+  volRange.addEventListener("change", () => setVolume(+volRange.value, true));
+  volBtn.addEventListener("click", () => setVolume(volume ? 0 : volumeBefore, true));
+  showVolume();
+
+  /* ---------- easter egg: type "ringo" in the console, find Ringo's gold watch, turn it back exactly 5 seconds ---------- */
+  const WATCH = [
+    "......OOOOOOO........",
+    ".....OYYYYYYYO.......",
+    ".....OYgGGGGYO.......",
+    ".....OYgGGGGYO.......",
+    ".....OYYYYYYYO.......",
+    ".....OYgGGGGYO.......",
+    ".....OYYYYYYYO.......",
+    "....OYYYgggYYYO......",
+    "...OYYgggggGGYYO.....",
+    "..OYgggffkffGGGYO....",
+    ".OYYggfkfkfkfGGYYO...",
+    ".OYggffkfffkffGGYO...",
+    "OYYgfkkfffffkkfGYYOO.",
+    "OYggfffffffffffGGYYYO",
+    "OYggkkfffffffkkGGYGYO",
+    "OYggfffffffffffGGYYYO",
+    "OYYGfkkfffffkkfGYYOO.",
+    ".OYGGffkfffkffGGYO...",
+    ".OYYGGfkfkfkfGGYYO...",
+    "..OYGGGffkffGGGYO....",
+    "...OYYGGGGGGGYYO.....",
+    "....OYYYGGGYYYO......",
+    ".....OYYYYYYYO.......",
+    ".....OYgGGGGYO.......",
+    ".....OYgGGGGYO.......",
+    ".....OYYYYYYYO.......",
+    ".....OYgGGGGYO.......",
+    ".....OYgGGGGYO.......",
+    "......OOOOOOO........",
+  ];
+  const DIAL = [
+    "..............OOOOOOOOOOOOOOO................",
+    ".............OYYYYYYYYYYYYYYYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYYYYYYYYYYYYYYYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYYYYYYYYYYYYYYYO...............",
+    ".............OYgGYYYYYYYYYGGYO...............",
+    "............OOYYYYYgggggYYYYYOO..............",
+    "..........OOYYYgggggggggggggYYYOO............",
+    ".........OYYYgggggflfkflfggGGGYYYO...........",
+    "........OYYggggflflffkfflflfGGGGYYO..........",
+    ".......OYYgggklffffffffffffflkGGGYYO.........",
+    "......OYggglfkfffffffffffffffkflGGGYO........",
+    ".....OYgggfffffffffffffffffffffffGGGYO.......",
+    "....OYYggflffffffffffffffffffffflfGGYYO......",
+    "...OYYggflffffffffffffffffffffffflfGGYYO.....",
+    "...OYgglffffffffffffffffffffffffffflGGYO.....",
+    "..OYYggfffffffffffffffffffffffffffffGGYYO....",
+    "..OYggkkfffffffffffffffffffffffffffkkGGYO....",
+    ".OYYgglffffffffffffffffffffffffffffflGGYYO...",
+    ".OYggfffffffffffffffffffffffffffffffffGGYO...",
+    ".OYgglffffffffffffffffffffffffffffffflGGYO...",
+    "OYYggfffffffffffffffffffffffffffffffffGGYYO..",
+    "OYYgflffffffffffffffffffffffffffffffflfGYYO..",
+    "OYgglffffffffffffffffffffffffffffffffflGGYOO.",
+    "OYggfffffffffffffffffffffffffffffffffffGGYYYO",
+    "OYggkkfffffffffffffffffffffffffffffffkkGGYGYO",
+    "OYggfffffffffffffffffffffffffffffffffffGGYYYO",
+    "OYgglffffffffffffffffffffffffffffffffflGGYOO.",
+    "OYYgflffffffffffffffffffffffffffffffflfGYYO..",
+    "OYYggfffffffffffffffffffffffffffffffffGGYYO..",
+    ".OYgglffffffffffffffffffffffffffffffflGGYO...",
+    ".OYgGfffffffffffffffffffffffffffffffffGGYO...",
+    ".OYYGGlffffffffffffffffffffffffffffflGGYYO...",
+    "..OYGGkkfffffffffffffffffffffffffffkkGGYO....",
+    "..OYYGGfffffffffffffffffffffffffffffGGYYO....",
+    "...OYGGlffffffffffffffffffffffffffflGGYO.....",
+    "...OYYGGflffffffffffffffffffffffflfGGYYO.....",
+    "....OYYGGflffffffffffffffffffffflfGGYYO......",
+    ".....OYGGGfffffffffffffffffffffffGGGYO.......",
+    "......OYGGGlfkfffffffffffffffkflGGGYO........",
+    ".......OYYGGGklffffffffffffflkGGGYYO.........",
+    "........OYYGGGGflflffkfflflfGGGGYYO..........",
+    ".........OYYYGGGGGflfkflfGGGGGYYYO...........",
+    "..........OOYYYGGGGGGGGGGGGGYYYOO............",
+    "............OOYYYYYGGGGGYYYYYOO..............",
+    ".............OYgGYYYYYYYYYGGYO...............",
+    ".............OYYYYYYYYYYYYYYYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYYYYYYYYYYYYYYYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYgGGGGGGGGGGGGYO...............",
+    ".............OYYYYYYYYYYYYYYYO...............",
+    "..............OOOOOOOOOOOOOOO................",
+  ];
+  const WATCH_PAL = { O: "#2e1248", Y: "#8a5a12", G: "#e2b13c", g: "#fff0a0", f: "#fff8e1", k: "#3a2a12", l: "#e3d3a8", L: "#8a5a12", r: "#d93a4a" };
+  const WATCH_C = [9, 14];  // face centres, in sprite pixels
+  const DIAL_C = [21, 28];
+  const REWIND = 5;
+  let watchEl = null;
+  let watchTimer = 0;
+  let watchTicker = 0;
+  let dial = null;
+
+  // one watch hand as 1x1 pixels, pointing at `sec` (0-60, 0 = 12 o'clock) from the face centre c
+  function handRects(c, len, tail, sec, color) {
+    const a = (sec / 60) * Math.PI * 2;
+    const seen = new Set();
+    let out = "";
+    for (let r = -tail; r <= len; r += 0.5) {
+      const x = Math.round(c[0] + Math.sin(a) * r);
+      const y = Math.round(c[1] - Math.cos(a) * r);
+      if (seen.has(x + "," + y)) continue;
+      seen.add(x + "," + y);
+      out += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="' + color + '"/>';
+    }
+    return out;
+  }
+  // hour and minute hands show the real time; the red second hand points at `sec`
+  function handsSvg(art, c, r, sec) {
+    const now = new Date();
+    const m = now.getMinutes() + now.getSeconds() / 60;
+    const h = (now.getHours() % 12) * 5 + m / 12;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + art[0].length + " " + art.length +
+      '" shape-rendering="crispEdges" aria-hidden="true">' +
+      handRects(c, r * 0.45, 0, h, WATCH_PAL.L) + handRects(c, r * 0.7, 0, m, WATCH_PAL.k) + handRects(c, r * 0.8, r * 0.2, sec, WATCH_PAL.r) +
+      '<rect x="' + c[0] + '" y="' + c[1] + '" width="1" height="1" fill="' + WATCH_PAL.k + '"/></svg>';
+  }
+
+  // like the painting: the watch peeks in from the left or right edge, somewhere just below where you are, for a minute
+  function hangWatch() {
+    removeWatch(false);
+    const right = Math.random() < 0.5;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "watch-peek " + (right ? "right" : "left");
+    b.setAttribute("aria-label", "A gold watch, ticking");
+    const face = sprite(WATCH, null, WATCH_PAL);
+    const draw = () => { b.innerHTML = face + handsSvg(WATCH, WATCH_C, 8, new Date().getSeconds()); };
+    draw();
+    watchTicker = setInterval(draw, 1000);
+    const top = scrollY + innerHeight * (0.5 + Math.random() * 1.5);
+    b.style.top = Math.max(0, Math.min(top, document.documentElement.scrollHeight - 160)) + "px";
+    const peek = right ? "translateX(34%) rotate(-8deg)" : "translateX(-34%) rotate(8deg)";
+    b.style.transform = peek;
+    b.addEventListener("click", openDial);
+    peekLayer().append(b);
+    watchEl = b;
+    if (!reduced) b.animate([{ transform: right ? "translateX(110%)" : "translateX(-110%)" }, { transform: peek }], { duration: 700, easing: "steps(7)" });
+    watchTimer = setTimeout(() => removeWatch(true), 60000);
+  }
+  function removeWatch(missed) {
+    clearTimeout(watchTimer);
+    clearInterval(watchTicker);
+    if (!watchEl) return;
+    const b = watchEl;
+    watchEl = null;
+    if (missed) toast("The watch is gone...", "Say his name again to bring it back.");
+    if (reduced) { unpeek(b); return; }
+    const gone = once(() => unpeek(b));
+    b.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, easing: "steps(5)" }).onfinish = gone;
+    setTimeout(gone, 800);
+  }
+
+  // the big watch: its second hand ticks along; grab it anywhere and turn it (or use the arrow keys)
+  function openDial() {
+    if (dial) return;
+    clearTimeout(watchTimer);  // the watch waits while you're busy with it
+    const root = document.createElement("div");
+    root.className = "dial";
+    root.setAttribute("role", "dialog");
+    root.setAttribute("aria-modal", "true");
+    root.setAttribute("aria-labelledby", "dial-title");
+    root.innerHTML = '<div class="dial-box"><button type="button" class="dial-x" aria-label="Close the watch">X</button>' +
+      '<p class="dial-title" id="dial-title">Ringo\'s watch</p>' +
+      '<div class="dial-face" tabindex="0" role="slider" aria-label="Second hand" aria-valuemin="0" aria-valuemax="59"></div>' +
+      '<p class="dial-tip" aria-live="polite">Turn the second hand back exactly 5 seconds.</p></div>';
+    const box = root.firstChild;
+    const faceEl = root.querySelector(".dial-face");
+    const tip = root.querySelector(".dial-tip");
+    const closeBtn = root.querySelector(".dial-x");
+    faceEl.innerHTML = sprite(DIAL, null, WATCH_PAL) + '<span class="dial-hands"></span>';
+    const handsEl = faceEl.lastChild;
+    const d = { root, pos: new Date().getSeconds(), net: 0, grab: null, judging: 0, ticker: 0, done: false, back: document.activeElement };
+    dial = d;
+    const draw = () => {
+      handsEl.innerHTML = handsSvg(DIAL, DIAL_C, 20, d.pos);
+      faceEl.setAttribute("aria-valuenow", d.pos);
+      faceEl.setAttribute("aria-valuetext", d.pos + (d.pos === 1 ? " second" : " seconds"));
+    };
+    draw();
+    // it keeps ticking unless you're holding the hand (or just let go of it)
+    d.ticker = setInterval(() => {
+      if (d.grab || d.net || d.done) return;
+      d.pos = (d.pos + 1) % 60;
+      draw();
+      blips([1600], { len: 0.02, volume: 0.015 });
+    }, 1000);
+    function step(k) {
+      const dir = Math.sign(k);
+      for (let i = 0; i < Math.abs(k); i++) { d.pos = (d.pos + dir + 60) % 60; d.net += dir; }
+      draw();
+      blips([dir < 0 ? 900 : 1300], { len: 0.025, volume: 0.03 });
+    }
+    function settle(ms) {
+      clearTimeout(d.judging);
+      d.judging = setTimeout(judge, ms);
+    }
+    function judge() {
+      const n = d.net;
+      d.net = 0;
+      if (!n || d.done) return;
+      if (n === -REWIND) { mandom(); return; }
+      const secs = (k) => k + (k === 1 ? " second" : " seconds");
+      tip.textContent = n > 0 ? "That's forward. Turn it back!" : -n < REWIND ? "Only " + secs(-n) + ". Exactly 5!" : "Too far: " + secs(-n) + ". Exactly 5!";
+      if (!reduced) faceEl.animate([{ transform: "none" }, { transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "none" }], { duration: 300, easing: "steps(4)" });
+    }
+    function mandom() {
+      d.done = true;
+      const already = unlockedSet.has("ringo");
+      tip.textContent = "Time turned back 5 seconds.";
+      blips([1568, 1319, 1047, 784, 659, 523], { gap: 0.07, len: 0.09, volume: 0.06 });
+      const boom = document.createElement("p");
+      boom.className = "dial-boom";
+      boom.textContent = "MANDOM";
+      box.append(boom);
+      if (!reduced) {
+        let k = 0;
+        const spin = setInterval(() => { d.pos = (d.pos + 59) % 60; draw(); if (++k >= 60) clearInterval(spin); }, 14);
+        boom.animate([{ opacity: 0, transform: "scale(2.2)" }, { opacity: 1, transform: "none" }], { duration: 420, easing: "steps(6)", fill: "both" });
+        const flash = document.createElement("div");
+        flash.className = "mandom-flash";
+        document.body.append(flash);
+        flash.animate([{ opacity: 0 }, { opacity: 0.85 }, { opacity: 0 }], { duration: 700, easing: "steps(7)" }).onfinish = () => flash.remove();
+      }
+      setTimeout(() => {
+        removeWatch(false);
+        closeDial();
+        if (!already) {
+          unlockedSet.add("ringo");
+          store.set("duckive-cosplays", [...unlockedSet].join(","));
+          showCloset(true);
+        }
+        applySkin("ringo", true);
+        toast(already ? "Already unlocked:" : "New form unlocked:", "Ringo Roadagain");
+      }, reduced ? 700 : 1600);
+    }
+    // where the pointer is around the face, in seconds (0-60, clockwise from 12); null too close to the middle
+    function secondsAt(e) {
+      const r = faceEl.getBoundingClientRect();
+      const dx = e.clientX - (r.left + ((DIAL_C[0] + 0.5) / DIAL[0].length) * r.width);
+      const dy = e.clientY - (r.top + ((DIAL_C[1] + 0.5) / DIAL.length) * r.height);
+      if (Math.hypot(dx, dy) < r.width * 0.07) return null;
+      return ((Math.atan2(dx, -dy) / (Math.PI * 2)) * 60 + 60) % 60;
+    }
+    faceEl.addEventListener("pointerdown", (e) => {
+      if (d.done) return;
+      e.preventDefault();
+      faceEl.focus({ preventScroll: true });
+      try { faceEl.setPointerCapture(e.pointerId); } catch (err) { /* the pointer is already gone */ }
+      clearTimeout(d.judging);
+      d.grab = { last: secondsAt(e), acc: 0, steps: 0 };
+      faceEl.classList.add("grabbing");
+    });
+    faceEl.addEventListener("pointermove", (e) => {
+      const g = d.grab;
+      if (!g || d.done) return;
+      const s = secondsAt(e);
+      if (s === null) return;
+      if (g.last !== null) {
+        let delta = s - g.last;
+        if (delta > 30) delta -= 60; else if (delta < -30) delta += 60;
+        g.acc += delta;
+        const steps = Math.round(g.acc);
+        if (steps !== g.steps) { step(steps - g.steps); g.steps = steps; }
+      }
+      g.last = s;
+    });
+    const letGo = () => {
+      if (!d.grab) return;
+      d.grab = null;
+      faceEl.classList.remove("grabbing");
+      settle(700);
+    };
+    faceEl.addEventListener("pointerup", letGo);
+    faceEl.addEventListener("pointercancel", letGo);
+    faceEl.addEventListener("keydown", (e) => {
+      const k = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1 }[e.key];
+      if (!k || d.done) return;
+      e.preventDefault();
+      step(k);
+      settle(1200);
+    });
+    root.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { e.preventDefault(); closeDial(); }
+      else if (e.key === "Tab") {
+        e.preventDefault();
+        (document.activeElement === closeBtn ? faceEl : closeBtn).focus();
+      }
+    });
+    root.addEventListener("click", (e) => { if (e.target === root) closeDial(); });
+    closeBtn.addEventListener("click", closeDial);
+    document.body.append(root);
+    faceEl.focus({ preventScroll: true });
+    if (!reduced) box.animate([{ opacity: 0, transform: "scale(.9)" }, { opacity: 1, transform: "none" }], { duration: 260, easing: "steps(4)" });
+  }
+  function closeDial() {
+    const d = dial;
+    if (!d) return;
+    dial = null;
+    d.done = true;
+    clearInterval(d.ticker);
+    clearTimeout(d.judging);
+    d.root.remove();
+    if (watchEl) watchTimer = setTimeout(() => removeWatch(true), 60000);
+    const back = watchEl || d.back;
+    if (back && back.isConnected && back.focus) back.focus({ preventScroll: true });
   }
 
   /* ---------- boot ---------- */
