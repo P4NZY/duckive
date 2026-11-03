@@ -790,6 +790,26 @@ html, button { touch-action: manipulation; }
 }
 .mandom-flash { position: fixed; inset: 0; z-index: 92; background: #fff0a0; pointer-events: none; }
 
+/* Bloons round (easter egg): bloons float up the screen; pop every one to recruit the Dart Monkey */
+.bloons { position: fixed; inset: 0; z-index: 45; overflow: hidden; pointer-events: none; }
+.bloon {
+  position: absolute; left: 0; top: 0; width: 39px; height: 51px; padding: 0; border: 0; background: none;
+  pointer-events: auto; cursor: crosshair; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+.bloon svg, .bloon-pop svg, .leek-show svg, .leek-note svg { display: block; width: 100%; height: 100%; }
+.bloon:focus-visible { outline: 3px dashed var(--plum); outline-offset: 2px; }
+.bloon-pop { position: absolute; left: 0; top: 0; width: 44px; height: 44px; pointer-events: none; }
+.bloon-hud {
+  position: absolute; top: 12px; left: 12px; padding: 8px 10px;
+  background: var(--plum); color: var(--butter-2); font: 9px/1.5 var(--font-pixel);
+  box-shadow: 0 -3px var(--plum-dark), 0 3px var(--plum-dark), -3px 0 var(--plum-dark), 3px 0 var(--plum-dark), 4px 4px 0 var(--pink-2);
+}
+
+/* Miku's leek spin */
+.leek-show { position: fixed; left: 50%; top: 42%; z-index: 85; width: 40px; height: 90px; margin: -45px 0 0 -20px; pointer-events: none; }
+.leek-note { position: fixed; z-index: 85; width: 24px; height: 27px; pointer-events: none; }
+
 </style>
 </head>
 <body>
@@ -855,7 +875,7 @@ html, button { touch-action: manipulation; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-11-01T10:29:37+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-11-03T12:59:53+00:00"></footer>
 <div class="pond">
   <div class="pond-water" aria-hidden="true"></div>
   <span class="pond-bank" id="pond-bank" aria-hidden="true"></span>
@@ -1224,6 +1244,98 @@ html, button { touch-action: manipulation; }
         ".....OkkyyyYyyyYyyyYyO....",
         "......OSSSsSSSSSsSSSO.....",
         ".......OsSsSsSsSsSsO......",
+        "........OOFFOOOFFOO.......",
+        "........OFFFOOFFFO........",
+        ".........OOO..OOO.........",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
+    },
+    miku: {
+      pal: {
+        O: "#13262b", V: "#39c5bb", v: "#2a9d95", i: "#9be8e1", E: "#10282b", R: "#b8fff6", k: "#26282e",
+        r: "#e8467c", W: "#cfd5dc", w: "#b1b9c3", x: "#8d97a3", c: "#f4f7f9", T: "#39c5bb", t: "#23968e",
+        B: "#ffb347", b: "#f08a24", D: "#7a1f3d", F: "#2c2f36", K: "#ff9fc4", X: "#e2553f", P: "#2c2f36",
+        p: "#39c5bb", S: "#2c2f36", s: "#3c414b", q: "#39c5bb",
+      },
+      rows: [
+        "..........................",
+        "..........................",
+        "........OOOOOOOO..........",
+        ".......OVVViVVkkOO........",
+        "......OVViiVVVkrVvO.......",
+        ".....OVVVVVVVVVvVVvO......",
+        ".....OVVEEVVVVVvVVvO..O...",
+        "..OOOOVVREVVVVVvVVvO.OpO..",
+        ".OBBBBVVVVVVVVVvVVvOOWPO..",
+        ".OBBBBVVVVVVVVVvvVVvWWpO..",
+        "..ObbbVVVVVVVVvWWVVvWWWO..",
+        "...OOOWcTTcWWWWWWVVvWWO...",
+        "....OWWWTtWWxxxxWWVVvWWO..",
+        "....OWWWTTWxWWWWxWVVvWWO..",
+        "....OWWWWTWxWWWWWxVVvWWO..",
+        "....OWWWWWWWxwwwwPpVvWwO..",
+        "....OwWWWWWWWxxxxPVVvwO...",
+        ".....OsSSSsSSSsSSSsVVvO...",
+        "......OSSSsSSSsSSSsVVvO...",
+        ".......OqqqqqqqqqqqVVvO...",
+        "........OOFFOOOFFOOOVvO...",
+        "........OFFFOOFFFO..OvO...",
+        ".........OOO..OOO....O....",
+        "..........................",
+      ],
+      frames: {
+        normal: {},
+        blink: {"8,6":"V","9,6":"V","8,7":"E"},
+        annoyed: {"10,6":"E"},
+        angry: {"10,5":"E","11,5":"E","10,6":"E","8,7":"X","17,1":"X","19,1":"X","18,2":"X","17,3":"X","19,3":"X"},
+        hmph: {"8,6":"V","9,6":"V","8,7":"E","10,7":"E","10,8":"K","11,8":"K"},
+        peek: {"8,6":"V","10,6":"E","8,7":"V","9,7":"R","10,7":"E","10,8":"K","11,8":"K"},
+        happy: {"8,6":"V","8,7":"E","9,7":"V","10,7":"E","10,8":"K","11,8":"K"},
+        eat: {"2,9":"D","3,9":"D","4,9":"D","2,11":"O","3,11":"b","4,11":"b","5,11":"b","3,12":"O"},
+        walk1: {"9,20":"F","11,20":"O","15,20":"O","17,20":"F","7,21":"O","8,21":"F","11,21":"O","12,21":".","13,21":".","14,21":"O","17,21":"F","18,21":"O","8,22":"O","11,22":".","14,22":".","17,22":"O"},
+        walk2: {"10,20":"O","12,20":"F","14,20":"F","16,20":"O","8,21":".","9,21":"O","12,21":"F","13,21":"F","16,21":"O","17,21":".","9,22":".","12,22":"O","13,22":"O","16,22":"."},
+      },
+    },
+    monkey: {
+      pal: {
+        O: "#2a1a10", H: "#8a5530", h: "#6b3f22", e: "#e8a88a", V: "#f0cf9f", E: "#24160c", R: "#24160c",
+        W: "#8a5530", w: "#6b3f22", x: "#5a3419", T: "#f0cf9f", t: "#d9b07a", B: "#ffb347", b: "#f08a24",
+        D: "#7a1f3d", F: "#f0cf9f", K: "#ff9fa8", X: "#e2553f", P: "#f0cf9f", p: "#d9b07a", S: "#7a4a29",
+        s: "#6b3f22", q: "#5a3419", d: "#4a4f5a", m: "#c9ced6", f: "#e8402a",
+      },
+      rows: [
+        "..........................",
+        "..........................",
+        "........OOOOOOO...........",
+        ".......OHHHHHHHO..........",
+        "......OHHHHHHHHHO.........",
+        ".....OHVVVVVHHHHhO...OO...",
+        ".....OVVEEVVVHhhhO..OHHO..",
+        "..OOOOVVREVVVheehO.OHOOHO.",
+        ".OBBBBVVVVVVVheehOOOO.OHO.",
+        ".OBBBBVVVVVVVHhhhWWWWOOHO.",
+        "..ObbbVVVVVVHHhWWWWWWWHO..",
+        "...OOOHTTTTHWWWWWWWWWWOO..",
+        "....OWTTTTTWxxxxWWWWWmWWO.",
+        "....OWTTTTTxWWWWxWWWdWWWO.",
+        "....OWTTTTTxWWWWWxWdWWWWO.",
+        "....OWWTTTWWxwwwwPPfWWWwO.",
+        "....OwWWWWWWWxxxxpfWWwOO..",
+        ".....OsSSSSSSSSSSSSSSO....",
+        "......OSSSSSSSSSSSSSO.....",
+        ".......OqqqqqqqqqqqO......",
         "........OOFFOOOFFOO.......",
         "........OFFFOOFFFO........",
         ".........OOO..OOO.........",
@@ -2501,6 +2613,8 @@ html, button { touch-action: manipulation; }
     { name: "ellen", label: "Ellen", title: "Ellen Joe", secret: true, hello: "Ellen Joe, Victoria Housekeeping. ...Can I clock out yet?" },
     { name: "doto", label: "Doto", title: "Meisho Doto", secret: true, hello: "H-hello! Meisho Doto... I'll do my best!" },
     { name: "ringo", label: "Ringo", title: "Ringo Roadagain", secret: true, hello: "Welcome... to the man's world." },
+    { name: "miku", label: "Miku", title: "Hatsune Miku", secret: true, hello: "Hatsune Miku, ready to sing! Leek spin!" },
+    { name: "monkey", label: "Monkey", title: "Dart Monkey", secret: true, hello: "Dart Monkey reporting for duty! Pop those bloons!" },
   ];
   const COSPLAY_BY = Object.fromEntries(COSPLAYS.map((c) => [c.name, c]));
   const BREAD_LINES = [
@@ -2517,7 +2631,9 @@ html, button { touch-action: manipulation; }
   const ELLEN_BREAD = ["Bread's okay. Got any candy, though?", "Nom... fine, I'll eat it on my break."];
   const DOTO_BREAD = ["Th-thank you... it's really good!", "Hauu... I'll do my best to earn this!", "Maybe a carrot next time...?"];
   const RINGO_BREAD = ["Mandom. Five seconds back, and the bread is whole again.", "A fair trade. This is the man's world."];
-  const SKIN_BREAD = { kira: KIRA_BREAD, ellen: ELLEN_BREAD, doto: DOTO_BREAD, ringo: RINGO_BREAD };
+  const MIKU_BREAD = ["Bread is nice... but have you tried leeks?", "Nom! Thank you! I'll sing you a song!"];
+  const MONKEY_BREAD = ["Bread? I'd rather have a banana. ...okay, it's good.", "Thanks! Now back to popping bloons."];
+  const SKIN_BREAD = { kira: KIRA_BREAD, ellen: ELLEN_BREAD, doto: DOTO_BREAD, ringo: RINGO_BREAD, miku: MIKU_BREAD, monkey: MONKEY_BREAD };
 
   const love = {
     pts: Math.max(0, Math.min(100, +store.get("duckive-love") || 0)),
@@ -2963,6 +3079,8 @@ html, button { touch-action: manipulation; }
       if (!unlockedSet.has("ellen")) say("Something in here is hungry, and it has very sharp teeth.");
       if (!unlockedSet.has("doto")) say("Someone at the very bottom of the page wants to be noticed.");
       if (!unlockedSet.has("ringo")) say("A man named after an apple wants to show you his watch.");
+      if (!unlockedSet.has("miku")) say("A pop star with teal pigtails is craving a certain green vegetable.");
+      if (!unlockedSet.has("monkey")) say("The monkeys will do anything for one yellow fruit.");
     },
     admin: () => (isAdmin() ? (say("Admin mode is on."), showAdmin()) : askPassword()),
     clear: () => termOut.replaceChildren(),
@@ -2984,6 +3102,17 @@ html, button { touch-action: manipulation; }
       chime([392, 523, 659, 523, 784]);
       applySkin("ellen", true);
       toast(already ? "Already unlocked:" : "New form unlocked:", "Ellen Joe");
+      return;
+    }
+    if (cmd === "leek" || cmd === "leeks" || cmd === "negi") {
+      say(unlockedSet.has("miku") ? "Miku is already unlocked." : "A leek! Someone with very long teal pigtails is ready to sing.", "secret");
+      setTimeout(() => { closeTerm(); unlockMiku(); }, 900);
+      return;
+    }
+    if (cmd === "banana" || cmd === "bananas") {
+      say("Bananas! The monkeys are in... and here come the bloons.", "secret");
+      say("Pop every last one!", "secret");
+      setTimeout(() => { closeTerm(); startBloons(); }, 1400);
       return;
     }
     if (cmd === "ringo" || cmd === "ringo roadagain" || cmd === "mandom") {
@@ -3668,6 +3797,226 @@ html, button { touch-action: manipulation; }
     if (watchEl) watchTimer = setTimeout(() => removeWatch(true), 60000);
     const back = watchEl || d.back;
     if (back && back.isConnected && back.focus) back.focus({ preventScroll: true });
+  }
+
+  /* ---------- easter egg: type "leek" in the console and Hatsune Miku shows up, leek spinning ---------- */
+  const LEEK = [
+    ".O....O.",
+    "OlO..OlO",
+    "OllOOllO",
+    ".OlOOlO.",
+    ".OllllO.",
+    "..OLLO..",
+    "..OLLO..",
+    "..OLLO..",
+    "..OLGO..",
+    "..OGGO..",
+    "..OggO..",
+    "..OggO..",
+    "..OggO..",
+    "..OggO..",
+    "..OggO..",
+    ".OggggO.",
+    ".OrOrOrO",
+    "..O.O.O.",
+  ];
+  const LEEK_PAL = { O: "#13262b", l: "#3f9a2c", L: "#7ccf4a", G: "#c8eaa0", g: "#f6fbef", r: "#d8c9a8" };
+  const NOTE = [
+    "....O...",
+    "...O#O..",
+    "...O##O.",
+    "...O#O#O",
+    "..OO#OO.",
+    ".O###O..",
+    "O####O..",
+    ".O##O...",
+    "..OO....",
+  ];
+  const NOTE_PAL = { O: "#13262b", "#": "#39c5bb" };
+  function leekSpin() {
+    blips([784, 988, 1175, 988, 784, 988, 1319], { gap: 0.1, len: 0.11, volume: 0.06 });
+    if (reduced) return;
+    const leek = document.createElement("div");
+    leek.className = "leek-show";
+    leek.innerHTML = sprite(LEEK, null, LEEK_PAL);
+    document.body.append(leek);
+    leek.animate([{ opacity: 0, transform: "rotate(0deg) scale(.5)" }, { opacity: 1, transform: "rotate(360deg) scale(1)", offset: 0.2 },
+      { opacity: 1, transform: "rotate(1080deg) scale(1)", offset: 0.85 }, { opacity: 0, transform: "rotate(1260deg) scale(.7)" }],
+      { duration: 2000, easing: "steps(30)" }).onfinish = () => leek.remove();
+    for (let k = 0; k < 6; k++) {
+      const n = document.createElement("div");
+      n.className = "leek-note";
+      n.innerHTML = sprite(NOTE, null, NOTE_PAL);
+      n.style.left = innerWidth / 2 - 12 + "px";
+      n.style.top = innerHeight * 0.42 - 14 + "px";
+      document.body.append(n);
+      const a = (k / 6) * Math.PI * 2 + 0.4;
+      n.animate([{ opacity: 0, transform: "none" },
+        { opacity: 1, transform: "translate(" + Math.cos(a) * 70 + "px, " + (Math.sin(a) * 60 - 10) + "px)", offset: 0.3 },
+        { opacity: 0, transform: "translate(" + Math.cos(a) * 130 + "px, " + (Math.sin(a) * 100 - 80) + "px)" }],
+        { duration: 1500 + k * 90, easing: "steps(10)" }).onfinish = () => n.remove();
+    }
+  }
+  function unlockMiku() {
+    const already = unlockedSet.has("miku");
+    if (!already) {
+      unlockedSet.add("miku");
+      store.set("duckive-cosplays", [...unlockedSet].join(","));
+      showCloset(true);
+    }
+    leekSpin();
+    toast(already ? "Already unlocked:" : "New form unlocked:", "Hatsune Miku");
+    setTimeout(() => applySkin("miku", true), 800);  // after the leek-spin tune, so the two don't clash
+  }
+
+  /* ---------- easter egg: type "banana", then pop every bloon floating up the screen to recruit the Dart Monkey ---------- */
+  const BLOON = [
+    ".....OOO.....",
+    "...OORRROO...",
+    "..ORRRRRRRO..",
+    ".ORwwRRRRRRO.",
+    ".ORwRRRRRRRO.",
+    "ORRwRRRRRRRRO",
+    "ORRRRRRRRRRRO",
+    "ORRRRRRRRRRRO",
+    "ORRRRRRRRRRrO",
+    "ORRRRRRRRrrrO",
+    ".ORRRRRRrrrO.",
+    ".ORRRRRrrrrO.",
+    "..ORRRrrrrO..",
+    "...OOrrrOO...",
+    ".....OrO.....",
+    "....OrRrO....",
+    ".....OOO.....",
+  ];
+  // popping a bloon peels off its outer layer, like in Bloons: yellow > green > blue > red > gone
+  const BLOON_TIERS = [
+    { name: "Red", speed: 55, pal: { O: "#3a0d0d", R: "#e8352b", r: "#a8211b", w: "#ffd2cc" } },
+    { name: "Blue", speed: 70, pal: { O: "#0d1f3a", R: "#2f8fe8", r: "#1d5fa8", w: "#d2e8ff" } },
+    { name: "Green", speed: 85, pal: { O: "#12300d", R: "#62c42f", r: "#3d8a1c", w: "#e2ffd2" } },
+    { name: "Yellow", speed: 115, pal: { O: "#3a320d", R: "#f5d52a", r: "#c9a514", w: "#fffbd2" } },
+  ];
+  const BLOON_WAVE = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3];
+  const POP = [
+    "....O.O....",
+    ".O..OwO..O.",
+    "..O.OwO.O..",
+    "...OwywO...",
+    "OOOwyyywOOO",
+    ".wwyy.yyww.",
+    "OOOwyyywOOO",
+    "...OwywO...",
+    "..O.OwO.O..",
+    ".O..OwO..O.",
+    "....O.O....",
+  ];
+  const POP_PAL = { O: "#2e1248", w: "#ffffff", y: "#ffe08a" };
+  let round = null;
+
+  function startBloons() {
+    endBloons(false);
+    const layer = document.createElement("div");
+    layer.className = "bloons";
+    const hud = document.createElement("div");
+    hud.className = "bloon-hud";
+    hud.setAttribute("role", "status");
+    layer.append(hud);
+    document.body.append(layer);
+    const r = { layer, hud, bloons: [], left: BLOON_WAVE.length, raf: 0, last: performance.now(), timers: [], won: false };
+    round = r;
+    hud.textContent = "Bloons left: " + r.left;
+    BLOON_WAVE.forEach((tier, i) => r.timers.push(setTimeout(() => addBloon(r, tier), reduced ? 0 : i * 650)));
+    r.timers.push(setTimeout(() => { if (round === r && !r.won) endBloons(true); }, 90000));
+    if (!reduced) {
+      const step = (t) => {
+        if (round !== r) return;
+        const dt = Math.min(0.1, (t - r.last) / 1000);  // capped so a stalled frame doesn't teleport them
+        r.last = t;
+        for (const b of r.bloons) {
+          b.y -= b.speed * dt;
+          b.phase += dt * b.wob;
+          if (b.y < -70) { b.y = innerHeight + 10; b.x = 8 + Math.random() * Math.max(0, innerWidth - 56); }
+          b.el.style.transform = "translate(" + Math.round(b.x + Math.sin(b.phase) * 10) + "px, " + Math.round(b.y) + "px)";
+        }
+        r.raf = requestAnimationFrame(step);
+      };
+      r.raf = requestAnimationFrame(step);
+    }
+  }
+  function addBloon(r, tier) {
+    if (round !== r) return;
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "bloon";
+    const b = { el, tier, x: 8 + Math.random() * Math.max(0, innerWidth - 56), y: innerHeight + 10 + Math.random() * 40,
+      speed: 0, phase: Math.random() * 6.3, wob: 1.6 + Math.random() * 1.4 };
+    if (reduced) b.y = innerHeight * (0.15 + Math.random() * 0.65);
+    const paint = () => {
+      const T = BLOON_TIERS[b.tier];
+      b.speed = T.speed * (0.9 + Math.random() * 0.25);
+      el.innerHTML = sprite(BLOON, null, T.pal);
+      el.setAttribute("aria-label", T.name + " bloon");
+    };
+    paint();
+    el.style.transform = "translate(" + Math.round(b.x) + "px, " + Math.round(b.y) + "px)";
+    // pop on touch-down (a moving target is hard to click); keyboard users press Enter or Space
+    el.addEventListener("pointerdown", (e) => { e.preventDefault(); pop(); });
+    el.addEventListener("click", (e) => { if (e.detail === 0) pop(); });
+    function pop() {
+      if (round !== r || b.gone) return;
+      const box = el.getBoundingClientRect();
+      popBurst(r, box.left + box.width / 2, box.top + box.height * 0.4);
+      blips([1250 - b.tier * 90, 520], { gap: 0.025, len: 0.05, volume: 0.07 });
+      if (b.tier > 0) { b.tier -= 1; paint(); return; }
+      b.gone = true;
+      el.remove();
+      r.bloons = r.bloons.filter((o) => o !== b);
+      r.left -= 1;
+      r.hud.textContent = "Bloons left: " + r.left;
+      if (!r.left) winBloons(r);
+    }
+    r.bloons.push(b);
+    r.layer.append(el);
+  }
+  function popBurst(r, x, y) {
+    if (reduced) return;
+    const p = document.createElement("span");
+    p.className = "bloon-pop";
+    p.innerHTML = sprite(POP, null, POP_PAL);
+    p.style.transform = "translate(" + Math.round(x - 22) + "px, " + Math.round(y - 22) + "px)";
+    r.layer.append(p);
+    const gone = once(() => p.remove());
+    p.animate([{ opacity: 1, scale: "0.6" }, { opacity: 1, scale: "1.1", offset: 0.4 }, { opacity: 0, scale: "1.3" }],
+      { duration: 280, easing: "steps(4)" }).onfinish = gone;
+    setTimeout(gone, 500);
+  }
+  function winBloons(r) {
+    r.won = true;
+    r.hud.textContent = "Round complete!";
+    chime([523, 659, 784, 1047]);
+    setTimeout(() => {
+      endBloons(false);
+      const already = unlockedSet.has("monkey");
+      if (!already) {
+        unlockedSet.add("monkey");
+        store.set("duckive-cosplays", [...unlockedSet].join(","));
+        showCloset(true);
+      }
+      applySkin("monkey", true);
+      toast(already ? "Already unlocked:" : "New form unlocked:", "Dart Monkey");
+    }, 900);
+  }
+  function endBloons(missed) {
+    const r = round;
+    if (!r) return;
+    round = null;
+    r.timers.forEach(clearTimeout);
+    cancelAnimationFrame(r.raf);
+    if (missed) toast("The bloons got away...", "Type banana to try again.");
+    if (reduced) { r.layer.remove(); return; }
+    const gone = once(() => r.layer.remove());
+    r.layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, easing: "steps(5)" }).onfinish = gone;
+    setTimeout(gone, 800);
   }
 
   /* ---------- boot ---------- */
