@@ -811,6 +811,76 @@ html, button { touch-action: manipulation; }
 .leek-show { position: fixed; left: 50%; top: 42%; z-index: 85; width: 40px; height: 90px; margin: -45px 0 0 -20px; pointer-events: none; }
 .leek-note { position: fixed; z-index: 85; width: 24px; height: 27px; pointer-events: none; }
 
+/* Dance Dance Duckolution (easter egg): Miku's little Dance Dance Revolution */
+.ddr {
+  position: fixed; inset: 0; z-index: 88;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; justify-items: center; gap: 10px;
+  padding: max(10px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
+  background-color: var(--night);
+  background-image: linear-gradient(rgba(203, 181, 238, .05) 2px, transparent 2px), linear-gradient(90deg, rgba(203, 181, 238, .05) 2px, transparent 2px);
+  background-size: 24px 24px;
+  color: #fff; outline: none;
+  touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
+.ddr-top { display: flex; align-items: center; gap: 12px; width: min(380px, 100%); }
+.ddr-miku { flex: none; width: 58px; height: 54px; }
+.ddr-miku svg { display: block; width: 100%; height: 100%; }
+.ddr-miku.flip svg { transform: scaleX(-1); }
+.ddr-info { flex: 1; min-width: 0; display: grid; gap: 9px; }
+.ddr-title { margin: 0; font: 10px/1.4 var(--font-pixel); color: var(--butter-2); }
+.ddr-gauge { height: 12px; background: var(--plum-dark); box-shadow: 0 -2px #cbb5ee, 0 2px #cbb5ee, -2px 0 #cbb5ee, 2px 0 #cbb5ee; }
+.ddr-gauge span { display: block; width: 60%; height: 100%; background: #39c5bb; box-shadow: inset 0 3px #a6efe8; }
+.ddr-gauge.low span { background: var(--pink-2); box-shadow: inset 0 3px #ffd0e2; }
+.ddr-x { align-self: flex-start; min-width: 36px; min-height: 36px; border: 0; background: none; color: var(--butter-2); font: 10px/1 var(--font-pixel); cursor: pointer; }
+.ddr-x:focus-visible, .ddr-msg button:focus-visible { outline: 2px dashed var(--sprout); outline-offset: 3px; }
+.ddr-stage { position: relative; width: min(380px, 100%); min-height: 0; }
+.ddr-lanes { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+.ddr-lane { position: relative; overflow: hidden; }
+.ddr-lane + .ddr-lane { box-shadow: -2px 0 rgba(203, 181, 238, .1); }
+.ddr-receptor, .ddr-arrow, .ddr-burst { position: absolute; left: 50%; top: 6px; width: 56px; height: 56px; margin-left: -28px; }
+.ddr-receptor svg, .ddr-arrow svg, .ddr-burst svg, .ddr-pad svg { display: block; width: 100%; height: 100%; }
+.ddr-l0 svg { transform: rotate(-90deg); }
+.ddr-l1 svg { transform: rotate(180deg); }
+.ddr-l3 svg { transform: rotate(90deg); }
+.ddr-receptor.press { filter: brightness(1.7); }
+.ddr-receptor.hit { filter: brightness(2.4); }
+.ddr-arrow { will-change: transform; }
+.ddr-arrow.missed { opacity: .3; }
+.ddr-burst { pointer-events: none; }
+.ddr-judge {
+  position: absolute; left: 0; right: 0; top: 36%; margin: 0;
+  font: 15px/1 var(--font-pixel); text-align: center; text-shadow: 3px 3px 0 var(--plum-dark);
+  pointer-events: none;
+}
+.ddr-judge.Perfect { color: var(--butter-2); }
+.ddr-judge.Great { color: var(--sprout); }
+.ddr-judge.Good { color: #9fd4ff; }
+.ddr-judge.Miss { color: #a69bb8; }
+.ddr-combo { position: absolute; left: 0; right: 0; top: calc(36% + 26px); margin: 0; font: 9px/1 var(--font-pixel); color: #fff; text-align: center; pointer-events: none; }
+.ddr-msg {
+  position: absolute; left: 6%; right: 6%; top: 16%;
+  display: grid; justify-items: center; gap: 12px; padding: 16px 14px;
+  background: rgba(20, 10, 31, .94); font: 9px/1.8 var(--font-pixel); text-align: center;
+  box-shadow: 0 -3px var(--plum), 0 3px var(--plum), -3px 0 var(--plum), 3px 0 var(--plum), 5px 5px 0 var(--pink-2);
+}
+.ddr-msg b { font-size: 16px; font-weight: 400; color: var(--butter-2); text-shadow: 3px 3px 0 var(--pink-2); }
+.ddr-msg .ddr-grade { font-size: 12px; color: #a6efe8; }
+.ddr-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.ddr-msg button {
+  min-height: 36px; padding: 8px 12px; border: 0;
+  background: var(--plum); color: var(--butter-2); font: 9px/1 var(--font-pixel); cursor: pointer;
+  box-shadow: 0 -2px var(--pink-2), 0 2px var(--pink-2), -2px 0 var(--pink-2), 2px 0 var(--pink-2);
+}
+.ddr-pads { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: min(380px, 100%); }
+.ddr-pad {
+  height: 72px; padding: 0; border: 0; background: var(--plum-dark); cursor: pointer;
+  box-shadow: 0 -3px var(--plum), 0 3px var(--plum), -3px 0 var(--plum), 3px 0 var(--plum);
+  touch-action: none; -webkit-tap-highlight-color: transparent;
+}
+.ddr-pad span { display: block; width: 44px; height: 44px; margin: 0 auto; }
+.ddr-pad.on { background: var(--plum); }
+.ddr-pad:focus-visible { outline: 3px dashed var(--butter-2); outline-offset: 2px; }
+
 /* Lab banner */
 .lab-bar { position: relative; z-index: 2; background: var(--plum); color: var(--plum-ink); font-size: 13px; }
 .lab-bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; }
@@ -882,7 +952,7 @@ html, button { touch-action: manipulation; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-11-03T13:05:18+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-11-03T13:16:43+00:00"></footer>
 <div class="pond">
   <div class="pond-water" aria-hidden="true"></div>
   <span class="pond-bank" id="pond-bank" aria-hidden="true"></span>
@@ -3112,8 +3182,8 @@ html, button { touch-action: manipulation; }
       return;
     }
     if (cmd === "leek" || cmd === "leeks" || cmd === "negi") {
-      say(unlockedSet.has("miku") ? "Miku is already unlocked." : "A leek! Someone with very long teal pigtails is ready to sing.", "secret");
-      setTimeout(() => { closeTerm(); unlockMiku(); }, 900);
+      say(unlockedSet.has("miku") ? "Miku wants to dance again!" : "A leek! Miku wants to dance. Hit the arrows in time to win her over.", "secret");
+      setTimeout(() => { closeTerm(); openDance(); }, 1100);
       return;
     }
     if (cmd === "banana" || cmd === "bananas") {
@@ -4024,6 +4094,318 @@ html, button { touch-action: manipulation; }
     const gone = once(() => r.layer.remove());
     r.layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, easing: "steps(5)" }).onfinish = gone;
     setTimeout(gone, 800);
+  }
+
+  /* ---------- easter egg: type "leek", then clear Miku's dance (a tiny Dance Dance Revolution) to unlock her ---------- */
+  const ARROW = [
+    ".....O.....",
+    "....OxO....",
+    "...OxXXO...",
+    "..OxXXXXO..",
+    ".OxXXXXXXO.",
+    "OOOOxXXOOOO",
+    "...OxXXO...",
+    "...OxXXO...",
+    "...OxXXO...",
+    "...OxXXO...",
+    "...OOOOO...",
+  ];  // points up; CSS turns it for the other lanes
+  const DDR_LANES = [
+    { name: "Left", pal: { O: "#2e1248", X: "#ff8fb8", x: "#ffd0e2" } },
+    { name: "Down", pal: { O: "#2e1248", X: "#39c5bb", x: "#a6efe8" } },
+    { name: "Up", pal: { O: "#2e1248", X: "#ffe08a", x: "#fff6cc" } },
+    { name: "Right", pal: { O: "#2e1248", X: "#b48cff", x: "#e2d4ff" } },
+  ];
+  const DDR_RECEPTOR = { O: "#cbb5ee", X: "#2a1745", x: "#3a2160" };
+  const DDR_KEYS = { ArrowLeft: 0, ArrowDown: 1, ArrowUp: 2, ArrowRight: 3, d: 0, f: 1, j: 2, k: 3, D: 0, F: 1, J: 2, K: 3 };
+  const DDR_BPM = 120;
+  const DDR_COUNT_IN = 4;     // beats of 3-2-1-go before the first arrow
+  const DDR_APPROACH = 1.5;   // seconds an arrow takes to rise to the targets
+  // one string per bar, eight eighth-note slots: L D U R are arrows, two letters make a jump, "." is a rest
+  const DDR_CHART = [
+    "L . D . U . R .", "R . U . D . L .", "L . U . D . R .", "U . D . U . . .",
+    "L . L . R . R .", "D . U . D U . .", "L . D . U . R U", "R . . . LR . . .",
+    "L D . U . R . .", "U D . L . R . .", "L . R . D U D U", "LR . . . UD . . .",
+  ];
+  // the chords go C, G, Am, F; each lane plays one note of the bar's chord (MIDI), and the last number is the bass
+  const DDR_CHORDS = [[72, 76, 79, 84, 48], [67, 71, 74, 79, 43], [69, 72, 76, 81, 45], [65, 69, 72, 77, 41]];
+  const DDR_JUDGE = [[0.05, "Perfect", 3, 3], [0.1, "Great", 2, 2], [0.15, "Good", 1, 1]];  // window (s), name, points, life
+  let dance = null;
+
+  function ddrNotes() {
+    const beat = 60 / DDR_BPM;
+    const notes = [];
+    DDR_CHART.forEach((bar, b) => bar.split(" ").forEach((slot, s) => {
+      if (slot === ".") return;
+      for (const ch of slot) {
+        const lane = "LDUR".indexOf(ch);
+        notes.push({ lane, t: (DDR_COUNT_IN + b * 4 + s / 2) * beat, pitch: DDR_CHORDS[b % 4][lane], el: null, done: false });
+      }
+    }));
+    return notes;
+  }
+  // schedule the whole song at once (count-in ticks, bass, hi-hats, and the arrows as the melody); returns the delay
+  // until it starts, or 0 when there's no sound (volume at zero, or no Web Audio)
+  function ddrMusic(d) {
+    let out = null;
+    try { out = audioOut(); } catch (e) { out = null; }
+    if (!out) return 0;
+    const ctx = audioCtx;
+    const gain = ctx.createGain();
+    gain.connect(out);
+    d.gain = gain;
+    const lead = 0.15;
+    const at = ctx.currentTime + lead;
+    const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
+    const tone = (t, f, len, type, vol) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = type;
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, at + t);
+      g.gain.exponentialRampToValueAtTime(vol, at + t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + t + len);
+      o.connect(g).connect(gain);
+      o.start(at + t);
+      o.stop(at + t + len + 0.02);
+    };
+    const beat = 60 / DDR_BPM;
+    for (let k = 0; k < DDR_COUNT_IN; k++) tone(k * beat, k === DDR_COUNT_IN - 1 ? 1760 : 1320, 0.05, "square", 0.04);
+    for (let b = 0; b < DDR_CHART.length; b++) {
+      for (let q = 0; q < 4; q++) {
+        const t = (DDR_COUNT_IN + b * 4 + q) * beat;
+        tone(t, hz(DDR_CHORDS[b % 4][4]), 0.22, "triangle", 0.12);
+        tone(t + beat / 2, 5200, 0.02, "square", 0.01);
+      }
+    }
+    for (const n of d.notes) tone(n.t, hz(n.pitch), 0.16, "square", 0.05);
+    return lead + (ctx.outputLatency || ctx.baseLatency || 0);
+  }
+
+  function openDance() {
+    if (dance) return;
+    const root = document.createElement("div");
+    root.className = "ddr";
+    root.setAttribute("role", "dialog");
+    root.setAttribute("aria-modal", "true");
+    root.setAttribute("aria-label", "Dance Dance Duckolution");
+    root.tabIndex = -1;
+    root.innerHTML = '<div class="ddr-top"><span class="ddr-miku" aria-hidden="true"></span><div class="ddr-info">' +
+      '<p class="ddr-title">Dance Dance Duckolution</p><div class="ddr-gauge" aria-hidden="true"><span></span></div></div>' +
+      '<button type="button" class="ddr-x" aria-label="Stop dancing">X</button></div>' +
+      '<div class="ddr-stage"><div class="ddr-lanes"></div><p class="ddr-judge" aria-live="polite"></p>' +
+      '<p class="ddr-combo" aria-hidden="true"></p><div class="ddr-msg"></div></div><div class="ddr-pads"></div>';
+    const d = { root, lanes: [], receptors: [], pads: [], miku: root.querySelector(".ddr-miku"), gaugeEl: root.querySelector(".ddr-gauge"),
+      judgeEl: root.querySelector(".ddr-judge"), comboEl: root.querySelector(".ddr-combo"), msg: root.querySelector(".ddr-msg"),
+      lanesEl: root.querySelector(".ddr-lanes"), back: document.activeElement, state: "ready", raf: 0, gain: null,
+      notes: [], live: [], timers: [], gauge: 60, wasLocked: document.documentElement.classList.contains("locked") };
+    DDR_LANES.forEach((L, i) => {
+      const lane = document.createElement("div");
+      lane.className = "ddr-lane ddr-l" + i;
+      const rec = document.createElement("span");
+      rec.className = "ddr-receptor";
+      rec.innerHTML = sprite(ARROW, null, DDR_RECEPTOR);
+      lane.append(rec);
+      lane.addEventListener("pointerdown", (e) => { e.preventDefault(); press(d, i); });
+      d.lanesEl.append(lane);
+      d.lanes.push(lane);
+      d.receptors.push(rec);
+      const pad = document.createElement("button");
+      pad.type = "button";
+      pad.className = "ddr-pad ddr-l" + i;
+      pad.setAttribute("aria-label", L.name);
+      pad.innerHTML = "<span>" + sprite(ARROW, null, L.pal) + "</span>";
+      // pointerdown, not click: rhythm needs the moment the finger lands; keyboard users press Enter or Space
+      pad.addEventListener("pointerdown", (e) => { e.preventDefault(); press(d, i); });
+      pad.addEventListener("click", (e) => { if (e.detail === 0) press(d, i); });
+      root.querySelector(".ddr-pads").append(pad);
+      d.pads.push(pad);
+    });
+    root.querySelector(".ddr-x").addEventListener("click", closeDance);
+    d.onKey = (e) => {
+      if (e.key === "Escape" || e.key === "`") { e.preventDefault(); e.stopPropagation(); if (e.key === "Escape") closeDance(); return; }
+      const lane = DDR_KEYS[e.key];
+      if (lane == null) {
+        if ((e.key === "Enter" || e.key === " ") && d.state === "ready" && e.target === root) { e.preventDefault(); startDance(d); }
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      if (!e.repeat) press(d, lane);
+    };
+    d.onHide = () => { if (document.hidden && d.state === "play") endDance(d, false, "The music stopped while you were away."); };
+    document.addEventListener("keydown", d.onKey, true);
+    document.addEventListener("visibilitychange", d.onHide);
+    dance = d;
+    document.documentElement.classList.add("locked");
+    document.body.append(root);
+    pose(d, "normal", false);
+    setGauge(d, 60);
+    d.msg.innerHTML = "<b>Ready?</b><span>Hit each arrow as it reaches the top: tap the pads, or use the arrow keys.</span>" +
+      "<button type='button'>Start</button>";
+    d.msg.querySelector("button").addEventListener("click", () => startDance(d));
+    root.focus({ preventScroll: true });
+    if (!reduced) root.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: "steps(4)" });
+  }
+  function closeDance() {
+    const d = dance;
+    if (!d) return;
+    dance = null;
+    d.state = "done";
+    cancelAnimationFrame(d.raf);
+    d.timers.forEach(clearTimeout);
+    if (d.gain) { try { d.gain.disconnect(); } catch (e) { /* already silent */ } }
+    document.removeEventListener("keydown", d.onKey, true);
+    document.removeEventListener("visibilitychange", d.onHide);
+    if (!d.wasLocked) document.documentElement.classList.remove("locked");
+    d.root.remove();
+    if (d.back && d.back.isConnected && d.back.focus) d.back.focus({ preventScroll: true });
+  }
+  function startDance(d) {
+    if (dance !== d || d.state === "play") return;
+    d.live.forEach((n) => n.el && n.el.remove());
+    d.notes = ddrNotes();
+    d.live = [];
+    d.spawn = 0;
+    d.counts = { Perfect: 0, Great: 0, Good: 0, Miss: 0 };
+    d.combo = 0;
+    d.best = 0;
+    d.lastBeat = -1;
+    d.missBeat = -1;
+    if (d.gain) { try { d.gain.disconnect(); } catch (e) { /* already silent */ } d.gain = null; }
+    setGauge(d, 60);
+    d.msg.hidden = true;
+    d.judgeEl.textContent = "";
+    d.comboEl.textContent = "";
+    d.state = "play";
+    d.t0 = performance.now() + (ddrMusic(d) || 0.15) * 1000;
+    const frame = () => {
+      if (dance !== d || d.state !== "play") return;
+      ddrFrame(d);
+      d.raf = requestAnimationFrame(frame);
+    };
+    d.raf = requestAnimationFrame(frame);
+  }
+  function ddrFrame(d) {
+    const t = (performance.now() - d.t0) / 1000;
+    const beat = 60 / DDR_BPM;
+    const travel = Math.max(120, d.lanesEl.clientHeight - 70);
+    const bi = Math.floor(t / beat);
+    if (bi >= 0 && bi !== d.lastBeat) {  // on each beat: the count-in, and Miku's next dance move
+      d.lastBeat = bi;
+      if (bi < DDR_COUNT_IN) { d.judgeEl.className = "ddr-judge"; d.judgeEl.textContent = ["3", "2", "1", "Go!"][bi]; }
+      else if (d.judgeEl.textContent === "Go!") d.judgeEl.textContent = "";
+      pose(d, d.missBeat === bi ? "hmph" : bi % 2 ? "normal" : "happy", Math.floor(bi / 2) % 2 === 1);
+    }
+    while (d.spawn < d.notes.length && d.notes[d.spawn].t - t <= DDR_APPROACH) {
+      const n = d.notes[d.spawn++];
+      n.el = document.createElement("span");
+      n.el.className = "ddr-arrow";
+      n.el.innerHTML = sprite(ARROW, null, DDR_LANES[n.lane].pal);
+      n.el.style.transform = "translateY(" + travel + "px)";
+      d.lanes[n.lane].append(n.el);
+      d.live.push(n);
+    }
+    for (const n of d.live) {
+      if (n.done) continue;
+      if (t - n.t > DDR_JUDGE[2][0]) { judge(d, n, null); if (d.state !== "play") return; continue; }
+      n.el.style.transform = "translateY(" + Math.round(((n.t - t) / DDR_APPROACH) * travel) + "px)";
+    }
+    d.live = d.live.filter((n) => !n.done);
+    if (d.state === "play" && d.spawn >= d.notes.length && !d.live.length && t > d.notes[d.notes.length - 1].t + 1) endDance(d, true);
+  }
+  function press(d, lane) {
+    if (dance !== d) return;
+    const pad = d.pads[lane];
+    pad.classList.add("on");
+    d.timers.push(setTimeout(() => pad.classList.remove("on"), 90));
+    if (d.state === "ready") { startDance(d); return; }
+    if (d.state !== "play") return;
+    const rec = d.receptors[lane];
+    rec.classList.add("press");
+    d.timers.push(setTimeout(() => rec.classList.remove("press"), 90));
+    const t = (performance.now() - d.t0) / 1000;
+    let best = null;
+    for (const n of d.live) {
+      if (!n.done && n.lane === lane && Math.abs(n.t - t) <= DDR_JUDGE[2][0] && (!best || n.t < best.t)) best = n;
+    }
+    if (best) judge(d, best, Math.abs(best.t - t));
+  }
+  function judge(d, n, dt) {
+    if (d.state !== "play") return;
+    n.done = true;
+    const j = dt == null ? null : DDR_JUDGE.find((x) => dt <= x[0]);
+    const name = j ? j[1] : "Miss";
+    d.counts[name] += 1;
+    if (j) {
+      d.combo += 1;
+      d.best = Math.max(d.best, d.combo);
+      setGauge(d, d.gauge + j[3]);
+      n.el.remove();
+      const rec = d.receptors[n.lane];
+      rec.classList.add("hit");
+      d.timers.push(setTimeout(() => rec.classList.remove("hit"), 120));
+      if (!reduced) {
+        const b = document.createElement("span");
+        b.className = "ddr-burst";
+        b.innerHTML = sprite(POP, null, POP_PAL);
+        d.lanes[n.lane].append(b);
+        b.animate([{ opacity: 1, transform: "scale(.6)" }, { opacity: 0, transform: "scale(1.3)" }], { duration: 220, easing: "steps(4)" }).onfinish = () => b.remove();
+      }
+    } else {
+      d.combo = 0;
+      d.missBeat = d.lastBeat + 1;  // Miku pouts on the next beat
+      setGauge(d, d.gauge - 10);
+      n.el.classList.add("missed");
+      d.timers.push(setTimeout(() => n.el.remove(), 250));
+    }
+    d.judgeEl.className = "ddr-judge " + name;
+    d.judgeEl.textContent = name === "Perfect" ? "Perfect!" : name;
+    if (!reduced) d.judgeEl.animate([{ transform: "scale(1.35)" }, { transform: "none" }], { duration: 160, easing: "steps(3)" });
+    d.comboEl.textContent = d.combo >= 4 ? d.combo + " combo" : "";
+    if (d.gauge <= 0) endDance(d, false, "Miku tripped over her leek...");
+  }
+  function setGauge(d, v) {
+    d.gauge = Math.max(0, Math.min(100, v));
+    d.gaugeEl.firstChild.style.width = d.gauge + "%";
+    d.gaugeEl.classList.toggle("low", d.gauge <= 25);
+  }
+  function pose(d, frame, flip) {
+    const M = SKINS.miku;
+    d.miku.innerHTML = sprite(M.rows, frame, M.pal, M.frames);
+    d.miku.classList.toggle("flip", !!flip);
+  }
+  function endDance(d, cleared, why) {
+    if (d.state !== "play") return;
+    d.state = "done";
+    cancelAnimationFrame(d.raf);
+    if (!cleared && d.gain) { try { d.gain.disconnect(); } catch (e) { /* already silent */ } d.gain = null; }
+    d.live.forEach((n) => n.el && n.el.remove());
+    d.live = [];
+    d.judgeEl.textContent = "";
+    d.comboEl.textContent = "";
+    const c = d.counts;
+    const score = (c.Perfect * 3 + c.Great * 2 + c.Good) / (d.notes.length * 3);
+    const grade = score >= 0.95 ? "AAA" : score >= 0.9 ? "AA" : score >= 0.8 ? "A" : score >= 0.7 ? "B" : score >= 0.6 ? "C" : "D";
+    const stats = c.Perfect + " perfect, " + c.Great + " great, " + c.Good + " good, " + c.Miss + " missed. Best combo: " + d.best + ".";
+    d.msg.hidden = false;
+    if (cleared) {
+      pose(d, "happy", false);
+      chime([659, 784, 988, 1319]);
+      d.msg.innerHTML = "<b>Cleared!</b><span class='ddr-grade'>Grade " + grade + "</span><span>" + stats + "</span><button type='button'>Yay!</button>";
+      const go = once(() => { if (dance === d) { closeDance(); unlockMiku(); } });
+      d.msg.querySelector("button").addEventListener("click", go);
+      d.timers.push(setTimeout(go, 3500));
+      d.msg.querySelector("button").focus({ preventScroll: true });
+    } else {
+      pose(d, "hmph", false);
+      d.msg.innerHTML = "<b>Failed...</b><span>" + why + "</span><span>" + stats + "</span>" +
+        "<span class='ddr-btns'><button type='button'>Try again</button><button type='button'>Close</button></span>";
+      const [again, close] = d.msg.querySelectorAll("button");
+      again.addEventListener("click", () => startDance(d));
+      close.addEventListener("click", closeDance);
+      again.focus({ preventScroll: true });
+    }
   }
 
   /* ---------- boot ---------- */
