@@ -704,7 +704,7 @@ footer a { color: var(--head); font-weight: 700; }
   .cloud { animation: none; transform: translateX(20vw); }
   .amb { animation: none; transform: translateX(38vw); }
   .pony { animation: none; }
-  .pearto { animation: none; }
+  .pearto svg { animation: none; transform: translateY(4px); }
 }
 /* Lab: feed the duck, affection hearts, cosplay closet */
 .duck-hud { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; animation: rise .6s 1.1s steps(5) backwards; }
@@ -1090,19 +1090,29 @@ html, button { touch-action: manipulation; }
 .to-top:focus-visible { outline: 3px dashed var(--focus); outline-offset: 6px; }
 html.locked .to-top { display: none; }
 
-/* The pearto (easter egg): a pear with drills for hair, hiding somewhere new on every visit */
+/* The pearto (easter egg): a pear with a familiar face, hiding somewhere new on every visit. The button is a little
+   window on the edge of its hiding place (a story tile, a month's count, the grassy bank): the pear sits low in it,
+   showing only its top, and pops up now and then to look around. In the pond it floats behind the waves instead. */
 .pearto {
-  flex: none; display: inline-block;
-  width: 30px; height: 27px; padding: 0; border: 0; background: none;
+  position: absolute; z-index: 2;
+  width: 24px; height: 22px; padding: 0; border: 0; background: none; overflow: hidden;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
-  animation: pear-idle 3.4s steps(1) infinite;
 }
-.pearto svg { display: block; width: 100%; height: 100%; }
+.pearto svg { display: block; width: 24px; height: 30px; transform: translateY(10px); animation: pear-peek 7s steps(1) infinite; }
 .pearto:focus-visible { outline: 3px dashed var(--focus); outline-offset: 3px; }
-@keyframes pear-idle { 0%, 78%, 100% { transform: none; } 84% { transform: translateY(-3px); } 92% { transform: translateY(1px); } }
-.month .pearto { order: 2; margin: -9px -2px -6px; }
-.pond .pearto { position: absolute; z-index: 2; bottom: 31px; }
-footer .pearto { margin-left: 8px; vertical-align: -7px; }
+@keyframes pear-peek {
+  0%, 100% { transform: translateY(10px); }
+  66% { transform: translateY(6px); }
+  69%, 86% { transform: translateY(0); }
+  89% { transform: translateY(6px); }
+}
+.grid { position: relative; }
+.month { position: relative; }
+.month .pearto { right: 14px; bottom: 31px; }
+.pond .pearto.bank { z-index: 1; right: calc(4% + 60px); bottom: 45px; }
+.pond .pearto.float { z-index: -1; bottom: 49px; height: 30px; overflow: visible; }
+.pond .pearto.float svg { transform: none; animation: bob 1.1s steps(1) infinite; }
+.pond-water { pointer-events: none; }
 .showcase {
   position: fixed; z-index: 94; left: 50%; top: 44%;
   display: grid; justify-items: center; gap: 12px;
@@ -1120,9 +1130,9 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
 @media (pointer: coarse) {
   .seg.sort button { min-height: 40px; }
   .term-btn { min-width: 44px; height: 32px; }
-  .pearto { width: 40px; height: 36px; }
-  .month .pearto { margin: -14px -2px -10px; }
-  .pond .pearto { bottom: 29px; }
+  .pearto { width: 32px; height: 29px; }
+  .pearto svg { width: 32px; height: 40px; }
+  .pond .pearto.float { height: 40px; }
 }
 
 /* Lab banner */
@@ -1214,7 +1224,7 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
   <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-ducks"></div>
 </main>
 
-<footer class="wrap" id="footer" data-updated="2026-11-14T10:51:26+00:00"></footer>
+<footer class="wrap" id="footer" data-updated="2026-11-14T10:56:56+00:00"></footer>
 <div class="pond">
   <div class="pond-water" aria-hidden="true"></div>
   <span class="pond-bank" id="pond-bank" aria-hidden="true"></span>
@@ -1889,7 +1899,7 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
       c.className = "count";
       el.append(h, c);
       heads.set(key, el);
-      if (pearSpot.type === "month" && pearSpot.key === key) el.insertBefore(pearButton(), c);
+      if (pearSpot.type === "month" && pearSpot.key === key) el.insertBefore(pearButton(""), c);
     }
     el.lastChild.textContent = plural(count, "story");
     return el;
@@ -1939,6 +1949,7 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
 
   function applyOrder() {
     grid.replaceChildren(...nodesFor(state.section, state.sort));
+    tuckPearto();
     grid.setAttribute("aria-labelledby", "tab-" + state.section);
     revealGen++;
     if (!revealer) return;
@@ -3469,7 +3480,7 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
       if (!unlockedSet.has("ringo")) say("A man named after an apple wants to show you his watch.");
       if (!unlockedSet.has("miku")) say("A pop star with teal pigtails is craving a certain green vegetable.");
       if (!unlockedSet.has("monkey")) say("The monkeys will do anything for one yellow fruit.");
-      if (!unlockedSet.has("teto")) say("A pear with drills for hair is hiding on this page. It moves every visit.");
+      if (!unlockedSet.has("teto")) say("A pear with a very familiar face is hiding on this page. It only peeks out, and it moves every visit.");
     },
     admin: () => (isAdmin() ? (say("Admin mode is on."), showAdmin()) : askPassword()),
     clear: () => termOut.replaceChildren(),
@@ -4854,7 +4865,8 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
   /* ---------- back to the top ---------- */
   const toTop = $("to-top");
   function syncTop() {
-    const show = scrollY > innerHeight * 1.2;
+    // not at the very bottom, where it would sit on top of the pond pony
+    const show = scrollY > innerHeight * 1.2 && scrollY + innerHeight < document.documentElement.scrollHeight - 130;
     if (show !== toTop.hidden) return;
     toTop.hidden = !show;
     if (show && !reduced) toTop.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 200, easing: "steps(4)" });
@@ -4862,66 +4874,87 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
   addEventListener("scroll", syncTop, { passive: true });
   toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: reduced ? "instant" : "smooth" }));
 
-  /* ---------- easter egg: the pearto (a pear with drills for hair) hides somewhere new on every visit; click it for Kasane Teto ---------- */
+  /* ---------- easter egg: the pearto (a pear with Kasane Teto's face) hides somewhere new on every visit; click it for Teto ---------- */
   const PEARTO = [
-    ".........OO.........",
-    "........OsO.OOO.....",
-    "........OsOOlLO.....",
-    ".......OOsOlLO......",
-    "..OO..OgGGgOO...OO..",
-    ".OrRO.OGGGGGO..ORrO.",
-    "OrRrROGGiGGGGOOrRrRO",
-    "ORrRrOGGGGGGGgORrRrO",
-    ".OrRrOGeGGGeGgOrRrO.",
-    ".ORrOGGeGGGeGGgORrO.",
-    "..OrOGGGGmGGGGgOrO..",
-    "..OOGGiGGGGGGGGgOO..",
-    "...OGGGGGGGGGGGgO...",
-    "...OGGGGGGGGGGGgO...",
-    "...OgGGGGGGGGGggO...",
-    "....OgGGGGGGGggO....",
-    ".....OOgggggOO......",
-    ".......OOOOO........",
+    ".........OO.....",
+    "........OsO.....",
+    ".......OsO......",
+    ".......OsO......",
+    "......OOYOO.....",
+    ".....OYiYYYO....",
+    ".....OYiYYYO....",
+    "....OYiYYYYYO...",
+    "....OYYYYYYYO...",
+    "...OYYhhhhhYYO..",
+    "..OYYhhHhhHhYyO.",
+    "..OYhhffhhffhyO.",
+    ".OYYhfeeffeefhyO",
+    ".OYYhfRRffRRfhyO",
+    ".OYYYkffmmffkyyO",
+    ".OYYYYffffffyyyO",
+    "..OYYYYYYYYyyyO.",
+    "..OyYYYYYYyyyyO.",
+    "...OOyyyyyyOO...",
+    ".....OOOOOO.....",
   ];
-  const PEARTO_PAL = { O: "#2a121a", s: "#7a4a22", l: "#5fae3c", L: "#8fd25a", G: "#d3e25c", g: "#a9bf3a", i: "#f1f7a8", r: "#b5364f", R: "#e0506e", e: "#33121c", m: "#b5364f" };
-  // where it hides this visit: tucked into a month heading further down either section (most visits), bobbing in
-  // the pond, or sitting at the very end of the footer
+  const PEARTO_PAL = { O: "#3a2a12", s: "#8a5a26", Y: "#ead24a", y: "#c9a630", i: "#f8ee9a", h: "#d9566e", H: "#f08fa2", f: "#ffe8dc", e: "#5c1020", R: "#d4283f", k: "#ffb4b4", m: "#b0485a" };
+  // Where it hides this visit. Most visits it peeks over the top of one story, somewhere in either section; otherwise
+  // over a month's story count, behind the grassy bank by the pond, or floating in the pond behind the waves.
+  // Nothing on the first screen: the newest and oldest stories and months of each section are left out.
   const pearSpot = (() => {
-    const keys = [];
+    const stories = [];
+    const months = [];
     for (const sec of Object.keys(SECTIONS)) {
-      const months = [];
-      for (const s of storiesFor(sec, "newest")) {
+      const list = storiesFor(sec, "newest");
+      stories.push(...list.slice(9, -9).map((s) => s.id));
+      const keys = [];
+      for (const s of list) {
         const d = dateOf(s);
         const key = sec + ":" + d.getFullYear() + "-" + d.getMonth();
-        if (months[months.length - 1] !== key) months.push(key);
+        if (keys[keys.length - 1] !== key) keys.push(key);
       }
-      keys.push(...months.slice(2));  // not the first two months: those are on screen right away
+      months.push(...keys.slice(2, -1));
     }
+    const any = (list) => list[Math.floor(Math.random() * list.length)];
     const roll = Math.random();
-    if (keys.length && roll < 0.65) return { type: "month", key: keys[Math.floor(Math.random() * keys.length)] };
-    return { type: roll < 0.9 ? "pond" : "footer" };
+    if (stories.length && roll < 0.55) return { type: "tile", id: any(stories), at: 0.1 + Math.random() * 0.8 };
+    if (months.length && roll < 0.75) return { type: "month", key: any(months) };
+    return { type: roll < 0.88 ? "float" : "bank" };
   })();
-  function pearButton() {
+  function pearButton(cls) {
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "pearto";
-    b.setAttribute("aria-label", "A pear with drills for hair");
+    b.className = "pearto " + cls;
+    b.setAttribute("aria-label", "A pear with a face");
     b.innerHTML = sprite(PEARTO, null, PEARTO_PAL);
     b.addEventListener("click", () => foundPearto(b));
     return b;
   }
+  // over a story: it sits on the top edge of that tile, so it's put back after every re-render and resize
+  function tuckPearto() {
+    if (pearSpot.type !== "tile" || pearSpot.found) return;
+    const tile = tiles.get(pearSpot.id);
+    if (!tile || tile.parentNode !== grid) { if (pearSpot.el) pearSpot.el.remove(); return; }
+    const b = pearSpot.el || (pearSpot.el = pearButton(""));
+    if (b.parentNode !== grid) grid.append(b);
+    b.style.left = Math.round(tile.offsetLeft + pearSpot.at * (tile.offsetWidth - b.offsetWidth)) + "px";
+    b.style.top = tile.offsetTop - 3 - b.offsetHeight + "px";
+  }
+  addEventListener("resize", tuckPearto);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(tuckPearto);
   function placePearto() {
-    if (pearSpot.type === "pond") {
-      const b = pearButton();
-      b.style.left = 6 + Math.random() * 50 + "%";
+    if (pearSpot.type === "float") {
+      const b = pearButton("float");
+      b.style.left = 6 + Math.random() * 52 + "%";
       document.querySelector(".pond").append(b);
-    } else if (pearSpot.type === "footer") {
-      $("footer").append(pearButton());
+    } else if (pearSpot.type === "bank") {
+      document.querySelector(".pond").append(pearButton("bank"));
     }
   }
   function foundPearto(b) {
     if (b.dataset.found) return;
     b.dataset.found = "1";
+    pearSpot.found = true;
     const already = unlockedSet.has("teto");
     if (!already) {
       unlockedSet.add("teto");
@@ -4938,7 +4971,7 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
         p.className = "poof";
         p.style.left = r.left + r.width / 2 + scrollX + "px";
         p.style.top = r.top + r.height / 2 + scrollY + "px";
-        p.style.background = k % 2 ? "#d3e25c" : "#e0506e";
+        p.style.background = k % 2 ? "#ead24a" : "#e0506e";
         document.body.append(p);
         const a = (k / 10) * Math.PI * 2;
         const d = 30 + (k % 3) * 9;
@@ -4946,7 +4979,9 @@ footer .pearto { margin-left: 8px; vertical-align: -7px; }
           { duration: 700, easing: "steps(7)" }).onfinish = () => p.remove();
         setTimeout(() => p.remove(), 1000);
       }
-      b.style.animation = "none";
+      b.style.overflow = "visible";
+      b.firstChild.style.animation = "none";
+      b.firstChild.style.transform = "none";
       b.animate([{ transform: "none" }, { transform: "translateY(-16px) scale(1.5) rotate(-14deg)", offset: 0.4 },
         { transform: "translateY(-24px) scale(1.7) rotate(12deg)", offset: 0.7 }, { transform: "translateY(-28px) scale(.2)", opacity: 0 }],
         { duration: 700, easing: "steps(8)", fill: "forwards" }).onfinish = () => b.remove();
